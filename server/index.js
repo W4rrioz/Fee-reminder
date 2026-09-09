@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { initDb, getDb } from './lib/db.js';
 import routes from './routes/index.js';
+import { runSeed } from './scripts/seed.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,29 +25,17 @@ if (!process.env.JWT_SECRET || process.env.JWT_SECRET.trim() === '') {
 // Initialize the database (creates tables on first run)
 await initDb();
 
-// Auto-seed demo admin if brand new database
+// Auto-seed demo admin and 50 dummy students if brand new database
 try {
   const db = getDb();
-  const adminCount = db.prepare('SELECT COUNT(*) as count FROM admins').get()?.count || 0;
-  if (adminCount === 0) {
-    const tenantId = uuidv4();
-    const adminId = uuidv4();
-    const passwordHash = bcrypt.hashSync('admin123', 10);
-
-    db.prepare(`
-      INSERT INTO tenants (id, name, upi_id, bank_details)
-      VALUES (?, ?, ?, ?)
-    `).run(tenantId, 'Apex Coaching Academy', 'apexacademy@okhdfcbank', 'HDFC Bank - A/C: 50100234918234, IFSC: HDFC0001234');
-
-    db.prepare(`
-      INSERT INTO admins (id, tenant_id, email, password_hash)
-      VALUES (?, ?, ?, ?)
-    `).run(adminId, tenantId, 'admin@feereminder.local', passwordHash);
-
-    console.log('✅ Initialized default admin: admin@feereminder.local (password: admin123)');
+  const studentCount = db.prepare('SELECT COUNT(*) as count FROM students').get()?.count || 0;
+  if (studentCount === 0) {
+    console.log('🔄 Initializing database with 50 demo students & fee records...');
+    await runSeed();
+    console.log('✅ Auto-seeded 50 demo students for Apex Coaching Academy.');
   }
 } catch (e) {
-  console.warn('Initial admin check notice:', e.message);
+  console.warn('Initial seed notice:', e.message);
 }
 
 const app = express();
