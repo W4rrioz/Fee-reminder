@@ -7,6 +7,9 @@ import UndoToast from '../components/UndoToast';
 import ThemeToggle from '../components/ThemeToggle';
 import RemindAllModal from '../components/RemindAllModal';
 import BulkFeeUpdateModal from '../components/BulkFeeUpdateModal';
+import CsvImportModal from '../components/CsvImportModal';
+import CollectionsOverview from '../components/CollectionsOverview';
+import BottomNav from '../components/BottomNav';
 
 const CACHE_KEY = 'feereminder_dashboard_cache';
 
@@ -37,9 +40,11 @@ export default function DashboardPage() {
   const [markPaidStudent, setMarkPaidStudent] = useState(null);
   const [isRemindAllOpen, setIsRemindAllOpen] = useState(false);
   const [isBulkUpdateOpen, setIsBulkUpdateOpen] = useState(false);
+  const [isCsvImportOpen, setIsCsvImportOpen] = useState(false);
 
   // Undo Toast state
   const [undoToast, setUndoToast] = useState(null);
+
 
   const loadDashboardData = useCallback(async () => {
     try {
@@ -362,22 +367,35 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Primary CTAs: Add Student & Bulk Actions */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
-        <Link to="/students/new" className="btn btn-primary" id="btn-add-student" style={{ minHeight: '44px', padding: '8px 12px', fontSize: 'var(--font-size-sm)' }}>
+      {/* Collections Overview: Analytics & Donut Charts */}
+      <CollectionsOverview students={students} summary={summary} />
+
+      {/* Primary CTAs: Add Student, Import CSV & Bulk Actions */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
+        <Link to="/students/new" className="btn btn-primary" id="btn-add-student" style={{ minHeight: '44px', padding: '8px 8px', fontSize: 'var(--font-size-xs)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
           <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>person_add</span>
           <span>Add Student</span>
         </Link>
         <button
           type="button"
+          onClick={() => setIsCsvImportOpen(true)}
+          className="btn btn-secondary"
+          style={{ minHeight: '44px', padding: '8px 8px', fontSize: 'var(--font-size-xs)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-primary)' }}>upload_file</span>
+          <span>Import CSV</span>
+        </button>
+        <button
+          type="button"
           onClick={() => setIsBulkUpdateOpen(true)}
           className="btn btn-secondary"
-          style={{ minHeight: '44px', padding: '8px 12px', fontSize: 'var(--font-size-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+          style={{ minHeight: '44px', padding: '8px 8px', fontSize: 'var(--font-size-xs)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
         >
           <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>price_change</span>
           <span>Bulk Actions</span>
         </button>
       </div>
+
 
       {/* Remind All Overdue Banner */}
       {overdueStudents.length > 0 && (
@@ -690,7 +708,21 @@ export default function DashboardPage() {
         }}
       />
 
+      {/* CSV Import Modal */}
+      <CsvImportModal
+        isOpen={isCsvImportOpen}
+        onClose={() => setIsCsvImportOpen(false)}
+        onSuccess={(count) => {
+          setUndoToast({
+            message: `Successfully imported ${count} student${count === 1 ? '' : 's'} from CSV.`,
+            type: 'success',
+          });
+          loadDashboardData();
+        }}
+      />
+
       {/* Floating Undo Toast */}
+
       <UndoToast
         toast={undoToast}
         onUndo={handleUndo}
@@ -698,26 +730,7 @@ export default function DashboardPage() {
       />
 
       {/* Fixed Bottom Navigation Bar */}
-      <nav className="bottom-nav">
-        <div className="bottom-nav-inner">
-          <Link to="/dashboard" className="bottom-nav-item active">
-            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>dashboard</span>
-            <span className="nav-label">Overview</span>
-          </Link>
-          <Link to="/dashboard" onClick={() => setActiveTab('all')} className="bottom-nav-item">
-            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>group</span>
-            <span className="nav-label">Students</span>
-          </Link>
-          <Link to="/students/new" className="bottom-nav-item">
-            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>person_add</span>
-            <span className="nav-label">Add</span>
-          </Link>
-          <Link to="/settings" className="bottom-nav-item">
-            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>settings</span>
-            <span className="nav-label">Settings</span>
-          </Link>
-        </div>
-      </nav>
+      <BottomNav active="dashboard" />
     </div>
   );
 }

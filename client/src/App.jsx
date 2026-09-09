@@ -7,6 +7,8 @@ import DashboardPage from './pages/DashboardPage';
 import StudentFormPage from './pages/StudentFormPage';
 import StudentDetailPage from './pages/StudentDetailPage';
 import SettingsPage from './pages/SettingsPage';
+import AttendancePage from './pages/AttendancePage';
+import AttendanceCalendarPage from './pages/AttendanceCalendarPage';
 
 export default function App() {
   const { token, loading } = useAuth();
@@ -61,6 +63,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <StudentFormPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/attendance"
+        element={
+          <ProtectedRoute>
+            <AttendancePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/attendance/student/:studentId"
+        element={
+          <ProtectedRoute>
+            <AttendanceCalendarPage />
           </ProtectedRoute>
         }
       />

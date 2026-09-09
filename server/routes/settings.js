@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
   try {
     const db = getDb();
     const tenant = db.prepare(`
-      SELECT id, name, upi_id, bank_details, created_at
+      SELECT id, name, upi_id, bank_details, reminder_template, created_at
       FROM tenants
       WHERE id = ?
     `).get(req.tenantId);
@@ -38,6 +38,7 @@ router.get('/', (req, res) => {
         name: tenant.name,
         upi_id: tenant.upi_id || '',
         bank_details: tenant.bank_details || '',
+        reminder_template: tenant.reminder_template || '',
       },
     });
   } catch (err) {
@@ -48,11 +49,11 @@ router.get('/', (req, res) => {
 
 /**
  * PUT /api/settings
- * Update tenant institute name, UPI ID, and bank details.
+ * Update tenant institute name, UPI ID, bank details, and reminder message template.
  */
 router.put('/', (req, res) => {
   try {
-    const { name, upiId, bankDetails } = req.body;
+    const { name, upiId, bankDetails, reminderTemplate } = req.body;
     const errors = {};
 
     if (name !== undefined && !name?.trim()) {
@@ -70,18 +71,23 @@ router.put('/', (req, res) => {
 
     const db = getDb();
     const trimmedBank = bankDetails ? bankDetails.trim() : null;
+    const trimmedTemplate = reminderTemplate !== undefined 
+      ? (reminderTemplate ? reminderTemplate.trim() : '') 
+      : null;
 
     db.prepare(`
       UPDATE tenants
       SET 
         name = COALESCE(?, name),
         upi_id = ?,
-        bank_details = ?
+        bank_details = ?,
+        reminder_template = COALESCE(?, reminder_template)
       WHERE id = ?
     `).run(
       name ? name.trim() : null,
       trimmedUpi,
       trimmedBank,
+      trimmedTemplate,
       req.tenantId
     );
 
@@ -92,6 +98,7 @@ router.put('/', (req, res) => {
         name: name ? name.trim() : undefined,
         upi_id: trimmedUpi || '',
         bank_details: trimmedBank || '',
+        reminder_template: trimmedTemplate !== null ? trimmedTemplate : '',
       },
     });
   } catch (err) {

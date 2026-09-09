@@ -1079,3 +1079,56 @@ textarea.form-input {
   }
 }
 
+/* Attendance Module Styles */
+.day-present {
+  background-color: #15803d !important;
+  color: #ffffff !important;
+}
+
+.day-absent {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.day-late {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+}
+
+.day-future,
+.day-unmarked {
+  background-color: var(--color-surface-low);
+  color: var(--color-on-surface-variant);
+}
+
+.dark .day-future,
+.dark .day-unmarked {
+  background-color: #1e293b;
+  color: #94a3b8;
+}
+
+.attendance-btn-present {
+  background-color: #15803d;
+  color: #ffffff;
+}
+.attendance-btn-present:hover {
+  background-color: #166534;
+}
+
+.attendance-btn-absent {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+.attendance-btn-absent:hover {
+  background-color: #b91c1c;
+}
+
+.attendance-btn-late {
+  background-color: #d97706;
+  color: #ffffff;
+}
+.attendance-btn-late:hover {
+  background-color: #b45309;
+}
+
+

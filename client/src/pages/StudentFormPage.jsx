@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
+import CsvImportModal from '../components/CsvImportModal';
 
 /**
  * Add / Edit Student screen — Ledger Calm design per mockups:
@@ -27,6 +28,7 @@ export default function StudentFormPage() {
   const [deleting, setDeleting] = useState(false);
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
+  const [isImportOpen, setIsImportOpen] = useState(false);
 
   // Prepopulate in Edit mode
   useEffect(() => {
@@ -211,39 +213,67 @@ export default function StudentFormPage() {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 'var(--space-3)',
+          justifyContent: 'space-between',
           backgroundColor: 'var(--color-surface-low)',
           padding: 'var(--space-4)',
           borderRadius: 'var(--radius-lg)',
           marginBottom: 'var(--space-4)',
+          flexWrap: 'wrap',
+          gap: 'var(--space-3)',
         }}
       >
-        <div
-          style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: 'var(--radius-full)',
-            backgroundColor: 'var(--color-primary-container)',
-            color: 'var(--color-on-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>
-            {isEditMode ? 'manage_accounts' : 'person_add'}
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: 'var(--radius-full)',
+              backgroundColor: 'var(--color-primary-container)',
+              color: 'var(--color-on-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>
+              {isEditMode ? 'manage_accounts' : 'person_add'}
+            </span>
+          </div>
+          <div>
+            <h2 style={{ fontSize: 'var(--font-size-md)', fontWeight: 700 }}>
+              {isEditMode ? 'Update Enrollment' : 'New Enrollment'}
+            </h2>
+            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-on-surface-variant)' }}>
+              Set up ledger profile & reminder schedule
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 style={{ fontSize: 'var(--font-size-md)', fontWeight: 700 }}>
-            {isEditMode ? 'Update Enrollment' : 'New Enrollment'}
-          </h2>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-on-surface-variant)' }}>
-            Set up ledger profile & reminder schedule
-          </p>
-        </div>
+
+        {!isEditMode && (
+          <button
+            type="button"
+            onClick={() => setIsImportOpen(true)}
+            className="btn btn-secondary"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              fontSize: 'var(--font-size-xs)',
+              minHeight: '36px',
+              width: 'auto',
+              fontWeight: 700,
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-primary)' }}>
+              upload_file
+            </span>
+            <span>Import CSV</span>
+          </button>
+        )}
       </div>
+
 
       {serverError && <div className="alert alert-error">{serverError}</div>}
 
@@ -422,7 +452,16 @@ export default function StudentFormPage() {
           )}
         </form>
       </div>
+
+      <CsvImportModal
+        isOpen={isImportOpen}
+        onClose={() => setIsImportOpen(false)}
+        onSuccess={() => {
+          navigate('/dashboard', { replace: true });
+        }}
+      />
     </div>
   );
 }
+
 

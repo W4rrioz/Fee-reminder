@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { formatReminderMessage, generateWhatsAppLink } from '../utils/reminderTemplate';
 
 /**
  * Screen: Send Reminder Action Modal
  * Ledger Calm design per mockups:
  *  - Modal sheet with amber accent rail
  *  - Recipient phone target chip
- *  - Structured WhatsApp message preview
+ *  - Structured WhatsApp message preview (custom template supported)
  *  - Confirm & Open WhatsApp CTA
  */
 export default function ReminderModal({
@@ -23,7 +24,6 @@ export default function ReminderModal({
 
   if (!isOpen || !student) return null;
 
-  const instituteName = settings?.name || 'our institute';
   const upiId = settings?.upi_id || '';
   const bankDetails = settings?.bank_details || '';
   const fee = student.fee;
@@ -31,23 +31,15 @@ export default function ReminderModal({
   const hasPaymentInfo = Boolean(upiId.trim() || bankDetails.trim());
   const phone = student.parent_phone || '';
 
-  // Format the WhatsApp reminder message text
-  const messageText = `Dear Parent,
+  // Format the WhatsApp reminder message text using tenant's custom template or default
+  const messageText = formatReminderMessage({
+    template: settings?.reminder_template,
+    student,
+    fee,
+    settings,
+  });
 
-This is a reminder from ${instituteName} regarding the fee dues for ${student.name}.
-
-• Amount Due: ₹${fee ? fee.amount.toLocaleString('en-IN') : '0'}
-• Due Date: ${fee ? fee.due_date : 'N/A'}
-• Status: ${fee?.status === 'overdue' ? 'Overdue' : 'Due Soon'}
-
-Payment Details:
-${upiId ? `• UPI ID: ${upiId}` : ''}
-${bankDetails ? `• Bank Info: ${bankDetails}` : ''}
-
-Please share a screenshot after completing the payment. Thank you!`;
-
-  const cleanPhone = phone.replace(/[^0-9]/g, '');
-  const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(messageText)}`;
+  const waUrl = generateWhatsAppLink(phone, messageText);
 
   async function handleConfirmSend() {
     if (!hasPaymentInfo || !phone) return;

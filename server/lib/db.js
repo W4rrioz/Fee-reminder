@@ -53,11 +53,12 @@ export async function initDb() {
   // Run migration — creates tables if they don't exist
   rawDb.exec(`
     CREATE TABLE IF NOT EXISTS tenants (
-      id           TEXT PRIMARY KEY,
-      name         TEXT NOT NULL CHECK (name <> ''),
-      upi_id       TEXT,
-      bank_details TEXT,
-      created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+      id                TEXT PRIMARY KEY,
+      name              TEXT NOT NULL CHECK (name <> ''),
+      upi_id            TEXT,
+      bank_details      TEXT,
+      reminder_template TEXT,
+      created_at        TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
     CREATE TABLE IF NOT EXISTS admins (
@@ -96,7 +97,24 @@ export async function initDb() {
       fee_id    TEXT NOT NULL REFERENCES fees(id) ON DELETE CASCADE,
       sent_at   TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS attendance (
+      id         TEXT PRIMARY KEY,
+      tenant_id  TEXT NOT NULL REFERENCES tenants(id),
+      student_id TEXT NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+      date       TEXT NOT NULL,
+      status     TEXT NOT NULL CHECK (status IN ('present', 'absent', 'late')),
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      UNIQUE(tenant_id, student_id, date)
+    );
   `);
+
+  // Safe column migrations for existing databases
+  try {
+    rawDb.exec(`ALTER TABLE tenants ADD COLUMN reminder_template TEXT;`);
+  } catch {
+    // Column already exists or table freshly created
+  }
 
   saveDb();
   console.log(`Database initialized at ${dbPath}`);

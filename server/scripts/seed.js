@@ -96,8 +96,9 @@ export async function runSeed() {
   }
 
   // 2. Clear existing demo data for this tenant
-  console.log('Clearing previous student and fee records for this tenant...');
+  console.log('Clearing previous student, fee, and attendance records for this tenant...');
   db.prepare('DELETE FROM reminders WHERE tenant_id = ?').run(tenantId);
+  db.prepare('DELETE FROM attendance WHERE tenant_id = ?').run(tenantId);
   db.prepare('DELETE FROM fees WHERE tenant_id = ?').run(tenantId);
   db.prepare('DELETE FROM students WHERE tenant_id = ?').run(tenantId);
 
@@ -173,6 +174,21 @@ export async function runSeed() {
         INSERT INTO fees (id, tenant_id, student_id, amount, due_date, status, paid_at)
         VALUES (?, ?, ?, ?, ?, ?, ?)
       `).run(feeId, tenantId, studentId, amount, dueDate, status, paidAt);
+
+      // Generate realistic demo attendance records for the past 10 days
+      for (let dayOffset = 9; dayOffset >= 0; dayOffset--) {
+        const attDate = formatDate(addDays(now, -dayOffset));
+        let attStatus = 'present';
+        // Give occasional absent or late based on student index and day
+        const seedVal = (index * 7 + dayOffset * 3) % 17;
+        if (seedVal === 0) attStatus = 'absent';
+        else if (seedVal === 1 || seedVal === 2) attStatus = 'late';
+
+        db.prepare(`
+          INSERT INTO attendance (id, tenant_id, student_id, date, status)
+          VALUES (?, ?, ?, ?, ?)
+        `).run(uuidv4(), tenantId, studentId, attDate, attStatus);
+      }
 
       studentsCreated.push({
         name: studentName,

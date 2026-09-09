@@ -162,6 +162,44 @@ export default function StudentDetailPage() {
   const isOverdue = status === 'overdue';
   const isPaid = status === 'paid';
 
+  const totalReminders = reminders?.length || 0;
+
+  function formatReminderDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+
+    const formatted = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    const timeFormatted = date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+    return `Sent ${formatted} at ${timeFormatted}`;
+  }
+
+  function getRelativeTime(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 30) return `${diffDays}d ago`;
+    return '';
+  }
+
   return (
     <div className="page-container">
       {/* Top Header */}
@@ -179,6 +217,14 @@ export default function StudentDetailPage() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
           <ThemeToggle />
+          <Link
+            to={`/attendance/student/${student.id}`}
+            className="nav-btn"
+            title="View Attendance Calendar"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>calendar_month</span>
+            <span>Attendance</span>
+          </Link>
           <Link
             to={`/students/${student.id}/edit`}
             className="nav-btn"
@@ -305,45 +351,170 @@ export default function StudentDetailPage() {
         </div>
       )}
 
-      {/* Reminder History Audit Log */}
-      <div className="card">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: 'var(--space-3)' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--color-primary)' }}>history</span>
-          <h3 style={{ fontSize: 'var(--font-size-md)', fontWeight: 700 }}>Reminder History</h3>
+      {/* Reminder History Timeline Section */}
+      <section className="card">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', paddingBottom: 'var(--space-3)', marginBottom: 'var(--space-3)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: 'var(--color-secondary-fixed)',
+                color: 'var(--color-secondary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>history</span>
+            </div>
+            <h3 style={{ fontSize: 'var(--font-size-base)', fontWeight: 700, margin: 0 }}>
+              Reminder History
+            </h3>
+          </div>
+          <span
+            style={{
+              fontSize: 'var(--font-size-xs)',
+              fontWeight: 700,
+              color: 'var(--color-secondary)',
+              backgroundColor: 'var(--color-secondary-fixed)',
+              padding: '2px 10px',
+              borderRadius: 'var(--radius-full)',
+              border: '1px solid var(--color-outline-variant)',
+            }}
+          >
+            {totalReminders} {totalReminders === 1 ? 'Reminder' : 'Reminders'} Sent
+          </span>
         </div>
 
-        {reminders && reminders.length > 0 ? (
-          <ul style={{ listStyle: 'none' }}>
-            {reminders.map((rem) => (
-              <li
-                key={rem.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '10px 0',
-                  borderBottom: '1px solid var(--color-border)',
-                  fontSize: 'var(--font-size-sm)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--color-secondary-container)', color: 'var(--color-on-secondary-fixed)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span className="material-symbols-outlined fill" style={{ fontSize: '14px' }}>chat</span>
+        {totalReminders > 0 ? (
+          <div
+            style={{
+              position: 'relative',
+              paddingLeft: '28px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'var(--space-3)',
+              paddingTop: '4px',
+            }}
+          >
+            {/* Vertical Connecting Line */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '11px',
+                top: '12px',
+                bottom: '12px',
+                width: '2px',
+                backgroundColor: 'var(--color-border)',
+              }}
+            />
+
+            {reminders.map((rem, idx) => {
+              const reminderNum = totalReminders - idx;
+              const isLatest = idx === 0;
+              const relativeTime = getRelativeTime(rem.sent_at);
+
+              return (
+                <div key={rem.id} style={{ position: 'relative' }}>
+                  {/* Timeline Node Dot */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-28px',
+                      top: '6px',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: 'var(--radius-full)',
+                      backgroundColor: isLatest ? 'var(--color-secondary-container)' : 'var(--color-surface-high)',
+                      color: isLatest ? '#ffffff' : 'var(--color-on-surface-variant)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                      zIndex: 1,
+                    }}
+                  >
+                    <span className="material-symbols-outlined fill" style={{ fontSize: '13px' }}>
+                      {isLatest ? 'chat' : 'mark_chat_read'}
+                    </span>
                   </div>
-                  <span style={{ fontWeight: 600 }}>WhatsApp Reminder sent</span>
+
+                  {/* Timeline Card */}
+                  <div
+                    style={{
+                      backgroundColor: 'var(--color-surface-low)',
+                      border: '1px solid var(--color-border)',
+                      borderRadius: 'var(--radius-lg)',
+                      padding: '10px 12px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '4px',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: 'var(--font-size-sm)', fontWeight: 700, color: 'var(--color-on-surface)' }}>
+                          WhatsApp Reminder #{reminderNum}
+                        </span>
+                        {isLatest && (
+                          <span style={{ fontSize: '10px', backgroundColor: 'var(--color-secondary-fixed)', color: 'var(--color-secondary)', padding: '1px 6px', borderRadius: 'var(--radius-full)', fontWeight: 700 }}>
+                            Latest
+                          </span>
+                        )}
+                      </div>
+                      <span
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          color: isLatest && isOverdue ? 'var(--color-error)' : 'var(--color-tertiary-container)',
+                        }}
+                      >
+                        {isLatest && isOverdue ? 'Overdue alert' : 'Delivered'}
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)' }}>
+                      <span>{formatReminderDate(rem.sent_at)}</span>
+                      {relativeTime && (
+                        <span style={{ fontStyle: 'normal', color: 'var(--color-outline)' }}>
+                          {relativeTime}
+                        </span>
+                      )}
+                    </div>
+
+                    <p style={{ fontSize: '11px', color: 'var(--color-on-surface-variant)', fontStyle: 'italic', margin: '2px 0 0 0', lineHeight: '1.4' }}>
+                      &ldquo;Dear Parent, reminder from {tenantSettings?.name || 'our institute'} regarding fee dues for {student.name}...&rdquo;
+                    </p>
+                  </div>
                 </div>
-                <span style={{ color: 'var(--color-on-surface-variant)', fontSize: 'var(--font-size-xs)' }}>
-                  {new Date(rem.sent_at).toLocaleString()}
-                </span>
-              </li>
-            ))}
-          </ul>
+              );
+            })}
+          </div>
         ) : (
-          <p style={{ color: 'var(--color-on-surface-variant)', fontSize: 'var(--font-size-sm)', textAlign: 'center', padding: 'var(--space-3) 0' }}>
-            No reminders sent yet.
-          </p>
+          <div
+            style={{
+              textAlign: 'center',
+              padding: 'var(--space-6) var(--space-4)',
+              border: '1.5px dashed var(--color-outline-variant)',
+              borderRadius: 'var(--radius-lg)',
+              backgroundColor: 'var(--color-surface-low)',
+              marginTop: 'var(--space-2)',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-outline)', marginBottom: '6px', display: 'block' }}>
+              chat_bubble_outline
+            </span>
+            <p style={{ fontWeight: 600, fontSize: 'var(--font-size-sm)', color: 'var(--color-on-surface)', margin: 0 }}>
+              No reminders sent yet
+            </p>
+            <p style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', marginTop: '4px', marginBottom: 0 }}>
+              When you send WhatsApp fee alerts, a chronological audit trail will appear here.
+            </p>
+          </div>
         )}
-      </div>
+      </section>
 
       {/* Reminder Modal */}
       {currentFee && (

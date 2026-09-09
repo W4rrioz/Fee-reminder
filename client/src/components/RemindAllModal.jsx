@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { formatReminderMessage, generateWhatsAppLink } from '../utils/reminderTemplate';
 
 /**
  * RemindAllModal — Remind All Overdue Confirmation & In-Flight Progress Modal
@@ -24,25 +25,13 @@ export default function RemindAllModal({
   const totalDuesOverdue = overdueStudents.reduce((sum, s) => sum + (s.fee?.amount || 0), 0);
 
   function generateWhatsAppUrl(student) {
-    const rawPhone = student.parent_phone?.replace(/\D/g, '') || '';
-    const phone = rawPhone.startsWith('91') ? rawPhone : `91${rawPhone}`;
-    const studentName = student.name || 'Student';
-    const amountStr = (student.fee?.amount || 0).toLocaleString('en-IN');
-    const dueDateStr = student.fee?.due_date || '';
-    const instituteName = tenantSettings?.name || 'FeeReminder';
-    const upiId = tenantSettings?.upi_id || '';
-    const bankDetails = tenantSettings?.bank_details || '';
-
-    let paymentInfo = '';
-    if (upiId) {
-      paymentInfo += `\nUPI ID: ${upiId}`;
-    }
-    if (bankDetails) {
-      paymentInfo += `\nBank Details: ${bankDetails}`;
-    }
-
-    const message = `Dear Parent, fee reminder from ${instituteName} for ${studentName}. Amount: ₹${amountStr}, Due Date: ${dueDateStr}.${paymentInfo}\nPlease clear the dues at your earliest convenience. Thank you.`;
-    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    const message = formatReminderMessage({
+      template: tenantSettings?.reminder_template,
+      student,
+      fee: student.fee,
+      settings: tenantSettings,
+    });
+    return generateWhatsAppLink(student.parent_phone, message);
   }
 
   async function handleConfirmAndSend() {

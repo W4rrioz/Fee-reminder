@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
 import BulkFeeUpdateModal from '../components/BulkFeeUpdateModal';
+import BottomNav from '../components/BottomNav';
+import {
+  DEFAULT_REMINDER_TEMPLATE,
+  AVAILABLE_TEMPLATE_TAGS,
+  formatReminderMessage,
+} from '../utils/reminderTemplate';
 
 /**
  * Screen: Institute Settings — Ledger Calm design per mockups:
@@ -10,6 +16,7 @@ import BulkFeeUpdateModal from '../components/BulkFeeUpdateModal';
  *  - Academy Identity preview card
  *  - Static UPI ID configuration with instant verification & QR test
  *  - Bank NEFT/IMPS fallback details
+ *  - Reminder message template editor with variable tag shortcuts & live preview
  *  - Direct settlement guarantee banner
  */
 export default function SettingsPage() {
@@ -18,6 +25,7 @@ export default function SettingsPage() {
   const [name, setName] = useState('');
   const [upiId, setUpiId] = useState('');
   const [bankDetails, setBankDetails] = useState('');
+  const [reminderTemplate, setReminderTemplate] = useState('');
   const [students, setStudents] = useState([]);
   const [isBulkUpdateOpen, setIsBulkUpdateOpen] = useState(false);
 
@@ -48,6 +56,7 @@ export default function SettingsPage() {
         setName(data.settings.name || '');
         setUpiId(data.settings.upi_id || '');
         setBankDetails(data.settings.bank_details || '');
+        setReminderTemplate(data.settings.reminder_template || '');
 
         if (studentsRes.ok) {
           const sData = await studentsRes.json();
@@ -78,6 +87,27 @@ export default function SettingsPage() {
     return errs;
   }
 
+  function handleInsertTag(tag) {
+    const textarea = document.getElementById('reminderTemplate');
+    if (!textarea) {
+      setReminderTemplate((prev) => (prev ? `${prev} ${tag}` : tag));
+      return;
+    }
+    const start = textarea.selectionStart ?? (reminderTemplate || '').length;
+    const end = textarea.selectionEnd ?? (reminderTemplate || '').length;
+    const text = reminderTemplate || '';
+    const newText = text.substring(0, start) + tag + text.substring(end);
+    setReminderTemplate(newText);
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + tag.length, start + tag.length);
+    }, 0);
+  }
+
+  function handleResetTemplate() {
+    setReminderTemplate(DEFAULT_REMINDER_TEMPLATE);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setServerError('');
@@ -100,6 +130,7 @@ export default function SettingsPage() {
           name: name.trim(),
           upiId: upiId.trim(),
           bankDetails: bankDetails.trim(),
+          reminderTemplate: reminderTemplate.trim(),
         }),
       });
 
@@ -111,7 +142,7 @@ export default function SettingsPage() {
         return;
       }
 
-      setSuccessMessage('Payment settings saved! WhatsApp reminders will include these details.');
+      setSuccessMessage('Settings saved! WhatsApp reminders will use your customized message template and payment credentials.');
     } catch {
       setServerError('A network error occurred. Please try again.');
     } finally {
@@ -299,6 +330,102 @@ export default function SettingsPage() {
             </span>
           </div>
 
+          {/* Reminder Message Template Editor */}
+          <div className="form-group" style={{ marginTop: 'var(--space-4)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
+              <label className="form-label" htmlFor="reminderTemplate" style={{ margin: 0 }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-whatsapp)' }}>chat</span>
+                  <span>Reminder Message Template</span>
+                </span>
+                <span className="tab-badge" style={{ backgroundColor: 'var(--color-whatsapp)', color: '#ffffff' }}>WhatsApp</span>
+              </label>
+              <button
+                type="button"
+                onClick={handleResetTemplate}
+                className="btn btn-secondary"
+                style={{ fontSize: '11px', padding: '4px 8px', height: 'auto' }}
+                title="Reset to standard template"
+              >
+                Reset to Default
+              </button>
+            </div>
+            
+            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', display: 'block', marginBottom: 'var(--space-2)' }}>
+              Customize the message sent to parents. Click any variable button below to insert it at cursor:
+            </span>
+
+            {/* Variable Tag Shortcut Buttons */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: 'var(--space-2)' }}>
+              {AVAILABLE_TEMPLATE_TAGS.map(({ tag, label }) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => handleInsertTag(tag)}
+                  style={{
+                    backgroundColor: 'var(--color-surface-low)',
+                    color: 'var(--color-primary-container)',
+                    border: '1px solid var(--color-outline-variant)',
+                    borderRadius: 'var(--radius-full)',
+                    padding: '4px 10px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    transition: 'all 0.15s ease',
+                  }}
+                  title={`Insert ${tag}`}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>add</span>
+                  <span>{tag}</span>
+                  <span style={{ color: 'var(--color-on-surface-variant)', fontWeight: 400 }}>({label})</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Template Textarea */}
+            <textarea
+              id="reminderTemplate"
+              className="form-input"
+              rows="7"
+              placeholder={DEFAULT_REMINDER_TEMPLATE}
+              value={reminderTemplate}
+              onChange={(e) => setReminderTemplate(e.target.value)}
+              disabled={saving}
+              style={{ fontFamily: 'monospace', fontSize: '13px', lineHeight: '1.4' }}
+            />
+
+            {/* Live Message Preview */}
+            <div style={{ marginTop: 'var(--space-3)' }}>
+              <span style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-on-surface-variant)', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '6px' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--color-secondary)' }}>visibility</span>
+                Live Parent Message Preview:
+              </span>
+              <div
+                className="message-preview-box"
+                style={{
+                  whiteSpace: 'pre-wrap',
+                  fontSize: '12px',
+                  lineHeight: '1.45',
+                  backgroundColor: 'var(--color-surface-low)',
+                  borderLeft: '4px solid var(--color-secondary-container)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '12px',
+                  color: 'var(--color-on-surface)',
+                }}
+              >
+                {formatReminderMessage({
+                  template: reminderTemplate || DEFAULT_REMINDER_TEMPLATE,
+                  student: { name: 'Rahul Sharma' },
+                  fee: { amount: 2500, due_date: '2026-09-15', status: 'overdue' },
+                  settings: { name: name || 'Apex Academy', upi_id: upiId || 'apex@upi', bank_details: bankDetails },
+                })}
+              </div>
+            </div>
+          </div>
+
           {/* Zero Commission Guarantee Note */}
           <div
             style={{
@@ -394,6 +521,9 @@ export default function SettingsPage() {
           setSuccessMessage(msg || 'Bulk fee update applied successfully.');
         }}
       />
+
+      {/* Bottom Navigation */}
+      <BottomNav active="settings" />
     </div>
   );
 }
