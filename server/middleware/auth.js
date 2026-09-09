@@ -1,14 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { getDb } from '../lib/db.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'feereminder_default_jwt_secret_dev_key_2026';
-
-if (!JWT_SECRET || JWT_SECRET === 'change-me-to-a-random-secret') {
-  console.warn(
-    'WARNING: JWT_SECRET is not set or is still the default. ' +
-    'Generate one with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"'
-  );
-}
+const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
  * Auth middleware — the single point where tenant_id is resolved.
