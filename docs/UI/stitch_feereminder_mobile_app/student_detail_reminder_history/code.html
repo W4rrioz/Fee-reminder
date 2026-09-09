@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Detail - Reminder History - FeeReminder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .status-overdue { border-left: 5px solid #DC2626; }
+  </style>
+</head>
+<body class="bg-[#FAFAF9] text-gray-900 min-h-screen pb-16 antialiased">
+  <!-- Top App Bar -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-20 px-4 py-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button class="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <div>
+          <h1 class="text-base font-bold text-gray-900 leading-tight">Student Details</h1>
+          <p class="text-xs text-gray-500 font-medium">Ledger & Communication Record</p>
+        </div>
+      </div>
+      <button class="text-gray-400 hover:text-gray-700 p-2">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+    <!-- Student Profile Card -->
+    <div class="bg-white p-4 rounded-xl border border-gray-200 status-overdue shadow-sm space-y-3">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-lg font-black text-gray-900">Rahul Sharma</h2>
+            <span class="bg-[#DC2626] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Overdue</span>
+          </div>
+          <p class="text-xs text-gray-600 font-medium mt-1">
+            <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> +91 98765 43210
+          </p>
+          <p class="text-xs text-gray-500 mt-0.5">Class 10 · Batch A · Roll #01</p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-gray-400 uppercase font-bold block">Due Amount</span>
+          <span class="text-xl font-black text-[#3730A3]">₹2,500</span>
+          <span class="text-[11px] text-[#DC2626] block font-semibold">Due: Sep 01, 2026</span>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-100 pt-3 flex gap-2">
+        <button class="flex-1 bg-[#D97706] hover:bg-amber-700 text-white font-bold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 h-11 shadow-sm">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Send Reminder
+        </button>
+        <button class="flex-1 bg-[#15803D] hover:bg-green-800 text-white font-bold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 h-11 shadow-sm">
+          <i class="fa-solid fa-check text-sm"></i> Mark as Paid
+        </button>
+      </div>
+    </div>
+
+    <!-- 6. Reminder History Section -->
+    <section class="bg-white p-4 rounded-xl border border-gray-200 space-y-3 shadow-sm">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-full bg-amber-100 text-[#D97706] flex items-center justify-center text-xs">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+          <h3 class="text-base font-bold text-gray-900">Reminder History</h3>
+        </div>
+        <span class="text-xs font-bold text-[#D97706] bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+          3 Reminders Sent
+        </span>
+      </div>
+
+      <!-- Vertical Timeline List -->
+      <div class="relative pl-6 space-y-4 pt-1 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-200">
+        <!-- Event 1 -->
+        <div class="relative">
+          <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-[#D97706] text-white flex items-center justify-center text-[10px] shadow-sm">
+            <i class="fa-solid fa-comment-dots"></i>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-2.5 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-900">WhatsApp Reminder #3</span>
+              <span class="text-[11px] font-semibold text-[#DC2626]">Overdue alert</span>
+            </div>
+            <p class="text-xs font-medium text-gray-600">Sent Sep 8, 2026 at 4:32 PM</p>
+            <p class="text-[11px] text-gray-500 italic">"Dear Parent, reminder from Apex Academy regarding fee dues for Rahul Sharma..."</p>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="relative">
+          <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-[10px]">
+            <i class="fa-solid fa-comment"></i>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-2.5 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-900">WhatsApp Reminder #2</span>
+              <span class="text-[11px] font-semibold text-gray-500">Delivered</span>
+            </div>
+            <p class="text-xs font-medium text-gray-600">Sent Sep 4, 2026 at 11:15 AM</p>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="relative">
+          <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center text-[10px]">
+            <i class="fa-solid fa-comment"></i>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-2.5 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-900">WhatsApp Reminder #1 (Due Soon)</span>
+              <span class="text-[11px] font-semibold text-gray-500">Delivered</span>
+            </div>
+            <p class="text-xs font-medium text-gray-600">Sent Aug 29, 2026 at 10:00 AM</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty State Variant Showcase (For documentation / other students) -->
+    <div class="bg-white p-4 rounded-xl border border-gray-200 space-y-2">
+      <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Empty State Example (New Student)</span>
+      <div class="py-6 text-center bg-gray-50 rounded-lg border border-dashed border-gray-200">
+        <i class="fa-regular fa-comment-dots text-2xl text-gray-300 mb-1 block"></i>
+        <p class="text-xs font-medium text-gray-400">No reminders sent yet</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

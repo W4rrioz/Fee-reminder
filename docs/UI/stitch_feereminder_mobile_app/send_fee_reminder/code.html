@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>Send Reminders - FeeReminder</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:max(env(safe-area-inset-bottom,0px),12px);}.pt-safe{padding-top:max(env(safe-area-inset-top,0px),0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-tint": "#544fc0", "surface-container-highest": "#d9e3f6", "primary-fixed": "#e2dfff", "on-secondary-fixed": "#2f1500", "inverse-on-surface": "#eaf1ff", "surface-container-high": "#dee9fc", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-container-low": "#eff4ff", "on-primary": "#ffffff", "error": "#ba1a1a", "on-error": "#ffffff", "background": "#f8f9ff", "secondary": "#904d00", "surface-container": "#e6eeff", "outline": "#777584", "primary": "#1f108e", "on-secondary-fixed-variant": "#6e3900", "on-tertiary-container": "#62c378", "tertiary-fixed-dim": "#79db8d", "surface-dim": "#d0dbed", "on-secondary-container": "#663500", "on-error-container": "#93000a", "surface": "#f8f9ff", "inverse-surface": "#27313f", "primary-container": "#3730a3", "on-surface-variant": "#464553", "on-tertiary-fixed": "#00210a", "on-primary-container": "#a9a7ff", "primary-fixed-dim": "#c3c0ff", "tertiary-container": "#004e20", "on-surface": "#121c2a", "inverse-primary": "#c3c0ff", "tertiary-fixed": "#95f8a7", "on-primary-fixed-variant": "#3b35a7", "on-background": "#121c2a", "outline-variant": "#c8c4d5", "secondary-fixed": "#ffdcc3", "secondary-fixed-dim": "#ffb77d", "tertiary": "#003514", "on-tertiary-fixed-variant": "#005323", "surface-bright": "#f8f9ff", "on-primary-fixed": "#0f0069", "on-tertiary": "#ffffff", "surface-variant": "#d9e3f6", "secondary-container": "#fe932c", "error-container": "#ffdad6" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "card-padding": "16px", "stack-gap-lg": "16px", "stack-gap-sm": "8px", "section-gap": "24px", "stack-gap-md": "12px", "gutter-mobile": "16px", "touch-min": "48px" }, fontFamily: { "label-badge": ["Inter"], "headline-lg": ["Inter"], "headline-md": ["Inter"], "headline-sm": ["Inter"], "label-md": ["Inter"], "display-currency": ["Inter"], "body-lg": ["Inter"], "body-md-bold": ["Inter"], "body-md": ["Inter"] }, fontSize: { "label-badge": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "display-currency": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-lg": ["18px", { lineHeight: "26px", fontWeight: "400" }], "body-md-bold": ["16px", { lineHeight: "24px", fontWeight: "600" }], "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script></head><body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-primary-fixed"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-xl mx-auto px-gutter-mobile flex items-center justify-between"><div class="flex items-center gap-stack-gap-sm"><img alt="FeeReminder Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XYOXxrqAAY8WZ6j6Lk4KGcWxhXT1SjBTztoYA1UJQHIIoKWcjL1Fku5RVUnhxa5Z3zU3uJZ8g649LU0PkT2jDMSjpOPAa1pjAuipjsO7F6D56POEddSNfe2M61EvWnjKH-YBHdHLik3br2Z-OwpOuCIuGqfu5C4O2FIQsBZFz8MmlC9mpQrC4Ovsc0fU6wq8AkPAmRAE94HET3tLK1LXnBQPFZWtUy_qNaaCPddzB-zt8NhlEOYIwEulJ2"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">FeeReminder</span></div><div class="flex items-center gap-stack-gap-md"><span class="font-label-md text-label-md text-on-surface-variant hidden sm:inline-block">Send Reminders</span><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full max-w-xl mx-auto px-gutter-mobile pt-16 pb-28 bg-surface"><div class="flex flex-col w-full relative">
+<!-- Faux Dimmed Backdrop Dashboard UI -->
+<div aria-hidden="true" class="flex flex-col w-full space-y-stack-gap-md opacity-30 select-none pointer-events-none filter blur-[1px]">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-primary">Class 10 - Batch A</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Fee Ledger Overview</span>
+</div>
+<div class="bg-surface-container-high px-3 py-1.5 rounded-full flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">filter_list</span>
+<span class="font-label-badge text-label-badge text-on-surface">32 Students</span>
+</div>
+</div>
+<!-- Overview Stats Pill Strip -->
+<div class="grid grid-cols-2 gap-stack-gap-sm">
+<div class="bg-surface-container-lowest p-card-padding rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<span class="font-label-badge text-label-badge text-on-surface-variant uppercase">Collected</span>
+<p class="font-headline-md text-headline-md text-primary mt-0.5">₹48,000</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-card-padding rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<span class="font-label-badge text-label-badge text-error uppercase">Overdue</span>
+<p class="font-headline-md text-headline-md text-error mt-0.5">₹12,500</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+</div>
+</div>
+<!-- Student Cards in Background -->
+<div class="bg-surface-container-lowest p-card-padding rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-stack-gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-headline-sm text-headline-sm text-primary">RS</div>
+<div>
+<h3 class="font-body-md-bold text-body-md-bold text-on-surface">Rahul Sharma</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">Due: 2026-09-01</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-md-bold text-body-md-bold text-error">₹2,500</span>
+<div class="bg-error px-2 py-0.5 rounded-full text-on-error font-label-badge text-label-badge">OVERDUE</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-card-padding rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-stack-gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center font-headline-sm text-headline-sm text-secondary">AP</div>
+<div>
+<h3 class="font-body-md-bold text-body-md-bold text-on-surface">Ananya Patel</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">Due: 2026-09-05</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-md-bold text-body-md-bold text-secondary">₹3,000</span>
+<div class="bg-secondary-container px-2 py-0.5 rounded-full text-on-secondary-container font-label-badge text-label-badge">DUE SOON</div>
+</div>
+</div>
+</div>
+<!-- Modal Presentation Layer -->
+<div class="fixed inset-0 z-50 flex items-center justify-center px-gutter-mobile py-6 overflow-y-auto bg-inverse-surface/40 backdrop-blur-sm transition-all duration-200" id="reminder-modal">
+<div class="bg-surface-container-lowest w-full max-w-lg rounded-xl shadow-2xl p-card-padding flex flex-col space-y-stack-gap-md transition-transform transform scale-100">
+<!-- Modal Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings: 'FILL' 1;">send_and_archive</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Send Fee Reminder</h2>
+</div>
+<button aria-label="Close dialog" class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high active:bg-surface-container-highest flex items-center justify-center text-on-surface-variant transition-colors" id="close-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Student & Recipient Target Info -->
+<div class="bg-surface-container-low p-3 rounded-lg flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5 shrink-0">contact_phone</span>
+<p class="font-label-md text-label-md text-on-surface-variant leading-snug">
+          Send WhatsApp reminder for <span class="font-body-md-bold text-body-md-bold text-on-surface">Rahul Sharma</span> to parent at <span class="font-body-md-bold text-body-md-bold text-primary tracking-wide">+919876543210</span>:
+        </p>
+</div>
+<!-- Live Message Preview Box -->
+<div class="relative bg-surface-container-lowest shadow-sm rounded-lg overflow-hidden">
+<!-- Visual Accent Strip (Solid Amber / Secondary Container) -->
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary-container"></div>
+<div class="pl-4 pr-3 py-3 space-y-2 bg-surface-container-lowest">
+<div class="flex items-center justify-between">
+<span class="font-label-badge text-label-badge text-on-surface-variant uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">mark_chat_unread</span> Preview Message
+            </span>
+<span class="bg-secondary-fixed text-on-secondary-fixed font-label-badge text-label-badge px-2 py-0.5 rounded-full">Automated</span>
+</div>
+<!-- Structured Message Content -->
+<div class="font-body-md text-body-md text-on-surface bg-surface-container-low/60 p-3 rounded-lg space-y-2 select-text">
+<p class="font-body-md-bold text-body-md-bold text-on-surface">Dear Parent,</p>
+<p class="">This is a reminder from <span class="font-body-md-bold text-body-md-bold text-primary">Apex Coaching Academy</span> regarding the fee dues for <span class="font-body-md-bold text-body-md-bold text-on-surface">Rahul Sharma</span>.</p>
+<div class="bg-surface-container-lowest p-2.5 rounded-md space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">• Amount Due:</span>
+<span class="font-body-md-bold text-body-md-bold text-error">₹2,500</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">• Due Date:</span>
+<span class="font-label-md text-label-md text-on-surface">2026-09-01</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">• Status:</span>
+<span class="bg-error px-2 py-0.5 rounded-full font-label-badge text-label-badge text-on-error uppercase">Overdue</span>
+</div>
+</div>
+<div class="pt-1">
+<p class="font-body-md-bold text-body-md-bold text-on-surface">Payment Details:</p>
+<ul class="list-none space-y-1 mt-1 font-label-md text-label-md text-on-surface-variant">
+<li class="flex items-center justify-between bg-surface-container-lowest px-2 py-1 rounded">
+<span class="">• UPI ID:</span>
+<span class="font-body-md-bold text-body-md-bold text-primary">apex@okhdfcbank</span>
+</li>
+<li class="flex flex-col bg-surface-container-lowest px-2 py-1 rounded gap-0.5">
+<span class="">• Bank Info:</span>
+<span class="font-body-md text-body-md text-on-surface">A/C No: 1234567890, IFSC: HDFC0001234, Apex Academy</span>
+</li>
+</ul>
+</div>
+<p class="pt-1 text-on-surface-variant">Please share a screenshot after completing the payment. Thank you!</p>
+</div>
+</div>
+</div>
+<!-- Action Button Group -->
+<div class="flex flex-col gap-stack-gap-sm pt-1">
+<a class="w-full h-touch-min bg-secondary text-on-secondary rounded-lg flex items-center justify-center gap-2 font-body-md-bold text-body-md-bold shadow-md hover:opacity-95 active:scale-[0.99] transition-transform" href="https://wa.me/919876543210?text=Dear%20Parent%2C%0AThis%20is%20a%20reminder%20from%20Apex%20Coaching%20Academy%20regarding%20the%20fee%20dues%20for%20Rahul%20Sharma.%0A%E2%80%A2%20Amount%20Due%3A%20%E2%82%B92%2C500%0A%E2%80%A2%20Due%20Date%3A%202026-09-01%0A%E2%80%A2%20Status%3A%20Overdue%0APayment%20Details%3A%0A%E2%80%A2%20UPI%20ID%3A%20apex%40okhdfcbank%0A%E2%80%A2%20Bank%20Info%3A%20A%2FC%20No%3A%201234567890%2C%20IFSC%3A%20HDFC0001234%2C%20Apex%20Academy%0APlease%20share%20a%20screenshot%20after%20completing%20the%20payment.%20Thank%20you!" id="whatsapp-confirm-btn" target="_blank">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span class="">Confirm &amp; Open WhatsApp</span>
+</a>
+<button class="w-full h-11 bg-surface-container-lowest text-on-surface hover:bg-surface-container-low active:bg-surface-container rounded-lg flex items-center justify-center font-body-md-bold text-body-md-bold transition-colors" id="cancel-btn" type="button">
+          Cancel
+        </button>
+</div><div class="flex items-center justify-center gap-1.5 pt-1 text-center"><span class="material-symbols-outlined text-[14px] text-on-surface-variant">history</span><span class="font-label-badge text-label-badge text-on-surface-variant">Recent Log: Reminder delivered via WhatsApp today at 10:15 AM</span></div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const modal = document.getElementById('reminder-modal');
+    const closeBtn = document.getElementById('close-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    function dismissModal() {
+      if (modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          modal.style.display = 'none';
+        }, 200);
+      }
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', dismissModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', dismissModal);
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-body-md-bold"><div class="max-w-xl mx-auto flex items-center justify-around h-16 px-gutter-mobile"><a class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min text-on-surface-variant hover:text-on-surface transition-colors" data-path="fee-dashboard" href="#"><span class="material-symbols-outlined text-[24px]">dashboard</span><span class="font-label-badge text-label-badge mt-0.5">Overview</span></a><a class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min text-on-surface-variant hover:text-on-surface transition-colors" data-path="student-ledger" href="#"><span class="material-symbols-outlined text-[24px]">group</span><span class="font-label-badge text-label-badge mt-0.5">Students</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min transition-colors text-primary font-body-md-bold" data-path="send-reminders" href="#"><span class="material-symbols-outlined text-[24px]">chat</span><span class="font-label-badge text-label-badge mt-0.5">Remind</span></a><a class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min text-on-surface-variant hover:text-on-surface transition-colors" data-path="reports" href="#"><span class="material-symbols-outlined text-[24px]">bar_chart</span><span class="font-label-badge text-label-badge mt-0.5">Reports</span></a></div></nav>
+
+</body></html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - FeeReminder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .status-overdue { border-left: 5px solid #DC2626; }
+    .status-due-soon { border-left: 5px solid #D97706; }
+    .status-at-risk { border-left: 5px solid #DC2626; }
+    .donut-status {
+      background: conic-gradient(
+        #15803D 0% 36%,
+        #3730A3 36% 76%,
+        #DC2626 76% 100%
+      );
+    }
+    .donut-month {
+      background: conic-gradient(
+        #15803D 0% 70%,
+        #DC2626 70% 100%
+      );
+    }
+  </style>
+</head>
+<body class="bg-[#FAFAF9] text-gray-900 min-h-screen pb-24 antialiased">
+  <!-- Top App Bar -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-20 px-4 py-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-[#3730A3] flex items-center justify-center text-white font-bold text-lg shadow-sm">
+          <i class="fa-solid fa-receipt text-sm"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-gray-900 leading-tight">FeeReminder</h1>
+          <p class="text-xs text-gray-500 font-medium">Apex Coaching Academy</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 h-8">
+          <i class="fa-solid fa-gear text-gray-500"></i> Settings
+        </button>
+        <button class="px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs font-semibold text-gray-700 hover:bg-gray-50 h-8">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+    <!-- Top Stat Cards -->
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-white p-3.5 rounded-xl border border-gray-200">
+        <span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase block mb-1">TOTAL OUTSTANDING</span>
+        <div class="text-2xl font-black text-[#3730A3]">₹5,700</div>
+        <div class="text-xs text-gray-500 mt-1 font-medium">2 pending invoices</div>
+      </div>
+      <div class="bg-white p-3.5 rounded-xl border border-gray-200">
+        <span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase block mb-1">OVERDUE STUDENTS</span>
+        <div class="text-2xl font-black text-[#DC2626]">1 <span class="text-xs font-semibold text-gray-500 font-normal">/ 2 pending</span></div>
+        <div class="text-xs text-[#DC2626] font-semibold mt-1 flex items-center gap-1">
+          <i class="fa-solid fa-triangle-exclamation text-[10px]"></i> Urgent action
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Collections Overview Section -->
+    <section class="bg-white p-4 rounded-xl border border-gray-200 space-y-3">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+        <h2 class="text-base font-bold text-gray-900">Collections Overview</h2>
+        <span class="text-xs font-semibold bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">Monthly</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <!-- Left Donut Chart: By Status -->
+        <div class="flex flex-col items-center text-center p-2 rounded-lg bg-gray-50 border border-gray-100">
+          <span class="text-xs font-bold text-gray-700 mb-2">By Status</span>
+          <div class="relative w-20 h-20 rounded-full donut-status flex items-center justify-center mb-2">
+            <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-inner">
+              <span class="text-[11px] font-bold text-gray-700">50</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-gray-600 font-medium leading-tight">
+            <span class="text-[#15803D] font-bold">Paid: 18</span> · 
+            <span class="text-[#3730A3] font-bold">Pending: 20</span> · 
+            <span class="text-[#DC2626] font-bold">Overdue: 12</span>
+          </div>
+        </div>
+
+        <!-- Right Donut Chart: This Month -->
+        <div class="flex flex-col items-center text-center p-2 rounded-lg bg-gray-50 border border-gray-100">
+          <span class="text-xs font-bold text-gray-700 mb-2">This Month</span>
+          <div class="relative w-20 h-20 rounded-full donut-month flex items-center justify-center mb-2">
+            <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-inner">
+              <span class="text-[11px] font-bold text-gray-700">70%</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-gray-600 font-medium leading-tight">
+            <span class="text-[#15803D] font-bold">Collected: ₹42k</span> · 
+            <span class="text-[#DC2626] font-bold">Due: ₹18.5k</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Third Stat -->
+      <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
+        <span class="text-xs text-gray-600 font-medium">Monthly Collection Rate</span>
+        <span class="text-base font-black text-[#3730A3]">Collection Rate: 70%</span>
+      </div>
+    </section>
+
+    <!-- Remind All Action Banner -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-[#D97706] text-white flex items-center justify-center text-sm flex-shrink-0">
+          <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div>
+          <div class="text-xs font-bold text-gray-900">12 Students Overdue</div>
+          <div class="text-[11px] text-gray-600">Total ₹30,000 pending reminder</div>
+        </div>
+      </div>
+      <button class="bg-[#D97706] hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 h-9">
+        <i class="fa-brands fa-whatsapp text-sm"></i> Remind All
+      </button>
+    </div>
+
+    <!-- Action: + Add Student -->
+    <button class="w-full bg-[#3730A3] hover:bg-indigo-900 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 h-12 shadow-sm active:scale-[0.99] transition">
+      <i class="fa-solid fa-user-plus"></i> + Add Student
+    </button>
+
+    <!-- Search Bar -->
+    <div class="relative">
+      <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+      <input type="text" placeholder="Search by student name or parent phone..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#3730A3] focus:ring-1 focus:ring-[#3730A3] h-11">
+    </div>
+
+    <!-- Tabs (including 7. At Risk tab) -->
+    <div class="flex border-b border-gray-200 bg-white rounded-t-xl px-2 pt-2 gap-1 text-xs font-bold overflow-x-auto">
+      <button class="px-3 py-2 text-gray-500 hover:text-gray-900 border-b-2 border-transparent whitespace-nowrap">
+        Pending Dues <span class="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-[10px]">2</span>
+      </button>
+      <button class="px-3 py-2 text-gray-500 hover:text-gray-900 border-b-2 border-transparent whitespace-nowrap">
+        All Students <span class="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-[10px]">50</span>
+      </button>
+      <button class="px-3 py-2 text-gray-500 hover:text-gray-900 border-b-2 border-transparent whitespace-nowrap">
+        Paid <span class="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-[10px]">18</span>
+      </button>
+      <button class="px-3 py-2 text-[#DC2626] border-b-2 border-[#DC2626] bg-red-50/50 rounded-t whitespace-nowrap flex items-center gap-1">
+        <span>At Risk</span>
+        <span class="bg-[#DC2626] text-white px-1.5 py-0.5 rounded-full text-[10px]">3</span>
+      </button>
+    </div>
+
+    <!-- Tab Content: Showing At Risk Cards -->
+    <div class="space-y-3">
+      <!-- At Risk Student 1 -->
+      <div class="bg-white p-4 rounded-xl border border-gray-200 status-at-risk shadow-sm space-y-3">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-gray-900 text-base">Vikas Kumar</h3>
+              <span class="bg-[#DC2626] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">At Risk</span>
+            </div>
+            <p class="text-xs text-gray-500 font-medium mt-0.5">+91 98451 22345 · Class 10</p>
+          </div>
+          <div class="text-right">
+            <span class="text-base font-black text-[#3730A3]">₹4,500</span>
+          </div>
+        </div>
+
+        <!-- At Risk Specific Reason Line -->
+        <div class="bg-red-50 border border-red-200 rounded-lg px-2.5 py-1.5 text-xs text-[#DC2626] font-semibold flex items-center gap-1.5">
+          <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+          <span>⚠ 3 reminders sent, no payment in 18 days</span>
+        </div>
+
+        <div class="border-t border-gray-100 pt-3 flex gap-2">
+          <button class="flex-1 bg-[#D97706] hover:bg-amber-700 text-white font-bold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 h-11">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Remind
+          </button>
+          <button class="flex-1 bg-[#15803D] hover:bg-green-800 text-white font-bold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 h-11">
+            <i class="fa-solid fa-check text-sm"></i> Mark as Paid
+          </button>
+        </div>
+      </div>
+
+      <!-- At Risk Student 2 -->
+      <div class="bg-white p-4 rounded-xl border border-gray-200 status-at-risk shadow-sm space-y-3">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-gray-900 text-base">Rahul Sharma</h3>
+              <span class="bg-[#DC2626] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">At Risk</span>
+            </div>
+            <p class="text-xs text-gray-500 font-medium mt-0.5">+91 98765 43210 · Class 9</p>
+          </div>
+          <div class="text-right">
+            <span class="text-base font-black text-[#3730A3]">₹2,500</span>
+          </div>
+        </div>
+
+        <div class="bg-red-50 border border-red-200 rounded-lg px-2.5 py-1.5 text-xs text-[#DC2626] font-semibold flex items-center gap-1.5">
+          <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+          <span>⚠ 4 reminders sent, phone unreachable on WhatsApp</span>
+        </div>
+
+        <div class="border-t border-gray-100 pt-3 flex gap-2">
+          <button class="flex-1 bg-[#D97706] hover:bg-amber-700 text-white font-bold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 h-11">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Remind
+          </button>
+          <button class="flex-1 bg-[#15803D] hover:bg-green-800 text-white font-bold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 h-11">
+            <i class="fa-solid fa-check text-sm"></i> Mark as Paid
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation with Attendance Tab -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-3 py-2 z-30">
+    <div class="max-w-md mx-auto grid grid-cols-4 gap-1 text-center">
+      <a href="#" class="flex flex-col items-center justify-center py-1 text-[#3730A3] font-bold">
+        <i class="fa-solid fa-table-cells-large text-base mb-1"></i>
+        <span class="text-[11px]">Dashboard</span>
+      </a>
+      <a href="#" class="flex flex-col items-center justify-center py-1 text-gray-500 hover:text-gray-900 font-medium">
+        <i class="fa-solid fa-calendar-check text-base mb-1"></i>
+        <span class="text-[11px]">Attendance</span>
+      </a>
+      <a href="#" class="flex flex-col items-center justify-center py-1 text-gray-500 hover:text-gray-900 font-medium">
+        <i class="fa-solid fa-user-group text-base mb-1"></i>
+        <span class="text-[11px]">Students</span>
+      </a>
+      <a href="#" class="flex flex-col items-center justify-center py-1 text-gray-500 hover:text-gray-900 font-medium">
+        <i class="fa-solid fa-chart-pie text-base mb-1"></i>
+        <span class="text-[11px]">Reports</span>
+      </a>
+    </div>
+  </nav>
+</body>
+</html>
