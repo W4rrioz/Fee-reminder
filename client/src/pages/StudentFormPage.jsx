@@ -3,10 +3,11 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 /**
- * Add / Edit Student screen — per 03-app-flow.md:
- *  Routes: /students/new, /students/:id/edit
- *  Fields: Name, Parent WhatsApp Number, Fee Amount, Due Date, Note
- *  Validation: Strict phone number validation, positive fee amount, required fields
+ * Add / Edit Student screen — Ledger Calm design per mockups:
+ *  - Route: /students/new, /students/:id/edit
+ *  - "New Enrollment" hero banner with profile setup note
+ *  - Form fields with clean iconography and currency ₹ prefix
+ *  - Indian WhatsApp mobile validation
  */
 export default function StudentFormPage() {
   const { id } = useParams();
@@ -29,7 +30,6 @@ export default function StudentFormPage() {
   // Prepopulate in Edit mode
   useEffect(() => {
     if (!isEditMode) {
-      // Default due date to today for convenience on new additions
       const todayStr = new Date().toISOString().split('T')[0];
       setDueDate(todayStr);
       return;
@@ -48,7 +48,6 @@ export default function StudentFormPage() {
 
         const data = await res.json();
         setName(data.student.name || '');
-        // Clean phone for display (e.g. remove +91 if present for cleaner input)
         let phoneDisplay = data.student.parent_phone || '';
         if (phoneDisplay.startsWith('+91')) {
           phoneDisplay = phoneDisplay.slice(3);
@@ -190,11 +189,56 @@ export default function StudentFormPage() {
 
   return (
     <div className="page-container">
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-5)' }}>
-        <Link to={isEditMode ? `/students/${id}` : '/dashboard'} style={{ fontSize: 'var(--font-size-lg)', textDecoration: 'none' }}>
-          ←
+      {/* Header with Back button */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-4)' }}>
+        <Link
+          to={isEditMode ? `/students/${id}` : '/dashboard'}
+          className="nav-btn"
+          style={{ width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
+          title="Back"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
         </Link>
         <h1>{isEditMode ? 'Edit Student' : 'Add Student'}</h1>
+      </div>
+
+      {/* Hero Card */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--space-3)',
+          backgroundColor: 'var(--color-surface-low)',
+          padding: 'var(--space-4)',
+          borderRadius: 'var(--radius-lg)',
+          marginBottom: 'var(--space-4)',
+        }}
+      >
+        <div
+          style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: 'var(--radius-full)',
+            backgroundColor: 'var(--color-primary-container)',
+            color: 'var(--color-on-primary)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>
+            {isEditMode ? 'manage_accounts' : 'person_add'}
+          </span>
+        </div>
+        <div>
+          <h2 style={{ fontSize: 'var(--font-size-md)', fontWeight: 700 }}>
+            {isEditMode ? 'Update Enrollment' : 'New Enrollment'}
+          </h2>
+          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-on-surface-variant)' }}>
+            Set up ledger profile & reminder schedule
+          </p>
+        </div>
       </div>
 
       {serverError && <div className="alert alert-error">{serverError}</div>}
@@ -204,7 +248,8 @@ export default function StudentFormPage() {
           {/* Student Name */}
           <div className="form-group">
             <label className="form-label" htmlFor="studentName">
-              Student Name *
+              <span>Student Name <span style={{ color: 'var(--color-error)' }}>*</span></span>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-outline)' }}>badge</span>
             </label>
             <input
               id="studentName"
@@ -222,68 +267,84 @@ export default function StudentFormPage() {
           {/* Parent WhatsApp Number */}
           <div className="form-group">
             <label className="form-label" htmlFor="parentPhone">
-              Parent WhatsApp Number *
+              <span>Parent WhatsApp Number <span style={{ color: 'var(--color-error)' }}>*</span></span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: 'var(--font-size-xs)', color: 'var(--color-on-tertiary-container)', backgroundColor: 'var(--color-surface-high)', padding: '2px 8px', borderRadius: 'var(--radius-full)' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>chat</span>
+                <span>WhatsApp</span>
+              </span>
             </label>
-            <input
-              id="parentPhone"
-              className={`form-input ${errors.parentPhone ? 'error' : ''}`}
-              type="tel"
-              placeholder="e.g. 9876543210"
-              value={parentPhone}
-              onChange={(e) => setParentPhone(e.target.value)}
-              disabled={saving || deleting}
-              autoComplete="tel"
-            />
-            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
+            <div className="input-with-icon">
+              <span className="input-text-prefix">+91</span>
+              <input
+                id="parentPhone"
+                className={`form-input has-prefix ${errors.parentPhone ? 'error' : ''}`}
+                type="tel"
+                placeholder="9876543210"
+                value={parentPhone}
+                onChange={(e) => setParentPhone(e.target.value)}
+                disabled={saving || deleting}
+                autoComplete="tel"
+                style={{ letterSpacing: '0.05em' }}
+              />
+            </div>
+            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>info</span>
               Used to send one-tap WhatsApp fee reminders.
             </span>
             {errors.parentPhone && <span className="form-error">{errors.parentPhone}</span>}
           </div>
 
-          {/* Fee Amount */}
-          <div className="form-group">
-            <label className="form-label" htmlFor="feeAmount">
-              Fee Amount (₹) *
-            </label>
-            <input
-              id="feeAmount"
-              className={`form-input ${errors.amount ? 'error' : ''}`}
-              type="number"
-              min="1"
-              step="any"
-              placeholder="e.g. 1500"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              disabled={saving || deleting}
-            />
-            {errors.amount && <span className="form-error">{errors.amount}</span>}
-          </div>
+          {/* Fee Amount & Due Date (2-col on larger screens) */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+            {/* Amount */}
+            <div className="form-group">
+              <label className="form-label" htmlFor="feeAmount">
+                <span>Fee Amount <span style={{ color: 'var(--color-error)' }}>*</span></span>
+              </label>
+              <div className="input-with-icon">
+                <span className="input-text-prefix" style={{ left: '12px' }}>₹</span>
+                <input
+                  id="feeAmount"
+                  className={`form-input has-currency ${errors.amount ? 'error' : ''}`}
+                  type="number"
+                  min="1"
+                  step="any"
+                  placeholder="1500"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  disabled={saving || deleting}
+                />
+              </div>
+              {errors.amount && <span className="form-error">{errors.amount}</span>}
+            </div>
 
-          {/* Due Date */}
-          <div className="form-group">
-            <label className="form-label" htmlFor="dueDate">
-              Due Date *
-            </label>
-            <input
-              id="dueDate"
-              className={`form-input ${errors.dueDate ? 'error' : ''}`}
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              disabled={saving || deleting}
-            />
-            {errors.dueDate && <span className="form-error">{errors.dueDate}</span>}
+            {/* Due Date */}
+            <div className="form-group">
+              <label className="form-label" htmlFor="dueDate">
+                <span>Due Date <span style={{ color: 'var(--color-error)' }}>*</span></span>
+              </label>
+              <input
+                id="dueDate"
+                className={`form-input ${errors.dueDate ? 'error' : ''}`}
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                disabled={saving || deleting}
+              />
+              {errors.dueDate && <span className="form-error">{errors.dueDate}</span>}
+            </div>
           </div>
 
           {/* Optional Note */}
           <div className="form-group">
             <label className="form-label" htmlFor="note">
-              Note (Optional)
+              <span>Note <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', fontWeight: 400 }}>(Optional)</span></span>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-outline)' }}>edit_note</span>
             </label>
-            <input
+            <textarea
               id="note"
               className="form-input"
-              type="text"
+              rows="2"
               placeholder="e.g. Sibling discount, Class 10 Batch A"
               value={note}
               onChange={(e) => setNote(e.target.value)}
@@ -291,30 +352,67 @@ export default function StudentFormPage() {
             />
           </div>
 
+          {/* Direct Reminders Guarantee */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 'var(--space-2)',
+              backgroundColor: 'var(--color-surface-low)',
+              padding: '10px 12px',
+              borderRadius: 'var(--radius-md)',
+              marginBottom: 'var(--space-4)',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-secondary)' }}>
+              verified_user
+            </span>
+            <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)' }}>
+              <strong style={{ color: 'var(--color-on-surface)' }}>Direct Reminders Activated</strong>
+              <p style={{ marginTop: '1px' }}>
+                Payment alert cards and customizable message templates generate automatically for this student.
+              </p>
+            </div>
+          </div>
+
           {/* Save Button */}
-          <button type="submit" className="btn btn-primary" disabled={saving || deleting} style={{ marginTop: 'var(--space-2)' }}>
-            {saving ? <span className="spinner" /> : isEditMode ? 'Update Student' : 'Save Student'}
+          <button type="submit" className="btn btn-primary" disabled={saving || deleting}>
+            {saving ? (
+              <span className="spinner" />
+            ) : (
+              <>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>save</span>
+                <span>{isEditMode ? 'Update Student' : 'Save Student'}</span>
+              </>
+            )}
           </button>
 
           {/* Cancel */}
           <Link
             to={isEditMode ? `/students/${id}` : '/dashboard'}
             className="btn btn-secondary"
-            style={{ marginTop: 'var(--space-3)' }}
+            style={{ marginTop: 'var(--space-2)' }}
           >
             Cancel
           </Link>
 
-          {/* Delete in edit mode */}
+          {/* Delete Button (Edit Mode Only) */}
           {isEditMode && (
-            <div style={{ marginTop: 'var(--space-6)', borderTop: '1px solid var(--color-border)', paddingTop: 'var(--space-4)' }}>
+            <div style={{ marginTop: 'var(--space-5)', borderTop: '1px solid var(--color-border)', paddingTop: 'var(--space-4)' }}>
               <button
                 type="button"
                 onClick={handleDelete}
                 className="btn btn-danger"
                 disabled={saving || deleting}
               >
-                {deleting ? <span className="spinner spinner-primary" /> : 'Delete Student'}
+                {deleting ? (
+                  <span className="spinner spinner-primary" />
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
+                    <span>Delete Student Record</span>
+                  </>
+                )}
               </button>
             </div>
           )}
@@ -323,3 +421,4 @@ export default function StudentFormPage() {
     </div>
   );
 }
+

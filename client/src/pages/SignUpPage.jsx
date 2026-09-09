@@ -3,12 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 /**
- * Sign Up screen — per 03-app-flow.md:
- *  Route: /signup
- *  Fields: Institute name, Email, Password
- *  Loading: Button spinner while creating account
- *  Error: Inline validation + server errors
- *  Success: Redirect to /dashboard
+ * Sign Up screen — Ledger Calm design per mockups:
+ *  - Route: /signup
+ *  - Academy hero illustration
+ *  - Inputs with Material Symbol icons (school, mail, key)
+ *  - Password visibility toggle
  */
 export default function SignUpPage() {
   const { signUp } = useAuth();
@@ -17,6 +16,7 @@ export default function SignUpPage() {
   const [instituteName, setInstituteName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
@@ -54,7 +54,6 @@ export default function SignUpPage() {
       });
 
       if (error) {
-        // Show field-level validation errors if the backend returned them
         if (error.errors) {
           setErrors(error.errors);
         }
@@ -72,80 +71,151 @@ export default function SignUpPage() {
   return (
     <div className="auth-page">
       <div className="auth-card card">
-        <h1>Create Account</h1>
-        <p className="subtitle">Set up your institute in under a minute.</p>
+        {/* Header Illustration */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: 'var(--space-4)' }}>
+          <div
+            style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: 'var(--radius-full)',
+              backgroundColor: 'var(--color-primary-fixed)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 'var(--space-3)',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary)' }}>
+              school
+            </span>
+          </div>
+          <h1>Create Account</h1>
+          <p className="subtitle">Set up your institute in under a minute.</p>
+        </div>
 
         {serverError && (
           <div className="alert alert-error">{serverError}</div>
         )}
 
         <form onSubmit={handleSubmit} noValidate>
+          {/* Institute Name */}
           <div className="form-group">
             <label className="form-label" htmlFor="instituteName">
-              Institute Name
+              <span>Institute Name</span>
+              <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', fontWeight: 400 }}>Required</span>
             </label>
-            <input
-              id="instituteName"
-              className={`form-input ${errors.instituteName ? 'error' : ''}`}
-              type="text"
-              placeholder="e.g. Sharma Coaching Centre"
-              value={instituteName}
-              onChange={(e) => setInstituteName(e.target.value)}
-              disabled={loading}
-              autoComplete="organization"
-            />
+            <div className="input-with-icon">
+              <span className="material-symbols-outlined input-icon-prefix">school</span>
+              <input
+                id="instituteName"
+                className={`form-input has-icon ${errors.instituteName ? 'error' : ''}`}
+                type="text"
+                placeholder="e.g. Sharma Coaching Centre"
+                value={instituteName}
+                onChange={(e) => setInstituteName(e.target.value)}
+                disabled={loading}
+                autoComplete="organization"
+              />
+            </div>
             {errors.instituteName && (
               <span className="form-error">{errors.instituteName}</span>
             )}
           </div>
 
+          {/* Email */}
           <div className="form-group">
             <label className="form-label" htmlFor="email">
-              Email
+              <span>Email address</span>
+              <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', fontWeight: 400 }}>Required</span>
             </label>
-            <input
-              id="email"
-              className={`form-input ${errors.email ? 'error' : ''}`}
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={loading}
-              autoComplete="email"
-            />
+            <div className="input-with-icon">
+              <span className="material-symbols-outlined input-icon-prefix">mail</span>
+              <input
+                id="email"
+                className={`form-input has-icon ${errors.email ? 'error' : ''}`}
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                autoComplete="email"
+              />
+            </div>
             {errors.email && (
               <span className="form-error">{errors.email}</span>
             )}
           </div>
 
+          {/* Password */}
           <div className="form-group">
             <label className="form-label" htmlFor="password">
-              Password
+              <span>Password</span>
             </label>
-            <input
-              id="password"
-              className={`form-input ${errors.password ? 'error' : ''}`}
-              type="password"
-              placeholder="At least 6 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-              autoComplete="new-password"
-            />
+            <div className="input-with-icon">
+              <span className="material-symbols-outlined input-icon-prefix">key</span>
+              <input
+                id="password"
+                className={`form-input has-icon ${errors.password ? 'error' : ''}`}
+                type={showPassword ? 'text' : 'password'}
+                placeholder="At least 6 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+                autoComplete="new-password"
+                style={{ paddingRight: '44px' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label="Toggle password visibility"
+                style={{
+                  position: 'absolute',
+                  right: '6px',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: 'var(--color-on-surface-variant)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '36px',
+                  height: '36px',
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                  {showPassword ? 'visibility_off' : 'visibility'}
+                </span>
+              </button>
+            </div>
             {errors.password && (
               <span className="form-error">{errors.password}</span>
             )}
           </div>
 
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? <span className="spinner" /> : 'Create Account'}
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={loading}
+            style={{ marginTop: 'var(--space-2)' }}
+          >
+            {loading ? (
+              <span className="spinner" />
+            ) : (
+              <>
+                <span>Create Account</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                  arrow_forward
+                </span>
+              </>
+            )}
           </button>
         </form>
 
         <p className="auth-footer">
-          Already have an account? <Link to="/login">Sign In</Link>
+          Already have an account? <Link to="/login" style={{ fontWeight: 600, color: 'var(--color-primary-container)' }}>Sign In</Link>
         </p>
       </div>
     </div>
   );
 }
+

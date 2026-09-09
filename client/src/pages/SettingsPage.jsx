@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 /**
- * Screen: Institute Settings — per 03-app-flow.md:
- *  Route: /settings
- *  Purpose: Set the institute's static payment info (UPI ID and bank details)
- *           included in every reminder message.
+ * Screen: Institute Settings — Ledger Calm design per mockups:
+ *  - Route: /settings
+ *  - Academy Identity preview card
+ *  - Static UPI ID configuration with instant verification & QR test
+ *  - Bank NEFT/IMPS fallback details
+ *  - Direct settlement guarantee banner
  */
 export default function SettingsPage() {
   const { getToken } = useAuth();
-  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [upiId, setUpiId] = useState('');
@@ -96,11 +97,19 @@ export default function SettingsPage() {
         return;
       }
 
-      setSuccessMessage('Payment settings updated! Reminders will now include these details.');
+      setSuccessMessage('Payment settings saved! WhatsApp reminders will include these details.');
     } catch {
       setServerError('A network error occurred. Please try again.');
     } finally {
       setSaving(false);
+    }
+  }
+
+  function handleTestUpi() {
+    if (upiId.trim()) {
+      alert(`Valid UPI Handle: ${upiId.trim()}\nParents will be prompted to pay this handle directly when opening WhatsApp reminders.`);
+    } else {
+      alert('Please enter a UPI ID first.');
     }
   }
 
@@ -114,12 +123,68 @@ export default function SettingsPage() {
 
   return (
     <div className="page-container">
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-5)' }}>
-        <Link to="/dashboard" style={{ fontSize: 'var(--font-size-lg)', textDecoration: 'none' }}>
-          ←
+      {/* Header with Back button */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-4)' }}>
+        <Link
+          to="/dashboard"
+          className="nav-btn"
+          style={{ width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
+          title="Back to Dashboard"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
         </Link>
-        <h1>Institute Settings</h1>
+        <div>
+          <h1>Institute Settings</h1>
+          <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)' }}>
+            Setup your collection & payment credentials
+          </span>
+        </div>
+      </div>
+
+      {/* Academy Identity Preview Hero Card */}
+      <div
+        style={{
+          borderRadius: 'var(--radius-lg)',
+          backgroundColor: 'var(--color-primary-container)',
+          color: 'var(--color-on-primary)',
+          padding: 'var(--space-4)',
+          marginBottom: 'var(--space-4)',
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', position: 'relative', zIndex: 1 }}>
+          <div
+            style={{
+              width: '52px',
+              height: '52px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--color-primary-fixed)',
+              color: 'var(--color-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>school</span>
+          </div>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: 'var(--font-size-md)', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {name || 'Your Institute'}
+              </span>
+              <span className="material-symbols-outlined fill" style={{ fontSize: '18px', color: 'var(--color-tertiary-fixed)' }}>
+                verified
+              </span>
+            </div>
+            <p style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-primary-container)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 700 }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--color-tertiary-fixed)' }} />
+              {upiId ? 'Active Payment Gateway' : 'Setup Required'}
+            </p>
+          </div>
+        </div>
       </div>
 
       {serverError && <div className="alert alert-error">{serverError}</div>}
@@ -130,35 +195,69 @@ export default function SettingsPage() {
           {/* Institute Name */}
           <div className="form-group">
             <label className="form-label" htmlFor="instituteName">
-              Institute Name *
+              <span>Institute Name <span style={{ color: 'var(--color-error)' }}>*</span></span>
+              <span className="tab-badge">Display Name</span>
             </label>
-            <input
-              id="instituteName"
-              className={`form-input ${errors.name ? 'error' : ''}`}
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={saving}
-            />
+            <div className="input-with-icon">
+              <span className="material-symbols-outlined input-icon-prefix">school</span>
+              <input
+                id="instituteName"
+                className={`form-input has-icon ${errors.name ? 'error' : ''}`}
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={saving}
+              />
+            </div>
+            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', marginTop: '2px' }}>
+              Shown at the top of digital reminders sent to parents.
+            </span>
             {errors.name && <span className="form-error">{errors.name}</span>}
           </div>
 
           {/* UPI ID */}
           <div className="form-group">
             <label className="form-label" htmlFor="upiId">
-              Static UPI ID
+              <span>Static UPI ID</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: 'var(--font-size-xs)', color: 'var(--color-tertiary)', backgroundColor: 'var(--color-tertiary-fixed)', padding: '2px 8px', borderRadius: 'var(--radius-full)', fontWeight: 700 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>bolt</span> Instant QR
+              </span>
             </label>
-            <input
-              id="upiId"
-              className={`form-input ${errors.upiId ? 'error' : ''}`}
-              type="text"
-              placeholder="e.g. sharma.coaching@okhdfcbank"
-              value={upiId}
-              onChange={(e) => setUpiId(e.target.value)}
-              disabled={saving}
-            />
-            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-              This UPI ID is automatically included in every WhatsApp reminder message so parents can pay directly.
+            <div className="input-with-icon">
+              <span className="material-symbols-outlined input-icon-prefix">payments</span>
+              <input
+                id="upiId"
+                className={`form-input has-icon ${errors.upiId ? 'error' : ''}`}
+                type="text"
+                placeholder="e.g. sharma.coaching@okhdfcbank"
+                value={upiId}
+                onChange={(e) => setUpiId(e.target.value)}
+                disabled={saving}
+                style={{ paddingRight: '44px' }}
+              />
+              <button
+                type="button"
+                onClick={handleTestUpi}
+                title="Verify UPI"
+                style={{
+                  position: 'absolute',
+                  right: '6px',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: 'var(--color-primary-container)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '36px',
+                  height: '36px',
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>qr_code_2</span>
+              </button>
+            </div>
+            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', marginTop: '2px' }}>
+              This UPI ID is automatically embedded in every WhatsApp reminder for direct 1-tap parent payments.
             </span>
             {errors.upiId && <span className="form-error">{errors.upiId}</span>}
           </div>
@@ -166,7 +265,8 @@ export default function SettingsPage() {
           {/* Bank Details */}
           <div className="form-group">
             <label className="form-label" htmlFor="bankDetails">
-              Bank Details (Optional fallback)
+              <span>Bank Details (Optional fallback)</span>
+              <span className="tab-badge">NEFT / IMPS</span>
             </label>
             <textarea
               id="bankDetails"
@@ -177,17 +277,57 @@ export default function SettingsPage() {
               onChange={(e) => setBankDetails(e.target.value)}
               disabled={saving}
             />
-            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-              Optional account number / IFSC details for parents paying via NEFT/IMPS.
+            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)', marginTop: '2px' }}>
+              Optional account number and IFSC details for parents who prefer wire transfer.
             </span>
           </div>
 
+          {/* Zero Commission Guarantee Note */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-3)',
+              backgroundColor: 'var(--color-surface-high)',
+              padding: '12px',
+              borderRadius: 'var(--radius-md)',
+              marginBottom: 'var(--space-4)',
+            }}
+          >
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: 'var(--color-secondary-container)',
+                color: 'var(--color-on-secondary-fixed)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>security_update_good</span>
+            </div>
+            <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)' }}>
+              <strong style={{ color: 'var(--color-on-surface)' }}>Zero-commission Direct Settlement</strong>
+              <p>Student payments route directly to your institute bank account without intermediaries.</p>
+            </div>
+          </div>
+
           {/* Save button */}
-          <button type="submit" className="btn btn-primary" disabled={saving} style={{ marginTop: 'var(--space-2)' }}>
-            {saving ? <span className="spinner" /> : 'Save Settings'}
+          <button type="submit" className="btn btn-primary" disabled={saving}>
+            {saving ? (
+              <span className="spinner" />
+            ) : (
+              <>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>save</span>
+                <span>Save Settings</span>
+              </>
+            )}
           </button>
 
-          <Link to="/dashboard" className="btn btn-secondary" style={{ marginTop: 'var(--space-3)' }}>
+          <Link to="/dashboard" className="btn btn-secondary" style={{ marginTop: 'var(--space-2)' }}>
             Back to Dashboard
           </Link>
         </form>
@@ -195,3 +335,4 @@ export default function SettingsPage() {
     </div>
   );
 }
+

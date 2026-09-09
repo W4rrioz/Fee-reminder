@@ -8,10 +8,12 @@ import UndoToast from '../components/UndoToast';
 const CACHE_KEY = 'feereminder_dashboard_cache';
 
 /**
- * Screen: Dashboard (Dues List) — per 03-app-flow.md:
+ * Screen: Dashboard (Ledger Calm design per mockups)
  *  - Primary view: students with pending/overdue fees, most urgent first.
- *  - Quick actions per card: "💬 Remind" and "✓ Mark Paid".
- *  - Full core loop completed: Add student → Remind → Mark Paid → Undo.
+ *  - Status indicator rails (6px left border on cards).
+ *  - 2-column metrics cards with background iconography.
+ *  - Quick actions per card: "💬 Remind" and "✓ Mark as Paid".
+ *  - Bottom navigation bar with direct link triggers.
  */
 export default function DashboardPage() {
   const { signOut, getToken } = useAuth();
@@ -110,14 +112,12 @@ export default function DashboardPage() {
 
   // Handle Mark as Paid confirmation
   function handlePaidConfirmed(updatedFee, student) {
-    // Show Undo Toast
     setUndoToast({
       feeId: updatedFee.id,
       studentName: student.name,
       amount: updatedFee.amount,
     });
 
-    // Update list dynamically
     setStudents((prev) =>
       prev.map((s) => {
         if (s.id === student.id) {
@@ -134,7 +134,6 @@ export default function DashboardPage() {
       })
     );
 
-    // Refresh summary stats
     loadDashboardData();
   }
 
@@ -180,16 +179,6 @@ export default function DashboardPage() {
     });
   }, [students, activeTab, searchQuery]);
 
-  function renderStatusBadge(status) {
-    if (status === 'paid') {
-      return <span className="badge badge-paid">Paid</span>;
-    }
-    if (status === 'overdue') {
-      return <span className="badge badge-overdue">Overdue</span>;
-    }
-    return <span className="badge badge-pending">Due Soon</span>;
-  }
-
   const hasConfiguredPayment = Boolean(
     tenantSettings?.upi_id?.trim() || tenantSettings?.bank_details?.trim()
   );
@@ -198,61 +187,73 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="page-container">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
-          <div>
-            <div className="skeleton-line title" style={{ width: 140 }} />
-            <div className="skeleton-line short" style={{ width: 100 }} />
+        <header className="app-header">
+          <div className="app-header-inner">
+            <div className="app-brand">
+              <div className="app-logo-icon">
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>account_balance</span>
+              </div>
+              <span className="app-brand-title">FeeReminder</span>
+            </div>
           </div>
-        </div>
+        </header>
         <div className="metrics-row">
-          <div className="skeleton-card" style={{ height: 80, padding: 'var(--space-3)' }} />
-          <div className="skeleton-card" style={{ height: 80, padding: 'var(--space-3)' }} />
+          <div className="skeleton-card" style={{ height: 100 }} />
+          <div className="skeleton-card" style={{ height: 100 }} />
         </div>
-        <div className="skeleton-card">
-          <div className="skeleton-line title" />
-          <div className="skeleton-line medium" />
-          <div className="skeleton-line short" />
-        </div>
-        <div className="skeleton-card">
-          <div className="skeleton-line title" />
-          <div className="skeleton-line medium" />
-          <div className="skeleton-line short" />
-        </div>
+        <div className="skeleton-card" style={{ height: 140 }} />
+        <div className="skeleton-card" style={{ height: 140 }} />
       </div>
     );
   }
 
   return (
     <div className="page-container">
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-3)' }}>
-        <div>
-          <h1>Dashboard</h1>
-          {tenantInfo && (
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+      {/* App Header Bar */}
+      <header className="app-header">
+        <div className="app-header-inner">
+          <div className="app-brand">
+            <div className="app-logo-icon">
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>account_balance</span>
+            </div>
+            <span className="app-brand-title">FeeReminder</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+            <Link to="/settings" className="nav-btn" title="Institute Settings">
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>settings</span>
+              <span style={{ fontSize: 'var(--font-size-xs)' }}>Settings</span>
+            </Link>
+            <button
+              onClick={signOut}
+              className="nav-btn"
+              style={{ color: 'var(--color-error)' }}
+              title="Sign Out"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>logout</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Institute Context & Heading */}
+      <div style={{ marginBottom: 'var(--space-4)' }}>
+        <h1 style={{ fontSize: 'var(--font-size-xl)' }}>Dashboard</h1>
+        {tenantInfo && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px', color: 'var(--color-on-surface-variant)' }}>
+            <span className="material-symbols-outlined fill" style={{ fontSize: '16px', color: 'var(--color-primary-container)' }}>
+              school
+            </span>
+            <p style={{ fontSize: 'var(--font-size-sm)', fontWeight: 600 }}>
               {tenantInfo.tenant_name}
             </p>
-          )}
-        </div>
-
-        <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-          <Link to="/settings" className="nav-btn" title="Institute Settings">
-            ⚙️ Settings
-          </Link>
-          <button
-            onClick={signOut}
-            className="nav-btn"
-            style={{ cursor: 'pointer' }}
-          >
-            Sign Out
-          </button>
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Cached / Offline Fallback Notice */}
       {isUsingCache && (
         <div className="alert alert-warning" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>⚠️ Showing last known dues list (offline / network error)</span>
+          <span>⚠️ Showing cached dues list (offline / network error)</span>
           <button
             onClick={loadDashboardData}
             style={{
@@ -273,7 +274,7 @@ export default function DashboardPage() {
       {!hasConfiguredPayment && !loading && (
         <div className="alert alert-warning" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <strong>Set up your payment details</strong>
+            <strong style={{ fontSize: 'var(--font-size-sm)' }}>Set up your payment details</strong>
             <p style={{ fontSize: 'var(--font-size-xs)', marginTop: '2px' }}>
               Add your UPI ID so WhatsApp fee reminders include how to pay.
             </p>
@@ -281,7 +282,7 @@ export default function DashboardPage() {
           <Link
             to="/settings"
             className="btn btn-primary"
-            style={{ width: 'auto', minHeight: '34px', padding: '6px 12px', fontSize: 'var(--font-size-xs)', flexShrink: 0 }}
+            style={{ width: 'auto', minHeight: '36px', padding: '6px 12px', fontSize: 'var(--font-size-xs)', flexShrink: 0 }}
           >
             Setup UPI
           </Link>
@@ -297,7 +298,7 @@ export default function DashboardPage() {
             style={{
               background: 'none',
               border: 'none',
-              color: 'var(--color-danger)',
+              color: 'var(--color-error)',
               fontWeight: 700,
               cursor: 'pointer',
               textDecoration: 'underline',
@@ -308,35 +309,62 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Dues Summary Metrics */}
-      {summary && summary.totalStudents > 0 && (
-        <div className="metrics-row">
-          <div className="metric-card">
-            <div className="metric-label">Total Outstanding</div>
-            <div className="metric-value" style={{ color: 'var(--color-primary)' }}>
-              ₹{summary.totalDueAmount.toLocaleString('en-IN')}
-            </div>
+      {/* Metric Overview Cards (2-column tactile grid) */}
+      <div className="metrics-row">
+        {/* Card 1: Total Outstanding */}
+        <div className="metric-card">
+          <div className="metric-icon-bg" style={{ backgroundColor: 'var(--color-primary-fixed)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary)' }}>
+              account_balance_wallet
+            </span>
           </div>
-          <div className="metric-card">
-            <div className="metric-label">Overdue Students</div>
-            <div className="metric-value" style={{ color: summary.overdueCount > 0 ? 'var(--color-danger)' : 'var(--color-text)' }}>
-              {summary.overdueCount}
-            </div>
+          <span className="metric-label">Total Outstanding</span>
+          <div className="metric-value tabular-nums">
+            ₹{summary ? summary.totalDueAmount.toLocaleString('en-IN') : '0'}
           </div>
+          <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-secondary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>priority_high</span>
+            {summary ? summary.overdueCount + summary.pendingCount : 0} dues pending
+          </span>
         </div>
-      )}
 
-      {/* Action Bar */}
+        {/* Card 2: Overdue Count */}
+        <div className="metric-card">
+          <div className="metric-icon-bg" style={{ backgroundColor: 'var(--color-error-container)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-error)' }}>
+              warning
+            </span>
+          </div>
+          <span className="metric-label">Overdue Students</span>
+          <div className="metric-value tabular-nums" style={{ color: (summary?.overdueCount || 0) > 0 ? 'var(--color-error)' : 'var(--color-on-surface)' }}>
+            {summary ? summary.overdueCount : 0}
+            <span style={{ fontSize: 'var(--font-size-sm)', fontWeight: 500, color: 'var(--color-on-surface-variant)', marginLeft: '4px' }}>
+              / {students.length} total
+            </span>
+          </div>
+          <span style={{ fontSize: 'var(--font-size-xs)', color: (summary?.overdueCount || 0) > 0 ? 'var(--color-error)' : 'var(--color-tertiary-container)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
+              {(summary?.overdueCount || 0) > 0 ? 'event_busy' : 'check_circle'}
+            </span>
+            {(summary?.overdueCount || 0) > 0 ? 'Urgent action required' : 'All accounts healthy'}
+          </span>
+        </div>
+      </div>
+
+      {/* Primary CTA: Add Student */}
       <div style={{ marginBottom: 'var(--space-4)' }}>
-        <Link to="/students/new" className="btn btn-primary">
-          + Add Student
+        <Link to="/students/new" className="btn btn-primary" id="btn-add-student">
+          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>person_add</span>
+          <span>Add Student</span>
         </Link>
       </div>
 
-      {/* Search & Tabs when students exist */}
+      {/* Search & Segmented Filter Tabs */}
       {students.length > 0 && (
-        <>
+        <div style={{ marginBottom: 'var(--space-3)' }}>
+          {/* Search Bar */}
           <div className="search-container">
+            <span className="material-symbols-outlined search-icon">search</span>
             <input
               type="text"
               className="search-input"
@@ -346,47 +374,71 @@ export default function DashboardPage() {
             />
           </div>
 
-          <div className="tabs-container">
+          {/* Segmented Filter Tabs */}
+          <div className="tabs-container" role="tablist">
             <button
               className={`tab-button ${activeTab === 'pending' ? 'active' : ''}`}
               onClick={() => setActiveTab('pending')}
+              role="tab"
+              type="button"
             >
-              Pending Dues ({summary ? summary.overdueCount + summary.pendingCount : 0})
+              <span>Pending Dues</span>
+              <span className="tab-badge">{summary ? summary.overdueCount + summary.pendingCount : 0}</span>
             </button>
             <button
               className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
               onClick={() => setActiveTab('all')}
+              role="tab"
+              type="button"
             >
-              All Students ({students.length})
+              <span>All Students</span>
+              <span className="tab-badge">{students.length}</span>
             </button>
             <button
               className={`tab-button ${activeTab === 'paid' ? 'active' : ''}`}
               onClick={() => setActiveTab('paid')}
+              role="tab"
+              type="button"
             >
-              Paid ({summary ? summary.paidCount : 0})
+              <span>Paid</span>
+              <span className="tab-badge">{summary ? summary.paidCount : 0}</span>
             </button>
           </div>
-        </>
+        </div>
       )}
 
-      {/* Dues / Students List */}
+      {/* Student Ledger Card List */}
       {students.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: 'var(--space-8) var(--space-4)' }}>
-          <h3 style={{ marginBottom: 'var(--space-2)' }}>No students yet</h3>
-          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-5)', fontSize: 'var(--font-size-sm)' }}>
+          <div style={{ width: '56px', height: '56px', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--color-surface-container)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-3)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary-container)' }}>group_add</span>
+          </div>
+          <h3 style={{ marginBottom: 'var(--space-2)' }}>No students enrolled yet</h3>
+          <p style={{ color: 'var(--color-on-surface-variant)', marginBottom: 'var(--space-5)', fontSize: 'var(--font-size-sm)' }}>
             Add your first student to track fee dues and send one-tap WhatsApp reminders.
           </p>
           <Link to="/students/new" className="btn btn-primary" style={{ display: 'inline-flex', width: 'auto' }}>
-            Add Your First Student
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>person_add</span>
+            <span>Add Your First Student</span>
           </Link>
         </div>
       ) : filteredStudents.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: 'var(--space-6) var(--space-4)' }}>
-          {activeTab === 'pending' && !searchQuery ? (
+          {activeTab === 'paid' ? (
             <>
-              <div style={{ fontSize: '32px', marginBottom: 'var(--space-2)' }}>🎉</div>
-              <h3 style={{ marginBottom: 'var(--space-2)', color: 'var(--color-success)' }}>All caught up!</h3>
-              <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--space-4)' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--color-surface-container)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-3)' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-on-surface-variant)' }}>task_alt</span>
+              </div>
+              <h3 style={{ marginBottom: 'var(--space-1)' }}>No paid records this cycle</h3>
+              <p style={{ color: 'var(--color-on-surface-variant)', fontSize: 'var(--font-size-sm)' }}>
+                Once students pay their fees, settled transactions will archive here.
+              </p>
+            </>
+          ) : activeTab === 'pending' && !searchQuery ? (
+            <>
+              <div style={{ fontSize: '36px', marginBottom: 'var(--space-2)' }}>🎉</div>
+              <h3 style={{ marginBottom: 'var(--space-1)', color: 'var(--color-tertiary-container)' }}>All caught up!</h3>
+              <p style={{ color: 'var(--color-on-surface-variant)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--space-4)' }}>
                 No pending or overdue fees for any student.
               </p>
               <button
@@ -398,67 +450,114 @@ export default function DashboardPage() {
               </button>
             </>
           ) : (
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>
-              No students match your search or filter.
+            <p style={{ color: 'var(--color-on-surface-variant)', fontSize: 'var(--font-size-sm)' }}>
+              No students match your search filter.
             </p>
           )}
         </div>
       ) : (
-        <div>
-          {filteredStudents.map((student) => (
-            <div key={student.id} className="card">
-              <Link
-                to={`/students/${student.id}`}
-                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-2)' }}>
-                  <div>
-                    <h3 style={{ fontSize: 'var(--font-size-lg)', marginBottom: '2px' }}>{student.name}</h3>
-                    <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)' }}>
-                      {student.parent_phone}
-                    </p>
-                  </div>
-                  {student.fee && renderStatusBadge(student.fee.status)}
-                </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+          {filteredStudents.map((student) => {
+            const fee = student.fee;
+            const status = fee?.status || 'pending';
+            const isOverdue = status === 'overdue';
+            const isPaid = status === 'paid';
 
-                {student.fee && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'var(--space-2)' }}>
-                    <span style={{ fontSize: 'var(--font-size-sm)', color: student.fee.status === 'overdue' ? 'var(--color-danger)' : 'var(--color-text-secondary)', fontWeight: student.fee.status === 'overdue' ? 600 : 400 }}>
-                      {student.fee.status === 'paid' ? `Paid` : `Due: ${student.fee.due_date}`}
+            return (
+              <div key={student.id} className="student-card">
+                {/* 6px Status Rail */}
+                <div
+                  className={`status-rail ${
+                    isPaid ? 'rail-paid' : isOverdue ? 'rail-overdue' : 'rail-due-soon'
+                  }`}
+                />
+
+                <div className="student-card-content">
+                  {/* Top Row: Name, Phone & Status Badge */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 'var(--space-2)' }}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <Link
+                        to={`/students/${student.id}`}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                      >
+                        <h3 style={{ fontSize: 'var(--font-size-md)', fontWeight: 700, color: 'var(--color-on-surface)' }}>
+                          {student.name}
+                        </h3>
+                      </Link>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px', color: 'var(--color-on-surface-variant)' }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--color-outline)' }}>call</span>
+                        <a
+                          href={`tel:${student.parent_phone}`}
+                          style={{ fontSize: 'var(--font-size-sm)', color: 'inherit', textDecoration: 'none' }}
+                        >
+                          {student.parent_phone}
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Saturated Status Pill Badge */}
+                    <span
+                      className={`badge ${
+                        isPaid ? 'badge-paid' : isOverdue ? 'badge-overdue' : 'badge-due-soon'
+                      }`}
+                    >
+                      {isOverdue && (
+                        <span style={{ width: '6px', height: '6px', borderRadius: 'var(--radius-full)', backgroundColor: '#ffffff' }} />
+                      )}
+                      {isPaid ? 'Paid' : isOverdue ? 'Overdue' : 'Due Soon'}
                     </span>
-                    <span style={{ fontSize: 'var(--font-size-base)', fontWeight: 700, color: 'var(--color-primary)' }}>
-                      ₹{student.fee.amount.toLocaleString('en-IN')}
-                    </span>
                   </div>
-                )}
-              </Link>
 
-              {/* Quick Actions per card */}
-              {student.fee && student.fee.status !== 'paid' && (
-                <div className="card-actions">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setReminderStudent(student);
-                    }}
-                    className="card-action-btn card-action-btn-remind"
-                  >
-                    💬 Remind
-                  </button>
+                  {/* Financial Info Box */}
+                  {fee && (
+                    <div className={`amount-due-box ${isOverdue ? 'overdue' : isPaid ? 'paid' : ''}`}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: isOverdue ? 'var(--color-error)' : 'var(--color-on-surface-variant)', fontSize: 'var(--font-size-sm)', fontWeight: 600 }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                          {isPaid ? 'check_circle' : isOverdue ? 'calendar_clock' : 'calendar_today'}
+                        </span>
+                        <span>{isPaid ? 'Settled' : `Due: ${fee.due_date}`}</span>
+                      </div>
+                      <div className="tabular-nums" style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, color: 'var(--color-primary-container)', marginRight: '2px' }}>₹</span>
+                        <span style={{ fontSize: 'var(--font-size-lg)', fontWeight: 700, color: isOverdue ? 'var(--color-error)' : 'var(--color-primary-container)' }}>
+                          {fee.amount.toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setMarkPaidStudent(student);
-                    }}
-                    className="card-action-btn card-action-btn-pay"
-                  >
-                    ✓ Mark as Paid
-                  </button>
+                  {/* Quick Action Row */}
+                  {fee && !isPaid && (
+                    <div className="card-actions">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setReminderStudent(student);
+                        }}
+                        className="card-action-btn card-action-btn-remind"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined fill" style={{ fontSize: '18px' }}>chat</span>
+                        <span>Remind</span>
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setMarkPaidStudent(student);
+                        }}
+                        className="card-action-btn card-action-btn-pay"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>check_circle</span>
+                        <span>Mark as Paid</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -469,7 +568,7 @@ export default function DashboardPage() {
         student={reminderStudent}
         settings={tenantSettings}
         onReminderSent={() => {
-          // Handled
+          loadDashboardData();
         }}
       />
 
@@ -487,6 +586,29 @@ export default function DashboardPage() {
         onUndo={handleUndo}
         onDismiss={() => setUndoToast(null)}
       />
+
+      {/* Fixed Bottom Navigation Bar */}
+      <nav className="bottom-nav">
+        <div className="bottom-nav-inner">
+          <Link to="/dashboard" className="bottom-nav-item active">
+            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>dashboard</span>
+            <span className="nav-label">Overview</span>
+          </Link>
+          <Link to="/dashboard" onClick={() => setActiveTab('all')} className="bottom-nav-item">
+            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>group</span>
+            <span className="nav-label">Students</span>
+          </Link>
+          <Link to="/students/new" className="bottom-nav-item">
+            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>person_add</span>
+            <span className="nav-label">Add</span>
+          </Link>
+          <Link to="/settings" className="bottom-nav-item">
+            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>settings</span>
+            <span className="nav-label">Settings</span>
+          </Link>
+        </div>
+      </nav>
     </div>
   );
 }
+

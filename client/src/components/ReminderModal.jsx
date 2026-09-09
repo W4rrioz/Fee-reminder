@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 /**
- * Screen: Send Reminder Action Modal / Bottom Sheet
- * per 03-app-flow.md:
- *  - Opens pre-filled WhatsApp message with amount, due date, institute UPI ID/bank info.
- *  - Blocks sending if phone number is invalid or institute payment info is missing.
- *  - Logs reminder in SQLite on confirm.
+ * Screen: Send Reminder Action Modal
+ * Ledger Calm design per mockups:
+ *  - Modal sheet with amber accent rail
+ *  - Recipient phone target chip
+ *  - Structured WhatsApp message preview
+ *  - Confirm & Open WhatsApp CTA
  */
 export default function ReminderModal({
   isOpen,
@@ -45,8 +46,6 @@ ${bankDetails ? `• Bank Info: ${bankDetails}` : ''}
 
 Please share a screenshot after completing the payment. Thank you!`;
 
-  // Generate clean wa.me URL
-  // Phone must be numbers only (e.g. 919876543210)
   const cleanPhone = phone.replace(/[^0-9]/g, '');
   const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(messageText)}`;
 
@@ -57,10 +56,9 @@ Please share a screenshot after completing the payment. Thank you!`;
     setError('');
 
     try {
-      // 1. Log reminder in the database
       if (fee?.id) {
         const token = getToken();
-        const res = await fetch('/api/reminders', {
+        await fetch('/api/reminders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -68,13 +66,8 @@ Please share a screenshot after completing the payment. Thank you!`;
           },
           body: JSON.stringify({ feeId: fee.id }),
         });
-
-        if (!res.ok) {
-          console.warn('Failed to log reminder audit in DB, continuing to WhatsApp');
-        }
       }
 
-      // 2. Open WhatsApp click-to-chat
       window.open(waUrl, '_blank');
 
       if (onReminderSent) {
@@ -94,9 +87,27 @@ Please share a screenshot after completing the payment. Thank you!`;
       <div className="modal-sheet" onClick={(e) => e.stopPropagation()}>
         {/* Modal Header */}
         <div className="modal-header">
-          <h3>Send Fee Reminder</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: 'var(--color-secondary-fixed)',
+                color: 'var(--color-secondary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span className="material-symbols-outlined fill" style={{ fontSize: '20px' }}>
+                send_and_archive
+              </span>
+            </div>
+            <h2 style={{ fontSize: 'var(--font-size-md)', fontWeight: 700 }}>Send Fee Reminder</h2>
+          </div>
           <button className="modal-close-btn" onClick={onClose} aria-label="Close">
-            ✕
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>close</span>
           </button>
         </div>
 
@@ -105,49 +116,84 @@ Please share a screenshot after completing the payment. Thank you!`;
         {/* Blocking Condition 1: Missing Payment Info */}
         {!hasPaymentInfo ? (
           <div className="alert alert-warning" style={{ marginBottom: 'var(--space-4)' }}>
-            <p style={{ fontWeight: 600, marginBottom: 'var(--space-1)' }}>
+            <p style={{ fontWeight: 700, marginBottom: '4px' }}>
               Institute payment info is not set!
             </p>
             <p style={{ fontSize: 'var(--font-size-sm)', marginBottom: 'var(--space-3)' }}>
               You must configure your UPI ID or Bank Details in Settings before sending reminders to parents.
             </p>
-            <Link to="/settings" className="btn btn-primary" style={{ width: 'auto' }}>
+            <Link to="/settings" className="btn btn-primary" style={{ width: 'auto', display: 'inline-flex' }}>
               Go to Settings
             </Link>
           </div>
         ) : !phone ? (
           /* Blocking Condition 2: Missing Phone */
           <div className="alert alert-error" style={{ marginBottom: 'var(--space-4)' }}>
-            <p style={{ fontWeight: 600 }}>Parent WhatsApp number is missing.</p>
+            <p style={{ fontWeight: 700 }}>Parent WhatsApp number is missing.</p>
             <p style={{ fontSize: 'var(--font-size-sm)' }}>
               Please edit the student record to add a valid phone number.
             </p>
           </div>
         ) : (
-          /* Confirmation Content */
           <>
-            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)' }}>
-              Send WhatsApp reminder for <strong>{student.name}</strong> to parent at <strong>{student.parent_phone}</strong>:
-            </p>
+            {/* Recipient Target Card */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                backgroundColor: 'var(--color-surface-low)',
+                padding: '10px 12px',
+                borderRadius: 'var(--radius-md)',
+                fontSize: 'var(--font-size-sm)',
+                color: 'var(--color-on-surface-variant)',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--color-primary-container)' }}>
+                contact_phone
+              </span>
+              <p>
+                Sending to parent of <strong style={{ color: 'var(--color-on-surface)' }}>{student.name}</strong> at{' '}
+                <strong style={{ color: 'var(--color-primary-container)' }}>{student.parent_phone}</strong>:
+              </p>
+            </div>
 
-            {/* Live Message Preview */}
+            {/* Live Message Preview Box with Amber Rail */}
             <div className="message-preview-box">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-on-surface-variant)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--color-secondary)' }}>mark_chat_unread</span>
+                  Message Preview
+                </span>
+                <span className="badge badge-due-soon" style={{ fontSize: '10px', padding: '2px 6px' }}>
+                  Automated
+                </span>
+              </div>
               {messageText}
             </div>
 
-            {/* Actions */}
+            {/* Action CTAs */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <button
                 onClick={handleConfirmSend}
                 className="btn btn-whatsapp"
                 disabled={sending}
+                type="button"
               >
-                {sending ? <span className="spinner" /> : 'Confirm & Open WhatsApp'}
+                {sending ? (
+                  <span className="spinner" />
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined fill" style={{ fontSize: '20px' }}>chat</span>
+                    <span>Confirm & Open WhatsApp</span>
+                  </>
+                )}
               </button>
               <button
                 onClick={onClose}
                 className="btn btn-secondary"
                 disabled={sending}
+                type="button"
               >
                 Cancel
               </button>
@@ -158,3 +204,4 @@ Please share a screenshot after completing the payment. Thank you!`;
     </div>
   );
 }
+
