@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from '../components/ThemeToggle';
 
 /**
  * Sign In screen — Ledger Calm design per mockups:
@@ -57,6 +58,11 @@ export default function SignInPage() {
   return (
     <div className="auth-page">
       <div className="auth-card card">
+        {/* Dark Theme Toggle */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', marginBottom: 'var(--space-2)' }}>
+          <ThemeToggle />
+        </div>
+
         {/* Header Illustration & Lock Badge */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: 'var(--space-4)' }}>
           <div

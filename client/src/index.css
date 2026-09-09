@@ -80,6 +80,104 @@
   --radius-full: 9999px;
 }
 
+/* Dark Theme Tokens */
+.dark,
+[data-theme="dark"] {
+  --color-primary: #818cf8;
+  --color-primary-hover: #a5b4fc;
+  --color-primary-container: #4f46e5;
+  --color-primary-container-hover: #4338ca;
+  --color-primary-fixed: #312e81;
+  --color-primary-fixed-dim: #1e1b4b;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #e0e7ff;
+
+  --color-secondary: #f59e0b;
+  --color-secondary-container: #d97706;
+  --color-secondary-container-hover: #b45309;
+  --color-secondary-fixed: #451a03;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-fixed: #fef3c7;
+
+  --color-tertiary: #22c55e;
+  --color-tertiary-container: #15803d;
+  --color-tertiary-container-hover: #166534;
+  --color-tertiary-fixed: #052e16;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #dcfce7;
+
+  --color-error: #ef4444;
+  --color-error-hover: #dc2626;
+  --color-error-container: #450a0a;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #fee2e2;
+
+  --color-whatsapp: #25D366;
+  --color-whatsapp-hover: #20BA5A;
+
+  --color-bg: #0b0f19;
+  --color-surface: #0b0f19;
+  --color-surface-card: #131b2e;
+  --color-surface-low: #182238;
+  --color-surface-container: #1e293b;
+  --color-surface-high: #243048;
+  --color-surface-highest: #334155;
+
+  --color-on-surface: #f1f5f9;
+  --color-on-surface-variant: #94a3b8;
+  --color-outline: #64748b;
+  --color-outline-variant: #334155;
+  --color-border: #1e293b;
+}
+
+.dark .app-header {
+  background-color: rgba(11, 15, 25, 0.92);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+}
+
+.dark .bottom-nav {
+  background-color: rgba(11, 15, 25, 0.95);
+  border-top: 1px solid rgba(30, 41, 59, 0.9);
+}
+
+.dark .modal-backdrop {
+  background-color: rgba(3, 7, 18, 0.75);
+}
+
+.dark .toast-snackbar {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+}
+
+.dark .alert-warning {
+  background-color: #451a03;
+  color: #fde68a;
+  border-color: #78350f;
+}
+
+.dark .alert-error {
+  background-color: #450a0a;
+  color: #fecaca;
+  border-color: #7f1d1d;
+}
+
+.dark .alert-success {
+  background-color: #052e16;
+  color: #bbf7d0;
+  border-color: #14532d;
+}
+
+.dark .skeleton-card {
+  background-color: #131b2e;
+  border-color: #1e293b;
+}
+
+.dark .skeleton-line {
+  background: linear-gradient(90deg, #182238 25%, #1e293b 50%, #182238 75%);
+  background-size: 200% 100%;
+}
+
+
 *,
 *::before,
 *::after {

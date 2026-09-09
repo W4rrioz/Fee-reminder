@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import ReminderModal from '../components/ReminderModal';
 import MarkPaidModal from '../components/MarkPaidModal';
 import UndoToast from '../components/UndoToast';
+import ThemeToggle from '../components/ThemeToggle';
 
 const CACHE_KEY = 'feereminder_dashboard_cache';
 
@@ -195,6 +196,7 @@ export default function DashboardPage() {
               </div>
               <span className="app-brand-title">FeeReminder</span>
             </div>
+            <ThemeToggle />
           </div>
         </header>
         <div className="metrics-row">
@@ -219,6 +221,7 @@ export default function DashboardPage() {
             <span className="app-brand-title">FeeReminder</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+            <ThemeToggle />
             <Link to="/settings" className="nav-btn" title="Institute Settings">
               <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>settings</span>
               <span style={{ fontSize: 'var(--font-size-xs)' }}>Settings</span>

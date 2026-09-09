@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import ReminderModal from '../components/ReminderModal';
 import MarkPaidModal from '../components/MarkPaidModal';
 import UndoToast from '../components/UndoToast';
+import ThemeToggle from '../components/ThemeToggle';
 
 /**
  * Student Detail screen — Ledger Calm design per mockups:
@@ -176,13 +177,16 @@ export default function StudentDetailPage() {
           </Link>
           <h1 style={{ fontSize: 'var(--font-size-lg)', truncate: true }}>{student.name}</h1>
         </div>
-        <Link
-          to={`/students/${student.id}/edit`}
-          className="nav-btn"
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>edit</span>
-          <span>Edit</span>
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+          <ThemeToggle />
+          <Link
+            to={`/students/${student.id}/edit`}
+            className="nav-btn"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>edit</span>
+            <span>Edit</span>
+          </Link>
+        </div>
       </div>
 
       {/* Student Profile Card */}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from '../components/ThemeToggle';
 
 /**
  * Add / Edit Student screen — Ledger Calm design per mockups:
@@ -189,17 +190,20 @@ export default function StudentFormPage() {
 
   return (
     <div className="page-container">
-      {/* Header with Back button */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-4)' }}>
-        <Link
-          to={isEditMode ? `/students/${id}` : '/dashboard'}
-          className="nav-btn"
-          style={{ width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
-          title="Back"
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
-        </Link>
-        <h1>{isEditMode ? 'Edit Student' : 'Add Student'}</h1>
+      {/* Header with Back button & ThemeToggle */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+          <Link
+            to={isEditMode ? `/students/${id}` : '/dashboard'}
+            className="nav-btn"
+            style={{ width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
+            title="Back"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
+          </Link>
+          <h1>{isEditMode ? 'Edit Student' : 'Add Student'}</h1>
+        </div>
+        <ThemeToggle />
       </div>
 
       {/* Hero Card */}

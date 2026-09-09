@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from '../components/ThemeToggle';
 
 /**
  * Screen: Institute Settings — Ledger Calm design per mockups:
@@ -123,22 +124,25 @@ export default function SettingsPage() {
 
   return (
     <div className="page-container">
-      {/* Header with Back button */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-4)' }}>
-        <Link
-          to="/dashboard"
-          className="nav-btn"
-          style={{ width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
-          title="Back to Dashboard"
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
-        </Link>
-        <div>
-          <h1>Institute Settings</h1>
-          <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)' }}>
-            Setup your collection & payment credentials
-          </span>
+      {/* Header with Back button & ThemeToggle */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+          <Link
+            to="/dashboard"
+            className="nav-btn"
+            style={{ width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
+            title="Back to Dashboard"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
+          </Link>
+          <div>
+            <h1>Institute Settings</h1>
+            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)' }}>
+              Setup your collection & payment credentials
+            </span>
+          </div>
         </div>
+        <ThemeToggle />
       </div>
 
       {/* Academy Identity Preview Hero Card */}
