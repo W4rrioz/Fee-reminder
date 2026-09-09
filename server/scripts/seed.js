@@ -215,8 +215,11 @@ export async function runSeed() {
   console.log(`- Overdue Dues: ${overdueCount}`);
   console.log(`- Pending Dues: ${pendingCount} (15 Due Soon within 14 days, 5 upcoming)`);
   console.log(`- Paid Dues: ${paidCount}`);
-  console.log(`- Students with Special Notes: ${notesCount}`);
   console.log('Login credentials:');
+  console.log(`  Email: ${ADMIN_EMAIL}`);
+  console.log(`  Password: ${ADMIN_PASSWORD}`);
+}
+
 // Run directly if invoked from command line
 if (process.argv[1] && (process.argv[1].includes('seed.js') || process.argv[1].includes('seed'))) {
   runSeed().catch((err) => {
