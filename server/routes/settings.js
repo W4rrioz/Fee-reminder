@@ -53,7 +53,10 @@ router.get('/', (req, res) => {
  */
 router.put('/', (req, res) => {
   try {
-    const { name, upiId, bankDetails, reminderTemplate } = req.body;
+    const name = req.body.name;
+    const upiId = req.body.upiId !== undefined ? req.body.upiId : req.body.upi_id;
+    const bankDetails = req.body.bankDetails !== undefined ? req.body.bankDetails : req.body.bank_details;
+    const reminderTemplate = req.body.reminderTemplate !== undefined ? req.body.reminderTemplate : req.body.reminder_template;
     const errors = {};
 
     if (name !== undefined && !name?.trim()) {
@@ -70,24 +73,29 @@ router.put('/', (req, res) => {
     }
 
     const db = getDb();
-    const trimmedBank = bankDetails ? bankDetails.trim() : null;
-    const trimmedTemplate = reminderTemplate !== undefined 
-      ? (reminderTemplate ? reminderTemplate.trim() : '') 
-      : null;
+    const current = db.prepare('SELECT id, name, upi_id, bank_details, reminder_template FROM tenants WHERE id = ?').get(req.tenantId);
+    if (!current) {
+      return res.status(404).json({ error: 'Tenant not found.' });
+    }
+
+    const updatedName = name !== undefined ? (name?.trim() || current.name) : current.name;
+    const updatedUpi = upiId !== undefined ? (trimmedUpi || null) : current.upi_id;
+    const updatedBank = bankDetails !== undefined ? (bankDetails ? bankDetails.trim() : null) : current.bank_details;
+    const updatedTemplate = reminderTemplate !== undefined ? (reminderTemplate ? reminderTemplate.trim() : null) : current.reminder_template;
 
     db.prepare(`
       UPDATE tenants
       SET 
-        name = COALESCE(?, name),
+        name = ?,
         upi_id = ?,
         bank_details = ?,
-        reminder_template = COALESCE(?, reminder_template)
+        reminder_template = ?
       WHERE id = ?
     `).run(
-      name ? name.trim() : null,
-      trimmedUpi,
-      trimmedBank,
-      trimmedTemplate,
+      updatedName,
+      updatedUpi,
+      updatedBank,
+      updatedTemplate,
       req.tenantId
     );
 
@@ -95,10 +103,10 @@ router.put('/', (req, res) => {
       message: 'Settings updated successfully.',
       settings: {
         id: req.tenantId,
-        name: name ? name.trim() : undefined,
-        upi_id: trimmedUpi || '',
-        bank_details: trimmedBank || '',
-        reminder_template: trimmedTemplate !== null ? trimmedTemplate : '',
+        name: updatedName,
+        upi_id: updatedUpi || '',
+        bank_details: updatedBank || '',
+        reminder_template: updatedTemplate || '',
       },
     });
   } catch (err) {

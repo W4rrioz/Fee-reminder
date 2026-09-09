@@ -91,6 +91,16 @@ function validateRow(row, rowIndex) {
 
     if (!/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
       errors.push('Please provide a valid due date (YYYY-MM-DD).');
+    } else {
+      const [year, month, day] = dueDate.split('-').map(Number);
+      const parsedDate = new Date(year, month - 1, day);
+      if (
+        parsedDate.getFullYear() !== year ||
+        parsedDate.getMonth() !== month - 1 ||
+        parsedDate.getDate() !== day
+      ) {
+        errors.push('Please provide a valid calendar due date (YYYY-MM-DD).');
+      }
     }
   }
 

@@ -198,6 +198,16 @@ router.post('/', (req, res) => {
       errors.dueDate = 'Due date is required.';
     } else if (!/^\d{4}-\d{2}-\d{2}$/.test(dueDate.trim())) {
       errors.dueDate = 'Please provide a valid due date (YYYY-MM-DD).';
+    } else {
+      const [year, month, day] = dueDate.trim().split('-').map(Number);
+      const parsedDate = new Date(year, month - 1, day);
+      if (
+        parsedDate.getFullYear() !== year ||
+        parsedDate.getMonth() !== month - 1 ||
+        parsedDate.getDate() !== day
+      ) {
+        errors.dueDate = 'Please provide a valid calendar due date (YYYY-MM-DD).';
+      }
     }
 
     if (Object.keys(errors).length > 0) {
@@ -330,6 +340,16 @@ router.put('/:id', (req, res) => {
     if (dueDate !== undefined && dueDate !== null && dueDate !== '') {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(dueDate.trim())) {
         errors.dueDate = 'Please provide a valid due date (YYYY-MM-DD).';
+      } else {
+        const [year, month, day] = dueDate.trim().split('-').map(Number);
+        const parsedDate = new Date(year, month - 1, day);
+        if (
+          parsedDate.getFullYear() !== year ||
+          parsedDate.getMonth() !== month - 1 ||
+          parsedDate.getDate() !== day
+        ) {
+          errors.dueDate = 'Please provide a valid calendar due date (YYYY-MM-DD).';
+        }
       }
     }
 
