@@ -6,7 +6,7 @@ import { getDb } from '../lib/db.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
-const JWT_SECRET = process.env.JWT_SECRET;
+const getJwtSecret = () => process.env.JWT_SECRET;
 const BCRYPT_ROUNDS = 10;
 
 // Token expires in 7 days — long enough for a pilot, short enough to be reasonable
@@ -72,7 +72,7 @@ router.post('/signup', async (req, res) => {
     createAccount();
 
     // Sign a JWT
-    const token = jwt.sign({ adminId }, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+    const token = jwt.sign({ adminId }, getJwtSecret(), { expiresIn: TOKEN_EXPIRY });
 
     res.status(201).json({
       token,
@@ -125,7 +125,7 @@ router.post('/signin', async (req, res) => {
     }
 
     // Sign a JWT
-    const token = jwt.sign({ adminId: admin.id }, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+    const token = jwt.sign({ adminId: admin.id }, getJwtSecret(), { expiresIn: TOKEN_EXPIRY });
 
     res.json({
       token,

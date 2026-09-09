@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { getDb } from '../lib/db.js';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
 /**
  * Auth middleware — the single point where tenant_id is resolved.
  *
@@ -16,6 +14,11 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 export function requireAuth(req, res, next) {
   try {
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      return res.status(500).json({ error: 'Server configuration error: JWT_SECRET is not set.' });
+    }
+
     // 1. Extract token
     const authHeader = req.headers.authorization;
     const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
@@ -27,7 +30,7 @@ export function requireAuth(req, res, next) {
     // 2. Verify the JWT
     let payload;
     try {
-      payload = jwt.verify(token, JWT_SECRET);
+      payload = jwt.verify(token, jwtSecret);
     } catch {
       return res.status(401).json({ error: 'Invalid or expired session. Please sign in again.' });
     }
