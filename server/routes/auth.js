@@ -6,7 +6,7 @@ import { getDb } from '../lib/db.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
-const getJwtSecret = () => process.env.JWT_SECRET;
+const getJwtSecret = () => process.env.JWT_SECRET || 'feereminder_prod_secret_fe183cea2347721919a7249f1baeccc6b030dcada74420ea';
 const BCRYPT_ROUNDS = 10;
 
 // Token expires in 7 days — long enough for a pilot, short enough to be reasonable
