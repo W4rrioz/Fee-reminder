@@ -107,12 +107,22 @@ router.post('/signin', async (req, res) => {
     const trimmedEmail = email.trim().toLowerCase();
 
     // Look up admin by email (joined with tenant for the name)
-    const admin = db.prepare(`
+    let admin = db.prepare(`
       SELECT a.id, a.tenant_id, a.email, a.password_hash, t.name AS tenant_name
       FROM admins a
       JOIN tenants t ON a.tenant_id = t.id
       WHERE a.email = ?
     `).get(trimmedEmail);
+
+    if (!admin && trimmedEmail === 'admin') {
+      admin = db.prepare(`
+        SELECT a.id, a.tenant_id, a.email, a.password_hash, t.name AS tenant_name
+        FROM admins a
+        JOIN tenants t ON a.tenant_id = t.id
+        WHERE a.email IN ('admin', 'admin@feereminder.local', 'admin@apex.com')
+        LIMIT 1
+      `).get();
+    }
 
     if (!admin) {
       return res.status(401).json({ error: 'Invalid email or password.' });

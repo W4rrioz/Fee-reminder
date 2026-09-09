@@ -1,6 +1,11 @@
 import initSqlJs from 'sql.js';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DEFAULT_DB_PATH = path.resolve(__dirname, '../data/feereminder.db');
 
 let rawDb;
 let dbPath;
@@ -21,7 +26,11 @@ function saveDb() {
  * and runs the schema migration.
  */
 export async function initDb() {
-  dbPath = process.env.DATABASE_PATH || './data/feereminder.db';
+  dbPath = process.env.DATABASE_PATH
+    ? (path.isAbsolute(process.env.DATABASE_PATH)
+        ? process.env.DATABASE_PATH
+        : path.resolve(__dirname, '..', process.env.DATABASE_PATH))
+    : DEFAULT_DB_PATH;
 
   // Ensure the directory exists
   const dir = path.dirname(dbPath);

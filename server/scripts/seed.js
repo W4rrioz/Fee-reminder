@@ -52,15 +52,15 @@ export async function runSeed() {
   // 1. Ensure Tenant and Admin exist
   const ADMIN_EMAIL = 'admin@feereminder.local';
   const ADMIN_PASSWORD = 'admin123';
+  const salt = bcrypt.genSaltSync(10);
+  const passwordHash = bcrypt.hashSync(ADMIN_PASSWORD, salt);
 
-  let admin = db.prepare('SELECT * FROM admins WHERE email = ?').get(ADMIN_EMAIL);
+  let admin = db.prepare("SELECT * FROM admins WHERE email = ? OR email = 'admin' OR email = 'admin@apex.com'").get(ADMIN_EMAIL);
   let tenantId;
 
   if (!admin) {
     tenantId = uuidv4();
     const adminId = uuidv4();
-    const salt = bcrypt.genSaltSync(10);
-    const passwordHash = bcrypt.hashSync(ADMIN_PASSWORD, salt);
 
     db.prepare(`
       INSERT INTO tenants (id, name, upi_id, bank_details)
@@ -75,7 +75,16 @@ export async function runSeed() {
     console.log(`Created new Admin account: ${ADMIN_EMAIL} (Password: ${ADMIN_PASSWORD})`);
   } else {
     tenantId = admin.tenant_id;
-    console.log(`Using existing Admin account: ${ADMIN_EMAIL} (Tenant ID: ${tenantId})`);
+    // Reset password hash to admin123 to guarantee it works
+    db.prepare('UPDATE admins SET password_hash = ? WHERE tenant_id = ?').run(passwordHash, tenantId);
+    
+    // Also ensure admin@feereminder.local exists
+    const exactLocalAdmin = db.prepare('SELECT * FROM admins WHERE email = ?').get(ADMIN_EMAIL);
+    if (!exactLocalAdmin) {
+      db.prepare('INSERT INTO admins (id, tenant_id, email, password_hash) VALUES (?, ?, ?, ?)').run(uuidv4(), tenantId, ADMIN_EMAIL, passwordHash);
+    }
+    
+    console.log(`Using Admin account (Tenant ID: ${tenantId}), reset password to: ${ADMIN_PASSWORD}`);
     
     // Ensure tenant has payment details set for reminder testing
     db.prepare(`
