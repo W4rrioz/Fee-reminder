@@ -54,4 +54,48 @@ router.post('/', (req, res) => {
   }
 });
 
+/**
+ * POST /api/reminders/bulk
+ * Log multiple reminders sent in bulk.
+ * Body: { feeIds: string[] }
+ * Scoped to req.tenantId.
+ */
+router.post('/bulk', (req, res) => {
+  try {
+    const { feeIds } = req.body;
+
+    if (!Array.isArray(feeIds) || feeIds.length === 0) {
+      return res.status(400).json({ error: 'Array of fee IDs is required.' });
+    }
+
+    const db = getDb();
+    const insertStmt = db.prepare(`
+      INSERT INTO reminders (id, tenant_id, fee_id, sent_at)
+      VALUES (?, ?, ?, datetime('now'))
+    `);
+
+    let loggedCount = 0;
+    const bulkTx = db.transaction(() => {
+      for (const feeId of feeIds) {
+        // Validate fee belongs to tenant
+        const fee = db.prepare('SELECT id FROM fees WHERE id = ? AND tenant_id = ?').get(feeId, req.tenantId);
+        if (fee) {
+          insertStmt.run(uuidv4(), req.tenantId, feeId);
+          loggedCount++;
+        }
+      }
+    });
+
+    bulkTx();
+
+    res.status(201).json({
+      message: `Successfully logged ${loggedCount} reminder(s).`,
+      loggedCount,
+    });
+  } catch (err) {
+    console.error('POST /api/reminders/bulk error:', err);
+    res.status(500).json({ error: 'Failed to log bulk reminders.' });
+  }
+});
+
 export default router;

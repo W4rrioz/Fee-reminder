@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
+import BulkFeeUpdateModal from '../components/BulkFeeUpdateModal';
 
 /**
  * Screen: Institute Settings — Ledger Calm design per mockups:
@@ -17,6 +18,8 @@ export default function SettingsPage() {
   const [name, setName] = useState('');
   const [upiId, setUpiId] = useState('');
   const [bankDetails, setBankDetails] = useState('');
+  const [students, setStudents] = useState([]);
+  const [isBulkUpdateOpen, setIsBulkUpdateOpen] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -25,21 +28,31 @@ export default function SettingsPage() {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
-    async function fetchSettings() {
+    async function fetchSettingsAndStudents() {
       try {
         const token = getToken();
-        const res = await fetch('/api/settings', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const [settingsRes, studentsRes] = await Promise.all([
+          fetch('/api/settings', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch('/api/students', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-        if (!res.ok) {
+        if (!settingsRes.ok) {
           throw new Error('Failed to load institute settings.');
         }
 
-        const data = await res.json();
+        const data = await settingsRes.json();
         setName(data.settings.name || '');
         setUpiId(data.settings.upi_id || '');
         setBankDetails(data.settings.bank_details || '');
+
+        if (studentsRes.ok) {
+          const sData = await studentsRes.json();
+          setStudents(sData.students || []);
+        }
       } catch (err) {
         setServerError(err.message || 'Could not load settings.');
       } finally {
@@ -47,7 +60,7 @@ export default function SettingsPage() {
       }
     }
 
-    fetchSettings();
+    fetchSettingsAndStudents();
   }, [getToken]);
 
   function validate() {
@@ -336,6 +349,51 @@ export default function SettingsPage() {
           </Link>
         </form>
       </div>
+
+      {/* Bulk Fee Operations Management Card */}
+      <div className="card" style={{ marginTop: 'var(--space-4)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: 'var(--radius-full)',
+              backgroundColor: 'var(--color-primary-fixed)',
+              color: 'var(--color-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>price_change</span>
+          </div>
+          <div>
+            <h3 style={{ margin: 0, fontSize: 'var(--font-size-base)' }}>Bulk Fee Management</h3>
+            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-on-surface-variant)' }}>
+              Batch fee increments, sibling discount adjustments, or standardizations
+            </span>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsBulkUpdateOpen(true)}
+          className="btn btn-secondary"
+          style={{ width: '100%', marginTop: 'var(--space-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>tune</span>
+          <span>Open Bulk Fee Editor</span>
+        </button>
+      </div>
+
+      {/* Bulk Fee Update Modal */}
+      <BulkFeeUpdateModal
+        isOpen={isBulkUpdateOpen}
+        onClose={() => setIsBulkUpdateOpen(false)}
+        students={students}
+        onSuccess={(msg) => {
+          setSuccessMessage(msg || 'Bulk fee update applied successfully.');
+        }}
+      />
     </div>
   );
 }

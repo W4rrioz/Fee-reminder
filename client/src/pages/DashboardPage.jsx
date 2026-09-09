@@ -5,6 +5,8 @@ import ReminderModal from '../components/ReminderModal';
 import MarkPaidModal from '../components/MarkPaidModal';
 import UndoToast from '../components/UndoToast';
 import ThemeToggle from '../components/ThemeToggle';
+import RemindAllModal from '../components/RemindAllModal';
+import BulkFeeUpdateModal from '../components/BulkFeeUpdateModal';
 
 const CACHE_KEY = 'feereminder_dashboard_cache';
 
@@ -33,6 +35,8 @@ export default function DashboardPage() {
   // Modal states
   const [reminderStudent, setReminderStudent] = useState(null);
   const [markPaidStudent, setMarkPaidStudent] = useState(null);
+  const [isRemindAllOpen, setIsRemindAllOpen] = useState(false);
+  const [isBulkUpdateOpen, setIsBulkUpdateOpen] = useState(false);
 
   // Undo Toast state
   const [undoToast, setUndoToast] = useState(null);
@@ -179,6 +183,10 @@ export default function DashboardPage() {
       return true;
     });
   }, [students, activeTab, searchQuery]);
+
+  const overdueStudents = useMemo(() => {
+    return students.filter((s) => s.fee?.status === 'overdue');
+  }, [students]);
 
   const hasConfiguredPayment = Boolean(
     tenantSettings?.upi_id?.trim() || tenantSettings?.bank_details?.trim()
@@ -354,13 +362,87 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Primary CTA: Add Student */}
-      <div style={{ marginBottom: 'var(--space-4)' }}>
-        <Link to="/students/new" className="btn btn-primary" id="btn-add-student">
-          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>person_add</span>
+      {/* Primary CTAs: Add Student & Bulk Actions */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
+        <Link to="/students/new" className="btn btn-primary" id="btn-add-student" style={{ minHeight: '44px', padding: '8px 12px', fontSize: 'var(--font-size-sm)' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>person_add</span>
           <span>Add Student</span>
         </Link>
+        <button
+          type="button"
+          onClick={() => setIsBulkUpdateOpen(true)}
+          className="btn btn-secondary"
+          style={{ minHeight: '44px', padding: '8px 12px', fontSize: 'var(--font-size-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>price_change</span>
+          <span>Bulk Actions</span>
+        </button>
       </div>
+
+      {/* Remind All Overdue Banner */}
+      {overdueStudents.length > 0 && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: 'var(--color-secondary-fixed)',
+            border: '1px solid var(--color-secondary-container)',
+            padding: 'var(--space-3) var(--space-4)',
+            borderRadius: 'var(--radius-lg)',
+            marginBottom: 'var(--space-4)',
+            boxShadow: '0 2px 4px rgba(217, 119, 6, 0.1)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--color-secondary-container)',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                notifications_active
+              </span>
+            </div>
+            <div>
+              <div style={{ fontSize: 'var(--font-size-xs)', fontWeight: 800, color: 'var(--color-on-secondary-fixed)' }}>
+                {overdueStudents.length} Overdue Dues
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--color-on-surface-variant)' }}>
+                Queue one-tap WhatsApp reminders
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsRemindAllOpen(true)}
+            className="btn btn-secondary"
+            style={{
+              backgroundColor: 'var(--color-secondary-container)',
+              color: '#ffffff',
+              fontSize: 'var(--font-size-xs)',
+              padding: '6px 12px',
+              minHeight: '36px',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              border: 'none',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>send</span>
+            Remind All ({overdueStudents.length})
+          </button>
+        </div>
+      )}
 
       {/* Search & Segmented Filter Tabs */}
       {students.length > 0 && (
@@ -581,6 +663,31 @@ export default function DashboardPage() {
         onClose={() => setMarkPaidStudent(null)}
         student={markPaidStudent}
         onPaidConfirmed={handlePaidConfirmed}
+      />
+
+      {/* Remind All Overdue Modal (Stitch export design) */}
+      <RemindAllModal
+        isOpen={isRemindAllOpen}
+        onClose={() => setIsRemindAllOpen(false)}
+        overdueStudents={overdueStudents}
+        tenantSettings={tenantSettings}
+        onSuccess={() => {
+          loadDashboardData();
+        }}
+      />
+
+      {/* Bulk Fee Update Modal */}
+      <BulkFeeUpdateModal
+        isOpen={isBulkUpdateOpen}
+        onClose={() => setIsBulkUpdateOpen(false)}
+        students={students}
+        onSuccess={(msg) => {
+          setUndoToast({
+            message: msg || 'Bulk fee update applied successfully.',
+            type: 'success',
+          });
+          loadDashboardData();
+        }}
       />
 
       {/* Floating Undo Toast */}
