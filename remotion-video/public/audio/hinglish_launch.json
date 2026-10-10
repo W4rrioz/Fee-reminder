@@ -1,0 +1,734 @@
+{
+  "id": "hinglish_launch",
+  "title": "EduManage Hinglish Coaching Launch",
+  "voice": "hi-IN-MadhurNeural",
+  "rate": "+15%",
+  "audioFile": "audio/hinglish_launch.mp3",
+  "durationSeconds": 35.256,
+  "durationFrames": 1058,
+  "fps": 30,
+  "fullScript": "Coaching chalana ab asaan! Register aur Excel sheet ki jhanjhat ko bolo bye-bye. Pesh hai EduManage — India ke smart coaching centers ke liye complete all-in-one platform. Zero commission direct UPI payment, fees seedhe aapke apne bank account mein. Ek tap mein parents ko WhatsApp reminder bhejo, dynamic payment link ke saath. Sirf teen second mein offline attendance mark karo, aur instant digital fee receipts pao. EduManage apnao, aur coaching ko smart banao. Aaj hi shuru karein!",
+  "segmentCount": 8,
+  "segments": [
+    {
+      "id": "segment_1_hook",
+      "scene": "hook",
+      "index": 0,
+      "text": "Coaching chalana ab asaan!",
+      "start": 0.1,
+      "end": 2.42,
+      "startFrame": 3,
+      "endFrame": 73,
+      "durationFrames": 70,
+      "words": [
+        {
+          "word": "Coaching",
+          "raw": "Coaching",
+          "start": 0.1,
+          "end": 0.907,
+          "startFrame": 3,
+          "endFrame": 27
+        },
+        {
+          "word": "chalana",
+          "raw": "chalana",
+          "start": 0.907,
+          "end": 1.613,
+          "startFrame": 27,
+          "endFrame": 48
+        },
+        {
+          "word": "ab",
+          "raw": "ab",
+          "start": 1.613,
+          "end": 1.814,
+          "startFrame": 48,
+          "endFrame": 54
+        },
+        {
+          "word": "asaan",
+          "raw": "asaan!",
+          "start": 1.814,
+          "end": 2.42,
+          "startFrame": 54,
+          "endFrame": 73
+        }
+      ]
+    },
+    {
+      "id": "segment_2_scene_2",
+      "scene": "scene_2",
+      "index": 1,
+      "text": "Register aur Excel sheet ki jhanjhat ko bolo bye-bye.",
+      "start": 2.37,
+      "end": 6.261,
+      "startFrame": 71,
+      "endFrame": 188,
+      "durationFrames": 117,
+      "words": [
+        {
+          "word": "Register",
+          "raw": "Register",
+          "start": 2.37,
+          "end": 3.061,
+          "startFrame": 71,
+          "endFrame": 92
+        },
+        {
+          "word": "aur",
+          "raw": "aur",
+          "start": 3.061,
+          "end": 3.321,
+          "startFrame": 92,
+          "endFrame": 100
+        },
+        {
+          "word": "Excel",
+          "raw": "Excel",
+          "start": 3.321,
+          "end": 3.753,
+          "startFrame": 100,
+          "endFrame": 113
+        },
+        {
+          "word": "sheet",
+          "raw": "sheet",
+          "start": 3.753,
+          "end": 4.186,
+          "startFrame": 113,
+          "endFrame": 126
+        },
+        {
+          "word": "ki",
+          "raw": "ki",
+          "start": 4.186,
+          "end": 4.358,
+          "startFrame": 126,
+          "endFrame": 131
+        },
+        {
+          "word": "jhanjhat",
+          "raw": "jhanjhat",
+          "start": 4.358,
+          "end": 5.05,
+          "startFrame": 131,
+          "endFrame": 152
+        },
+        {
+          "word": "ko",
+          "raw": "ko",
+          "start": 5.05,
+          "end": 5.223,
+          "startFrame": 152,
+          "endFrame": 157
+        },
+        {
+          "word": "bolo",
+          "raw": "bolo",
+          "start": 5.223,
+          "end": 5.569,
+          "startFrame": 157,
+          "endFrame": 167
+        },
+        {
+          "word": "byebye",
+          "raw": "bye-bye.",
+          "start": 5.569,
+          "end": 6.261,
+          "startFrame": 167,
+          "endFrame": 188
+        }
+      ]
+    },
+    {
+      "id": "segment_3_intro",
+      "scene": "intro",
+      "index": 2,
+      "text": "Pesh hai EduManage — India ke smart coaching centers ke liye complete all-in-one platform.",
+      "start": 6.261,
+      "end": 12.37,
+      "startFrame": 188,
+      "endFrame": 371,
+      "durationFrames": 183,
+      "words": [
+        {
+          "word": "Pesh",
+          "raw": "Pesh",
+          "start": 6.261,
+          "end": 6.578,
+          "startFrame": 188,
+          "endFrame": 197
+        },
+        {
+          "word": "hai",
+          "raw": "hai",
+          "start": 6.578,
+          "end": 6.816,
+          "startFrame": 197,
+          "endFrame": 204
+        },
+        {
+          "word": "EduManage",
+          "raw": "EduManage",
+          "start": 6.816,
+          "end": 7.53,
+          "startFrame": 204,
+          "endFrame": 226
+        },
+        {
+          "word": "—",
+          "raw": "—",
+          "start": 7.53,
+          "end": 7.61,
+          "startFrame": 226,
+          "endFrame": 228
+        },
+        {
+          "word": "India",
+          "raw": "India",
+          "start": 7.61,
+          "end": 8.006,
+          "startFrame": 228,
+          "endFrame": 240
+        },
+        {
+          "word": "ke",
+          "raw": "ke",
+          "start": 8.006,
+          "end": 8.165,
+          "startFrame": 240,
+          "endFrame": 245
+        },
+        {
+          "word": "smart",
+          "raw": "smart",
+          "start": 8.165,
+          "end": 8.562,
+          "startFrame": 245,
+          "endFrame": 257
+        },
+        {
+          "word": "coaching",
+          "raw": "coaching",
+          "start": 8.562,
+          "end": 9.196,
+          "startFrame": 257,
+          "endFrame": 276
+        },
+        {
+          "word": "centers",
+          "raw": "centers",
+          "start": 9.196,
+          "end": 9.752,
+          "startFrame": 276,
+          "endFrame": 293
+        },
+        {
+          "word": "ke",
+          "raw": "ke",
+          "start": 9.752,
+          "end": 9.91,
+          "startFrame": 293,
+          "endFrame": 297
+        },
+        {
+          "word": "liye",
+          "raw": "liye",
+          "start": 9.91,
+          "end": 10.228,
+          "startFrame": 297,
+          "endFrame": 307
+        },
+        {
+          "word": "complete",
+          "raw": "complete",
+          "start": 10.228,
+          "end": 10.862,
+          "startFrame": 307,
+          "endFrame": 326
+        },
+        {
+          "word": "allinone",
+          "raw": "all-in-one",
+          "start": 10.862,
+          "end": 11.656,
+          "startFrame": 326,
+          "endFrame": 350
+        },
+        {
+          "word": "platform",
+          "raw": "platform.",
+          "start": 11.656,
+          "end": 12.37,
+          "startFrame": 350,
+          "endFrame": 371
+        }
+      ]
+    },
+    {
+      "id": "segment_4_upi_fees",
+      "scene": "upi_fees",
+      "index": 3,
+      "text": "Zero commission direct UPI payment, fees seedhe aapke apne bank account mein.",
+      "start": 12.37,
+      "end": 18.13,
+      "startFrame": 371,
+      "endFrame": 544,
+      "durationFrames": 173,
+      "words": [
+        {
+          "word": "Zero",
+          "raw": "Zero",
+          "start": 12.37,
+          "end": 12.719,
+          "startFrame": 371,
+          "endFrame": 382
+        },
+        {
+          "word": "commission",
+          "raw": "commission",
+          "start": 12.719,
+          "end": 13.592,
+          "startFrame": 382,
+          "endFrame": 408
+        },
+        {
+          "word": "direct",
+          "raw": "direct",
+          "start": 13.592,
+          "end": 14.115,
+          "startFrame": 408,
+          "endFrame": 423
+        },
+        {
+          "word": "UPI",
+          "raw": "UPI",
+          "start": 14.115,
+          "end": 14.377,
+          "startFrame": 423,
+          "endFrame": 431
+        },
+        {
+          "word": "payment",
+          "raw": "payment,",
+          "start": 14.377,
+          "end": 15.075,
+          "startFrame": 431,
+          "endFrame": 452
+        },
+        {
+          "word": "fees",
+          "raw": "fees",
+          "start": 15.075,
+          "end": 15.425,
+          "startFrame": 452,
+          "endFrame": 463
+        },
+        {
+          "word": "seedhe",
+          "raw": "seedhe",
+          "start": 15.425,
+          "end": 15.948,
+          "startFrame": 463,
+          "endFrame": 478
+        },
+        {
+          "word": "aapke",
+          "raw": "aapke",
+          "start": 15.948,
+          "end": 16.385,
+          "startFrame": 478,
+          "endFrame": 492
+        },
+        {
+          "word": "apne",
+          "raw": "apne",
+          "start": 16.385,
+          "end": 16.734,
+          "startFrame": 492,
+          "endFrame": 502
+        },
+        {
+          "word": "bank",
+          "raw": "bank",
+          "start": 16.734,
+          "end": 17.083,
+          "startFrame": 502,
+          "endFrame": 512
+        },
+        {
+          "word": "account",
+          "raw": "account",
+          "start": 17.083,
+          "end": 17.694,
+          "startFrame": 512,
+          "endFrame": 531
+        },
+        {
+          "word": "mein",
+          "raw": "mein.",
+          "start": 17.694,
+          "end": 18.13,
+          "startFrame": 531,
+          "endFrame": 544
+        }
+      ]
+    },
+    {
+      "id": "segment_5_whatsapp_reminders",
+      "scene": "whatsapp_reminders",
+      "index": 4,
+      "text": "Ek tap mein parents ko WhatsApp reminder bhejo, dynamic payment link ke saath.",
+      "start": 18.13,
+      "end": 23.652,
+      "startFrame": 544,
+      "endFrame": 710,
+      "durationFrames": 166,
+      "words": [
+        {
+          "word": "Ek",
+          "raw": "Ek",
+          "start": 18.13,
+          "end": 18.298,
+          "startFrame": 544,
+          "endFrame": 549
+        },
+        {
+          "word": "tap",
+          "raw": "tap",
+          "start": 18.298,
+          "end": 18.549,
+          "startFrame": 549,
+          "endFrame": 556
+        },
+        {
+          "word": "mein",
+          "raw": "mein",
+          "start": 18.549,
+          "end": 18.883,
+          "startFrame": 556,
+          "endFrame": 567
+        },
+        {
+          "word": "parents",
+          "raw": "parents",
+          "start": 18.883,
+          "end": 19.469,
+          "startFrame": 567,
+          "endFrame": 584
+        },
+        {
+          "word": "ko",
+          "raw": "ko",
+          "start": 19.469,
+          "end": 19.636,
+          "startFrame": 584,
+          "endFrame": 589
+        },
+        {
+          "word": "WhatsApp",
+          "raw": "WhatsApp",
+          "start": 19.636,
+          "end": 20.306,
+          "startFrame": 589,
+          "endFrame": 609
+        },
+        {
+          "word": "reminder",
+          "raw": "reminder",
+          "start": 20.306,
+          "end": 20.975,
+          "startFrame": 609,
+          "endFrame": 629
+        },
+        {
+          "word": "bhejo",
+          "raw": "bhejo,",
+          "start": 20.975,
+          "end": 21.477,
+          "startFrame": 629,
+          "endFrame": 644
+        },
+        {
+          "word": "dynamic",
+          "raw": "dynamic",
+          "start": 21.477,
+          "end": 22.063,
+          "startFrame": 644,
+          "endFrame": 662
+        },
+        {
+          "word": "payment",
+          "raw": "payment",
+          "start": 22.063,
+          "end": 22.648,
+          "startFrame": 662,
+          "endFrame": 679
+        },
+        {
+          "word": "link",
+          "raw": "link",
+          "start": 22.648,
+          "end": 22.983,
+          "startFrame": 679,
+          "endFrame": 689
+        },
+        {
+          "word": "ke",
+          "raw": "ke",
+          "start": 22.983,
+          "end": 23.15,
+          "startFrame": 689,
+          "endFrame": 695
+        },
+        {
+          "word": "saath",
+          "raw": "saath.",
+          "start": 23.15,
+          "end": 23.652,
+          "startFrame": 695,
+          "endFrame": 710
+        }
+      ]
+    },
+    {
+      "id": "segment_6_attendance_offline",
+      "scene": "attendance_offline",
+      "index": 5,
+      "text": "Sirf teen second mein offline attendance mark karo, aur instant digital fee receipts pao.",
+      "start": 23.652,
+      "end": 29.663,
+      "startFrame": 710,
+      "endFrame": 890,
+      "durationFrames": 180,
+      "words": [
+        {
+          "word": "Sirf",
+          "raw": "Sirf",
+          "start": 23.652,
+          "end": 23.969,
+          "startFrame": 710,
+          "endFrame": 719
+        },
+        {
+          "word": "teen",
+          "raw": "teen",
+          "start": 23.969,
+          "end": 24.285,
+          "startFrame": 719,
+          "endFrame": 729
+        },
+        {
+          "word": "second",
+          "raw": "second",
+          "start": 24.285,
+          "end": 24.759,
+          "startFrame": 729,
+          "endFrame": 743
+        },
+        {
+          "word": "mein",
+          "raw": "mein",
+          "start": 24.759,
+          "end": 25.076,
+          "startFrame": 743,
+          "endFrame": 752
+        },
+        {
+          "word": "offline",
+          "raw": "offline",
+          "start": 25.076,
+          "end": 25.629,
+          "startFrame": 752,
+          "endFrame": 769
+        },
+        {
+          "word": "attendance",
+          "raw": "attendance",
+          "start": 25.629,
+          "end": 26.42,
+          "startFrame": 769,
+          "endFrame": 793
+        },
+        {
+          "word": "mark",
+          "raw": "mark",
+          "start": 26.42,
+          "end": 26.737,
+          "startFrame": 793,
+          "endFrame": 802
+        },
+        {
+          "word": "karo",
+          "raw": "karo,",
+          "start": 26.737,
+          "end": 27.132,
+          "startFrame": 802,
+          "endFrame": 814
+        },
+        {
+          "word": "aur",
+          "raw": "aur",
+          "start": 27.132,
+          "end": 27.369,
+          "startFrame": 814,
+          "endFrame": 821
+        },
+        {
+          "word": "instant",
+          "raw": "instant",
+          "start": 27.369,
+          "end": 27.923,
+          "startFrame": 821,
+          "endFrame": 838
+        },
+        {
+          "word": "digital",
+          "raw": "digital",
+          "start": 27.923,
+          "end": 28.477,
+          "startFrame": 838,
+          "endFrame": 854
+        },
+        {
+          "word": "fee",
+          "raw": "fee",
+          "start": 28.477,
+          "end": 28.714,
+          "startFrame": 854,
+          "endFrame": 861
+        },
+        {
+          "word": "receipts",
+          "raw": "receipts",
+          "start": 28.714,
+          "end": 29.347,
+          "startFrame": 861,
+          "endFrame": 880
+        },
+        {
+          "word": "pao",
+          "raw": "pao.",
+          "start": 29.347,
+          "end": 29.663,
+          "startFrame": 880,
+          "endFrame": 890
+        }
+      ]
+    },
+    {
+      "id": "segment_7_cta",
+      "scene": "cta",
+      "index": 6,
+      "text": "EduManage apnao, aur coaching ko smart banao.",
+      "start": 29.663,
+      "end": 33.283,
+      "startFrame": 890,
+      "endFrame": 998,
+      "durationFrames": 109,
+      "words": [
+        {
+          "word": "EduManage",
+          "raw": "EduManage",
+          "start": 29.663,
+          "end": 30.498,
+          "startFrame": 890,
+          "endFrame": 915
+        },
+        {
+          "word": "apnao",
+          "raw": "apnao,",
+          "start": 30.498,
+          "end": 31.055,
+          "startFrame": 915,
+          "endFrame": 932
+        },
+        {
+          "word": "aur",
+          "raw": "aur",
+          "start": 31.055,
+          "end": 31.334,
+          "startFrame": 932,
+          "endFrame": 940
+        },
+        {
+          "word": "coaching",
+          "raw": "coaching",
+          "start": 31.334,
+          "end": 32.076,
+          "startFrame": 940,
+          "endFrame": 962
+        },
+        {
+          "word": "ko",
+          "raw": "ko",
+          "start": 32.076,
+          "end": 32.262,
+          "startFrame": 962,
+          "endFrame": 968
+        },
+        {
+          "word": "smart",
+          "raw": "smart",
+          "start": 32.262,
+          "end": 32.726,
+          "startFrame": 968,
+          "endFrame": 982
+        },
+        {
+          "word": "banao",
+          "raw": "banao.",
+          "start": 32.726,
+          "end": 33.283,
+          "startFrame": 982,
+          "endFrame": 998
+        }
+      ]
+    },
+    {
+      "id": "segment_8_scene_8",
+      "scene": "scene_8",
+      "index": 7,
+      "text": "Aaj hi shuru karein!",
+      "start": 33.283,
+      "end": 35.196,
+      "startFrame": 998,
+      "endFrame": 1056,
+      "durationFrames": 57,
+      "words": [
+        {
+          "word": "Aaj",
+          "raw": "Aaj",
+          "start": 33.283,
+          "end": 33.62,
+          "startFrame": 998,
+          "endFrame": 1009
+        },
+        {
+          "word": "hi",
+          "raw": "hi",
+          "start": 33.62,
+          "end": 33.845,
+          "startFrame": 1009,
+          "endFrame": 1015
+        },
+        {
+          "word": "shuru",
+          "raw": "shuru",
+          "start": 33.845,
+          "end": 34.408,
+          "startFrame": 1015,
+          "endFrame": 1032
+        },
+        {
+          "word": "karein",
+          "raw": "karein!",
+          "start": 34.408,
+          "end": 35.196,
+          "startFrame": 1032,
+          "endFrame": 1056
+        }
+      ]
+    }
+  ]
+}

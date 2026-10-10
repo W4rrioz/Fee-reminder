@@ -1,0 +1,428 @@
+{
+  "id": "english_promo",
+  "title": "EduManage 20s Fast-Paced Promo",
+  "voice": "en-IN-PrabhatNeural",
+  "rate": "+26%",
+  "audioFile": "audio/english_promo.mp3",
+  "durationSeconds": 20.784,
+  "durationFrames": 624,
+  "fps": 30,
+  "fullScript": "Still chasing coaching fees manually? It is time to upgrade! EduManage puts your entire coaching institute right in your pocket. Zero commission UPI payments, one-tap WhatsApp reminders, and lightning-fast attendance. Simple, powerful, and mobile-first. Switch to EduManage today and supercharge your institute!",
+  "segmentCount": 6,
+  "segments": [
+    {
+      "id": "segment_1_hook",
+      "scene": "hook",
+      "index": 0,
+      "text": "Still chasing coaching fees manually?",
+      "start": 0.1,
+      "end": 2.461,
+      "startFrame": 3,
+      "endFrame": 74,
+      "durationFrames": 71,
+      "words": [
+        {
+          "word": "Still",
+          "raw": "Still",
+          "start": 0.1,
+          "end": 0.458,
+          "startFrame": 3,
+          "endFrame": 14
+        },
+        {
+          "word": "chasing",
+          "raw": "chasing",
+          "start": 0.458,
+          "end": 0.958,
+          "startFrame": 14,
+          "endFrame": 29
+        },
+        {
+          "word": "coaching",
+          "raw": "coaching",
+          "start": 0.958,
+          "end": 1.531,
+          "startFrame": 29,
+          "endFrame": 46
+        },
+        {
+          "word": "fees",
+          "raw": "fees",
+          "start": 1.531,
+          "end": 1.817,
+          "startFrame": 46,
+          "endFrame": 55
+        },
+        {
+          "word": "manually",
+          "raw": "manually?",
+          "start": 1.817,
+          "end": 2.461,
+          "startFrame": 55,
+          "endFrame": 74
+        }
+      ]
+    },
+    {
+      "id": "segment_2_scene_2",
+      "scene": "scene_2",
+      "index": 1,
+      "text": "It is time to upgrade!",
+      "start": 2.411,
+      "end": 4.216,
+      "startFrame": 72,
+      "endFrame": 126,
+      "durationFrames": 54,
+      "words": [
+        {
+          "word": "It",
+          "raw": "It",
+          "start": 2.411,
+          "end": 2.611,
+          "startFrame": 72,
+          "endFrame": 78
+        },
+        {
+          "word": "is",
+          "raw": "is",
+          "start": 2.611,
+          "end": 2.812,
+          "startFrame": 78,
+          "endFrame": 84
+        },
+        {
+          "word": "time",
+          "raw": "time",
+          "start": 2.812,
+          "end": 3.213,
+          "startFrame": 84,
+          "endFrame": 96
+        },
+        {
+          "word": "to",
+          "raw": "to",
+          "start": 3.213,
+          "end": 3.414,
+          "startFrame": 96,
+          "endFrame": 102
+        },
+        {
+          "word": "upgrade",
+          "raw": "upgrade!",
+          "start": 3.414,
+          "end": 4.216,
+          "startFrame": 102,
+          "endFrame": 126
+        }
+      ]
+    },
+    {
+      "id": "segment_3_intro",
+      "scene": "intro",
+      "index": 2,
+      "text": "EduManage puts your entire coaching institute right in your pocket.",
+      "start": 4.216,
+      "end": 8.423,
+      "startFrame": 126,
+      "endFrame": 253,
+      "durationFrames": 126,
+      "words": [
+        {
+          "word": "EduManage",
+          "raw": "EduManage",
+          "start": 4.216,
+          "end": 4.869,
+          "startFrame": 126,
+          "endFrame": 146
+        },
+        {
+          "word": "puts",
+          "raw": "puts",
+          "start": 4.869,
+          "end": 5.159,
+          "startFrame": 146,
+          "endFrame": 155
+        },
+        {
+          "word": "your",
+          "raw": "your",
+          "start": 5.159,
+          "end": 5.449,
+          "startFrame": 155,
+          "endFrame": 163
+        },
+        {
+          "word": "entire",
+          "raw": "entire",
+          "start": 5.449,
+          "end": 5.884,
+          "startFrame": 163,
+          "endFrame": 177
+        },
+        {
+          "word": "coaching",
+          "raw": "coaching",
+          "start": 5.884,
+          "end": 6.464,
+          "startFrame": 177,
+          "endFrame": 194
+        },
+        {
+          "word": "institute",
+          "raw": "institute",
+          "start": 6.464,
+          "end": 7.117,
+          "startFrame": 194,
+          "endFrame": 214
+        },
+        {
+          "word": "right",
+          "raw": "right",
+          "start": 7.117,
+          "end": 7.48,
+          "startFrame": 214,
+          "endFrame": 224
+        },
+        {
+          "word": "in",
+          "raw": "in",
+          "start": 7.48,
+          "end": 7.625,
+          "startFrame": 224,
+          "endFrame": 229
+        },
+        {
+          "word": "your",
+          "raw": "your",
+          "start": 7.625,
+          "end": 7.915,
+          "startFrame": 229,
+          "endFrame": 237
+        },
+        {
+          "word": "pocket",
+          "raw": "pocket.",
+          "start": 7.915,
+          "end": 8.423,
+          "startFrame": 237,
+          "endFrame": 253
+        }
+      ]
+    },
+    {
+      "id": "segment_4_features_rapid",
+      "scene": "features_rapid",
+      "index": 3,
+      "text": "Zero commission UPI payments, one-tap WhatsApp reminders, and lightning-fast attendance.",
+      "start": 8.423,
+      "end": 14.117,
+      "startFrame": 253,
+      "endFrame": 424,
+      "durationFrames": 171,
+      "words": [
+        {
+          "word": "Zero",
+          "raw": "Zero",
+          "start": 8.423,
+          "end": 8.711,
+          "startFrame": 253,
+          "endFrame": 261
+        },
+        {
+          "word": "commission",
+          "raw": "commission",
+          "start": 8.711,
+          "end": 9.432,
+          "startFrame": 261,
+          "endFrame": 283
+        },
+        {
+          "word": "UPI",
+          "raw": "UPI",
+          "start": 9.432,
+          "end": 9.648,
+          "startFrame": 283,
+          "endFrame": 289
+        },
+        {
+          "word": "payments",
+          "raw": "payments,",
+          "start": 9.648,
+          "end": 10.297,
+          "startFrame": 289,
+          "endFrame": 309
+        },
+        {
+          "word": "onetap",
+          "raw": "one-tap",
+          "start": 10.297,
+          "end": 10.801,
+          "startFrame": 309,
+          "endFrame": 324
+        },
+        {
+          "word": "WhatsApp",
+          "raw": "WhatsApp",
+          "start": 10.801,
+          "end": 11.378,
+          "startFrame": 324,
+          "endFrame": 341
+        },
+        {
+          "word": "reminders",
+          "raw": "reminders,",
+          "start": 11.378,
+          "end": 12.099,
+          "startFrame": 341,
+          "endFrame": 363
+        },
+        {
+          "word": "and",
+          "raw": "and",
+          "start": 12.099,
+          "end": 12.315,
+          "startFrame": 363,
+          "endFrame": 369
+        },
+        {
+          "word": "lightningfast",
+          "raw": "lightning-fast",
+          "start": 12.315,
+          "end": 13.324,
+          "startFrame": 369,
+          "endFrame": 400
+        },
+        {
+          "word": "attendance",
+          "raw": "attendance.",
+          "start": 13.324,
+          "end": 14.117,
+          "startFrame": 400,
+          "endFrame": 424
+        }
+      ]
+    },
+    {
+      "id": "segment_5_scene_5",
+      "scene": "scene_5",
+      "index": 4,
+      "text": "Simple, powerful, and mobile-first.",
+      "start": 14.117,
+      "end": 16.994,
+      "startFrame": 424,
+      "endFrame": 510,
+      "durationFrames": 86,
+      "words": [
+        {
+          "word": "Simple",
+          "raw": "Simple,",
+          "start": 14.117,
+          "end": 14.746,
+          "startFrame": 424,
+          "endFrame": 442
+        },
+        {
+          "word": "powerful",
+          "raw": "powerful,",
+          "start": 14.746,
+          "end": 15.556,
+          "startFrame": 442,
+          "endFrame": 467
+        },
+        {
+          "word": "and",
+          "raw": "and",
+          "start": 15.556,
+          "end": 15.825,
+          "startFrame": 467,
+          "endFrame": 475
+        },
+        {
+          "word": "mobilefirst",
+          "raw": "mobile-first.",
+          "start": 15.825,
+          "end": 16.994,
+          "startFrame": 475,
+          "endFrame": 510
+        }
+      ]
+    },
+    {
+      "id": "segment_6_cta",
+      "scene": "cta",
+      "index": 5,
+      "text": "Switch to EduManage today and supercharge your institute!",
+      "start": 16.994,
+      "end": 20.724,
+      "startFrame": 510,
+      "endFrame": 622,
+      "durationFrames": 112,
+      "words": [
+        {
+          "word": "Switch",
+          "raw": "Switch",
+          "start": 16.994,
+          "end": 17.442,
+          "startFrame": 510,
+          "endFrame": 523
+        },
+        {
+          "word": "to",
+          "raw": "to",
+          "start": 17.442,
+          "end": 17.591,
+          "startFrame": 523,
+          "endFrame": 528
+        },
+        {
+          "word": "EduManage",
+          "raw": "EduManage",
+          "start": 17.591,
+          "end": 18.262,
+          "startFrame": 528,
+          "endFrame": 548
+        },
+        {
+          "word": "today",
+          "raw": "today",
+          "start": 18.262,
+          "end": 18.635,
+          "startFrame": 548,
+          "endFrame": 559
+        },
+        {
+          "word": "and",
+          "raw": "and",
+          "start": 18.635,
+          "end": 18.859,
+          "startFrame": 559,
+          "endFrame": 566
+        },
+        {
+          "word": "supercharge",
+          "raw": "supercharge",
+          "start": 18.859,
+          "end": 19.68,
+          "startFrame": 566,
+          "endFrame": 590
+        },
+        {
+          "word": "your",
+          "raw": "your",
+          "start": 19.68,
+          "end": 19.978,
+          "startFrame": 590,
+          "endFrame": 599
+        },
+        {
+          "word": "institute",
+          "raw": "institute!",
+          "start": 19.978,
+          "end": 20.724,
+          "startFrame": 599,
+          "endFrame": 622
+        }
+      ]
+    }
+  ]
+}
