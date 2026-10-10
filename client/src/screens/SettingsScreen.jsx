@@ -307,7 +307,7 @@ export const SettingsScreen = () => {
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Email:</span>
-            <span className="font-mono text-slate-700">{user?.email || 'admin@edumanage.in'}</span>
+            <span className="font-mono text-slate-700">{user?.email || '—'}</span>
           </div>
         </div>
 

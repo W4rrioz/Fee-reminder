@@ -355,7 +355,7 @@ const hashPassword = (pw) => crypto.createHash('sha256').update(pw).digest('hex'
 
 // POST /api/auth/login
 // Accepts { email, password }
-// Validates against users table (supports Admin@12345 for existing accounts)
+// Validates against users table
 // Returns user info, role, and joined institute info
 app.post('/api/auth/login', async (req, res) => {
   try {
@@ -375,11 +375,10 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const hashedPassword = hashPassword(password);
-    // Check match by hash or plaintext fallback / Admin@12345 fallback
+    // Validate password match
     const isPasswordValid = 
       user.password_hash === hashedPassword ||
-      user.password_hash === password ||
-      (password === 'Admin@12345' && (user.password_hash === 'hashed_pw_secret' || !user.password_hash));
+      user.password_hash === password;
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid email or password' });

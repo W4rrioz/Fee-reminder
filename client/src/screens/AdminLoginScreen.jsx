@@ -28,17 +28,6 @@ export const AdminLoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [quickFilled, setQuickFilled] = useState(false);
-
-  // One-click quick fill demo admin credentials
-  const handleQuickFill = () => {
-    setFormData({
-      email: 'admin@edumanage.in',
-      password: 'Admin@12345'
-    });
-    setQuickFilled(true);
-    setTimeout(() => setQuickFilled(false), 2500);
-  };
 
   // Explore app as a guest visitor with random details (non-admin)
   const handleGuestExplore = () => {
@@ -105,65 +94,20 @@ export const AdminLoginScreen = () => {
           const data = await res.json();
           if (res.ok && data.user) {
             authResponse = data;
-          } else if (res.status === 401) {
-            // Check if it's the demo admin credentials fallback
-            if (
-              formData.email.toLowerCase() === 'admin@edumanage.in' &&
-              formData.password === 'Admin@12345'
-            ) {
-              // will handle in fallback
-            } else {
-              throw new Error(data.error || 'Invalid email or password');
-            }
+          } else {
+            throw new Error(data.error || 'Invalid email or password');
           }
         } catch (fetchErr) {
-          console.warn('Backend login endpoint unavailable or errored:', fetchErr.message);
-          if (fetchErr.message === 'Invalid email or password') {
+          if (fetchErr.message && !fetchErr.message.includes('Failed to fetch')) {
             throw fetchErr;
           }
+          console.warn('Backend login endpoint unavailable or errored:', fetchErr.message);
         }
       }
 
-      // Offline / Local Demo Admin fallback
+      // If offline or backend unreachable
       if (!authResponse) {
-        if (
-          formData.email.toLowerCase() === 'admin@edumanage.in' &&
-          formData.password === 'Admin@12345'
-        ) {
-          authResponse = {
-            token: `token_demo_admin_${Date.now()}`,
-            user: {
-              id: 'user_admin_demo',
-              name: 'Institute Administrator',
-              email: 'admin@edumanage.in',
-              phone: '+91 98765 43210',
-              role: 'admin',
-              created_at: new Date().toISOString()
-            },
-            institute: {
-              id: 'inst_apex_01',
-              name: 'Apex Coaching Academy',
-              type: 'coaching_center',
-              city: 'Kanpur',
-              upi_id: 'apexacademy@upi',
-              upi_name: 'Apex Academy Kanpur',
-              role: 'admin'
-            }
-          };
-        } else {
-          // If offline and custom user, allow login
-          authResponse = {
-            token: `token_local_${Date.now()}`,
-            user: {
-              id: `user_${Date.now()}`,
-              name: 'Institute Manager',
-              email: formData.email,
-              role: 'admin',
-              created_at: new Date().toISOString()
-            },
-            institute: null
-          };
-        }
+        throw new Error('Authentication server is unreachable. Please verify your connection or use Guest Explore mode.');
       }
 
       loginUser(authResponse);
@@ -210,36 +154,6 @@ export const AdminLoginScreen = () => {
 
       {/* Main Login Card */}
       <div className="relative z-10 my-4 bg-slate-800/90 backdrop-blur-md border border-slate-700 rounded-2xl p-4 sm:p-5 shadow-xl">
-        {/* Quick Fill Demo Admin Credentials Button */}
-        <div className="mb-4">
-          <button
-            type="button"
-            onClick={handleQuickFill}
-            className={`w-full p-2.5 rounded-xl border text-xs font-bold flex items-center justify-between transition-all ${
-              quickFilled
-                ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300'
-                : 'bg-gradient-to-r from-amber-500/15 to-orange-500/15 border-amber-500/40 text-amber-300 hover:bg-amber-500/25 active:scale-98'
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Zap size={16} className="text-amber-400 fill-amber-400" />
-              <span>⚡ Quick Fill Demo Admin Credentials</span>
-            </div>
-            {quickFilled ? (
-              <span className="flex items-center gap-1 text-[11px] text-emerald-300 font-semibold">
-                <Check size={14} /> Filled!
-              </span>
-            ) : (
-              <span className="text-[10px] uppercase font-extrabold tracking-wider bg-amber-500/30 px-2 py-0.5 rounded-md">
-                1-Click
-              </span>
-            )}
-          </button>
-          <div className="mt-1 flex items-center justify-between px-1 text-[11px] text-slate-400">
-            <span>admin@edumanage.in</span>
-            <span className="font-mono text-slate-500">Admin@12345</span>
-          </div>
-        </div>
 
         {error && (
           <div className="mb-4 bg-rose-500/15 border border-rose-500/40 rounded-xl p-3 flex items-start gap-2.5 text-rose-300 text-xs">
@@ -261,7 +175,7 @@ export const AdminLoginScreen = () => {
               <input
                 type="email"
                 required
-                placeholder="admin@edumanage.in"
+                placeholder="name@institute.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
