@@ -11,7 +11,9 @@ import {
   AlertCircle,
   Loader2,
   ShieldCheck,
-  Check
+  Check,
+  Compass,
+  Sparkles
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -36,6 +38,46 @@ export const AdminLoginScreen = () => {
     });
     setQuickFilled(true);
     setTimeout(() => setQuickFilled(false), 2500);
+  };
+
+  // Explore app as a guest visitor with random details (non-admin)
+  const handleGuestExplore = () => {
+    const randomGuestNames = [
+      'Aarav Sharma',
+      'Pooja Nair',
+      'Vikram Seth',
+      'Rohit Deshmukh',
+      'Ananya Sen',
+      'Karan Mehta',
+      'Neha Singhania'
+    ];
+    const randomName = randomGuestNames[Math.floor(Math.random() * randomGuestNames.length)];
+    const randomId = `guest_${Math.floor(1000 + Math.random() * 9000)}`;
+    const randomEmail = `guest.${randomId}@edumanage.demo`;
+
+    const guestAuthData = {
+      token: `token_guest_${Date.now()}`,
+      user: {
+        id: randomId,
+        name: randomName,
+        email: randomEmail,
+        phone: `+91 98${Math.floor(10000000 + Math.random() * 90000000)}`,
+        role: 'viewer', // Explorer / Viewer role, NOT admin
+        isGuest: true,
+        created_at: new Date().toISOString()
+      },
+      institute: {
+        id: 'inst_apex_01',
+        name: 'Apex Coaching Academy (Preview)',
+        type: 'coaching_center',
+        city: 'Kanpur',
+        upi_id: 'apexacademy@upi',
+        upi_name: 'Apex Academy Kanpur',
+        role: 'viewer'
+      }
+    };
+
+    loginUser(guestAuthData);
   };
 
   const handleSubmit = async (e) => {
@@ -275,6 +317,29 @@ export const AdminLoginScreen = () => {
             </button>
           </div>
         </form>
+
+        {/* Divider */}
+        <div className="relative my-4 flex items-center justify-center">
+          <div className="border-t border-slate-700 w-full" />
+          <span className="bg-slate-800 px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 absolute">
+            Or
+          </span>
+        </div>
+
+        {/* Explore App with Random Details (Non-Admin Guest) */}
+        <div>
+          <button
+            type="button"
+            onClick={handleGuestExplore}
+            className="w-full min-h-[48px] rounded-xl bg-gradient-to-r from-emerald-600/20 to-teal-600/20 hover:from-emerald-600/30 hover:to-teal-600/30 border border-emerald-500/50 text-emerald-300 font-bold text-sm shadow-sm flex items-center justify-center gap-2 transition-all active:scale-98"
+          >
+            <Compass size={17} className="text-emerald-400" />
+            <span>Explore App with Random Details</span>
+          </button>
+          <p className="text-[11px] text-center text-slate-400 mt-1.5 leading-snug">
+            Preview all app features, fee registers, and pie charts with sample guest details without entering the Admin panel.
+          </p>
+        </div>
       </div>
 
       {/* Bottom Switch to Sign Up */}
