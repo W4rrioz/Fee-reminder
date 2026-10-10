@@ -22,6 +22,7 @@ import {
   Video
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { VersionBadge } from '../components/VersionBadge';
 
 export const WelcomeLandingScreen = () => {
   const { setAuthView } = useApp();
@@ -197,6 +198,7 @@ export const WelcomeLandingScreen = () => {
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                 Bharat
               </span>
+              <VersionBadge />
             </div>
           </div>
 

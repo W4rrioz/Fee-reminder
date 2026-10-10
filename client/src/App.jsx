@@ -12,6 +12,8 @@ import { WelcomeLandingScreen } from './screens/WelcomeLandingScreen';
 import { SignUpScreen } from './screens/SignUpScreen';
 import { OnboardingWizard } from './screens/OnboardingWizard';
 import { AdminLoginScreen } from './screens/AdminLoginScreen';
+import { AppLoader } from './components/AppLoader';
+import { VersionBadge } from './components/VersionBadge';
 import { GraduationCap, Shield } from 'lucide-react';
 
 export function MainApp() {
@@ -26,12 +28,18 @@ export function MainApp() {
     authView
   } = useApp();
 
+  const [hasLoaded, setHasLoaded] = React.useState(false);
+
   // If attendance is disabled and activeTab is 'attendance', redirect to dashboard
   useEffect(() => {
     if (!attendanceEnabled && activeTab === 'attendance') {
       setActiveTab('dashboard');
     }
   }, [attendanceEnabled, activeTab, setActiveTab]);
+
+  if (!hasLoaded) {
+    return <AppLoader onComplete={() => setHasLoaded(true)} />;
+  }
 
   // If not authenticated or currently onboarding, show landing/auth flows
   if (!isAuthenticated || !isOnboarded) {
@@ -83,13 +91,13 @@ export function MainApp() {
           </div>
 
           <div className="flex items-center gap-1.5">
+            {/* Version Badge UI with animated changelog modal */}
+            <VersionBadge />
+
             {/* User Role Badge in Header */}
             <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs">
               <Shield size={10} className="text-blue-600" />
               {user?.role ? user.role : 'ADMIN'}
-            </span>
-            <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-md">
-              PWA
             </span>
           </div>
         </header>
