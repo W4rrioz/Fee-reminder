@@ -39,6 +39,9 @@ export const generateWhatsAppReminder = ({
     refId: dueId || `REF${Date.now()}`
   });
 
+  // Direct QR Code image URL generated specifically for this exact amount and UPI ID
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiLink)}`;
+
   const formattedDueDate = dueDate ? new Date(dueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Due Soon';
 
   const message = 
@@ -47,11 +50,16 @@ This is a gentle reminder from *${instituteName}*.
 
 The fee for *${studentName}* (${month || 'Current Month'}) of *₹${Number(amount).toLocaleString('en-IN')}* is due on *${formattedDueDate}*.
 
-Please pay directly using UPI:
-🔗 *Tap to Pay with GPay/PhonePe/Paytm:*
+Scan QR or Tap Link to Pay Exact Amount:
+📷 *View & Scan Instant UPI QR Code:*
+${qrImageUrl}
+
+🔗 *Direct UPI App Link (GPay / PhonePe / Paytm):*
 ${upiLink}
 
 *UPI ID:* \`${upiId}\`
+*Payee:* ${upiName || instituteName}
+*Amount:* ₹${Number(amount).toLocaleString('en-IN')}
 
 If already paid, please ignore this message or reply with screenshot.
 Thank you!`;
@@ -62,6 +70,7 @@ Thank you!`;
     whatsappUrl: encodedUrl,
     messageText: message,
     upiLink,
+    qrImageUrl,
     formattedPhone
   };
 };
@@ -91,6 +100,9 @@ export const generateCumulativeWhatsAppReminder = ({
     refId: `CUM-${studentId || 'STD'}-${Date.now()}`
   });
 
+  // Direct QR Code image URL generated specifically for this exact cumulative amount and UPI ID
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiLink)}`;
+
   const monthsText = unpaidMonths.length > 0 ? unpaidMonths.join(', ') : 'Pending Dues';
 
   const message =
@@ -100,11 +112,16 @@ This is a gentle reminder from *${instituteName}*.
 The total fee dues for *${studentName}* are *₹${Number(totalAmount).toLocaleString('en-IN')}* across ${unpaidMonths.length} unpaid month(s):
 📌 *Months:* ${monthsText}
 
-Kindly clear the balance directly using UPI:
-🔗 *Tap to Pay with GPay/PhonePe/Paytm:*
+Scan QR or Tap Link to Pay Exact Amount:
+📷 *View & Scan Instant UPI QR Code:*
+${qrImageUrl}
+
+🔗 *Direct UPI App Link (GPay / PhonePe / Paytm):*
 ${upiLink}
 
 *UPI ID:* \`${upiId}\`
+*Payee:* ${upiName || instituteName}
+*Exact Total Amount:* ₹${Number(totalAmount).toLocaleString('en-IN')}
 
 If already paid, please ignore this message or reply with screenshot.
 Thank you!`;
@@ -115,6 +132,7 @@ Thank you!`;
     whatsappUrl: encodedUrl,
     messageText: message,
     upiLink,
+    qrImageUrl,
     formattedPhone
   };
 };

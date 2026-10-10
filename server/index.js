@@ -1172,6 +1172,9 @@ app.post('/api/fee-dues/:id/remind', async (req, res) => {
 
     // Build standard NPCI UPI Deep Link
     const upiDeepLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${remainingAmount}&tr=${refId}&cu=INR&tn=${encodeURIComponent(`Fee for ${dueInfo.student_name}`)}`;
+    
+    // Direct QR Code image URL for exact amount
+    const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiDeepLink)}`;
 
     // Construct WhatsApp message text
     const messageText = 
@@ -1179,10 +1182,15 @@ app.post('/api/fee-dues/:id/remind', async (req, res) => {
 This is a gentle reminder from ${dueInfo.institute_name} regarding the pending fee of ₹${remainingAmount} for ${dueInfo.student_name}.
 Due Date: ${dueInfo.due_date}
 
-Pay directly via UPI using this link:
+Scan QR or Tap Link to Pay Exact Amount:
+📷 Instant UPI QR Code:
+${qrImageUrl}
+
+🔗 Pay via UPI App (GPay / PhonePe / Paytm):
 ${upiDeepLink}
 
-Or UPI ID: ${upiId} (${upiName})
+UPI ID: ${upiId} (${upiName})
+Amount: ₹${remainingAmount}
 Thank you!`;
 
     // Normalize phone number for wa.me link
@@ -1207,6 +1215,7 @@ Thank you!`;
       guardian_phone: dueInfo.guardian_phone,
       remaining_amount: remainingAmount,
       upi_deep_link: upiDeepLink,
+      qr_image_url: qrImageUrl,
       whatsapp_url: waLink,
       message_text: messageText
     });
