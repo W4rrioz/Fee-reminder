@@ -1182,10 +1182,6 @@ app.post('/api/fee-dues/:id/remind', async (req, res) => {
 This is a gentle reminder from ${dueInfo.institute_name} regarding the pending fee of ₹${remainingAmount} for ${dueInfo.student_name}.
 Due Date: ${dueInfo.due_date}
 
-Scan QR or Tap Link to Pay Exact Amount:
-📷 Instant UPI QR Code:
-${qrImageUrl}
-
 🔗 Pay via UPI App (GPay / PhonePe / Paytm):
 ${upiDeepLink}
 

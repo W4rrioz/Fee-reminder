@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import {
   X,
-  Share2,
   Copy,
   Check,
   Download,
   Send,
-  ExternalLink,
-  QrCode as QrIcon,
+  Edit3,
+  RotateCcw,
   Sparkles,
-  Smartphone
+  Smartphone,
+  Eye
 } from 'lucide-react';
 import { generateUpiLink } from '../utils/upi';
 
@@ -26,8 +26,8 @@ export const SendReminderModal = ({
   const [qrDataUrl, setQrDataUrl] = useState('');
   const [copiedText, setCopiedText] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
-  const [isSharingImage, setIsSharingImage] = useState(false);
-  const canvasRef = useRef(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedMessage, setEditedMessage] = useState('');
 
   if (!isOpen || !student) return null;
 
@@ -49,10 +49,7 @@ export const SendReminderModal = ({
     refId: due?.id || `REM-${student.id}-${Date.now().toString().slice(-6)}`
   });
 
-  // Direct QR Code web image URL (shows instant image preview & allows 1-tap open/download)
-  const qrWebImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(upiLink)}`;
-
-  // Generate high-resolution local canvas QR dataURL for direct device sharing & download
+  // Generate high-resolution local QR code image for counter display & local saving
   useEffect(() => {
     if (institute?.upi_id) {
       QRCode.toDataURL(
@@ -78,61 +75,34 @@ export const SendReminderModal = ({
     ? unpaidMonths.join(', ')
     : (due?.month || 'Current Month');
 
-  // Pre-formatted message text
-  const messageText = 
+  // Default clean message text without QR photo link
+  const defaultMessage = 
 `Namaste ${student.guardian_name || 'Parent'},
-This is a fee reminder from *${institute.name}*.
+This is a gentle reminder from *${institute.name}*.
 
 Student: *${student.name}*
-Pending Period: *${monthsText}*
+Pending Fee Period: *${monthsText}*
 *Exact Amount Due: ₹${targetAmount.toLocaleString('en-IN')}*
 
-📷 *Attached Instant UPI QR Code:*
-${qrWebImageUrl}
-
-🔗 *Direct UPI Payment Link (GPay / PhonePe / Paytm):*
+🔗 *Tap to Pay with UPI (GPay / PhonePe / Paytm):*
 ${upiLink}
 
 *UPI ID:* \`${institute.upi_id}\`
-*Institute:* ${institute.upi_name || institute.name}
+*Payee Name:* ${institute.upi_name || institute.name}
 
-Please scan the QR photo above or tap the link to pay the exact amount directly.
 If already paid, kindly reply with the transaction screenshot.
 Thank you!`;
 
-  const waLink = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(messageText)}`;
+  // Initialize or reset edited message
+  useEffect(() => {
+    setEditedMessage(defaultMessage);
+    setIsEditing(false);
+  }, [isOpen, due, student]);
 
-  // 1. Native Web Share API with actual QR image file (Direct WhatsApp image send on Android & Mobile)
-  const handleShareQrImageAndMessage = async () => {
-    setIsSharingImage(true);
-    try {
-      if (qrDataUrl && navigator.canShare) {
-        // Convert dataURL to Blob / File
-        const res = await fetch(qrDataUrl);
-        const blob = await res.blob();
-        const file = new File([blob], `fee_qr_${student.name.replace(/\s+/g, '_')}_${targetAmount}.png`, {
-          type: 'image/png'
-        });
+  const currentMessage = editedMessage || defaultMessage;
+  const waLink = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(currentMessage)}`;
 
-        if (navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: `Fee QR Code - ${student.name}`,
-            text: messageText
-          });
-          setIsSharingImage(false);
-          return;
-        }
-      }
-    } catch (err) {
-      console.warn('Native share error or dismissed:', err);
-    }
-    setIsSharingImage(false);
-    // Fallback: Open WhatsApp with full message and direct QR link
-    window.open(waLink, '_blank');
-  };
-
-  // 2. Download QR photo to device
+  // Download QR photo to local device
   const handleDownloadQr = () => {
     if (!qrDataUrl) return;
     const link = document.createElement('a');
@@ -141,11 +111,15 @@ Thank you!`;
     link.click();
   };
 
-  // 3. Copy message text
+  // Copy message text
   const handleCopyMessage = () => {
-    navigator.clipboard.writeText(messageText);
+    navigator.clipboard.writeText(currentMessage);
     setCopiedText(true);
     setTimeout(() => setCopiedText(false), 2000);
+  };
+
+  const handleResetMessage = () => {
+    setEditedMessage(defaultMessage);
   };
 
   return (
@@ -160,7 +134,7 @@ Thank you!`;
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <h3 className="text-base font-black text-slate-900">
-                Send Fee Reminder with UPI QR
+                Payment Reminder & QR
               </h3>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -176,28 +150,28 @@ Thank you!`;
         </div>
 
         <div className="p-4 space-y-4">
-          {/* QR PHOTO CARD - Pre-configured with exact amount */}
+          {/* QR PHOTO DISPLAY (In-App Only with exact amount preset) */}
           <div className="bg-linear-to-b from-slate-50 to-blue-50/30 border border-slate-200 rounded-2xl p-4 flex flex-col items-center text-center shadow-xs">
             <div className="flex items-center gap-1 text-[11px] font-bold text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-full mb-2.5">
               <Sparkles size={13} />
-              <span>UPI QR Preset to ₹{targetAmount.toLocaleString('en-IN')}</span>
+              <span>Exact Amount UPI QR (₹{targetAmount.toLocaleString('en-IN')})</span>
             </div>
 
-            {/* QR Photo Container with Indian UPI Badge */}
+            {/* QR Photo Container */}
             <div className="relative bg-white p-3 rounded-2xl shadow-md border border-slate-200/90 mb-2">
               {qrDataUrl ? (
                 <img 
                   src={qrDataUrl} 
                   alt={`UPI QR Code for ${student.name}`} 
-                  className="w-48 h-48 rounded-xl object-contain mx-auto"
+                  className="w-44 h-44 rounded-xl object-contain mx-auto"
                 />
               ) : (
-                <div className="w-48 h-48 flex items-center justify-center bg-slate-100 rounded-xl text-xs text-slate-400">
+                <div className="w-44 h-44 flex items-center justify-center bg-slate-100 rounded-xl text-xs text-slate-400">
                   Generating QR...
                 </div>
               )}
               <div className="mt-1 text-[10px] font-extrabold text-slate-500 tracking-wider uppercase">
-                BHIM UPI • GPay • PhonePe • Paytm
+                Scan with GPay • PhonePe • Paytm
               </div>
             </div>
 
@@ -208,72 +182,117 @@ Thank you!`;
               Exact Amount: <span className="font-bold text-emerald-700">₹{targetAmount.toLocaleString('en-IN')}</span> ({monthsText})
             </div>
 
-            {/* UPI ID Info */}
-            <div className="mt-2.5 w-full flex items-center justify-between bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs">
-              <span className="font-mono text-slate-700 text-[11px] truncate">{institute.upi_id}</span>
+            {/* UPI ID Info & Save Button */}
+            <div className="mt-2.5 w-full flex items-center justify-between gap-1.5">
+              <div className="flex-1 flex items-center justify-between bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs">
+                <span className="font-mono text-slate-700 text-[11px] truncate">{institute.upi_id}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(institute.upi_id);
+                    setCopiedUpi(true);
+                    setTimeout(() => setCopiedUpi(false), 2000);
+                  }}
+                  className="flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 text-[11px] ml-1 shrink-0"
+                >
+                  {copiedUpi ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+                  <span>{copiedUpi ? 'Copied' : 'Copy'}</span>
+                </button>
+              </div>
+
               <button
                 type="button"
-                onClick={() => {
-                  navigator.clipboard.writeText(institute.upi_id);
-                  setCopiedUpi(true);
-                  setTimeout(() => setCopiedUpi(false), 2000);
-                }}
-                className="flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 text-[11px] ml-2 shrink-0"
+                onClick={handleDownloadQr}
+                title="Save QR Photo to Device"
+                className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold border border-slate-200 flex items-center gap-1 shrink-0"
               >
-                {copiedUpi ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
-                <span>{copiedUpi ? 'Copied' : 'Copy UPI'}</span>
+                <Download size={13} />
+                <span>Save QR</span>
               </button>
             </div>
           </div>
 
-          {/* MESSAGE PREVIEW */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Message Preview
-              </span>
-              <button
-                onClick={handleCopyMessage}
-                className="text-[11px] text-blue-600 font-bold flex items-center gap-1"
-              >
-                {copiedText ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
-                <span>{copiedText ? 'Copied' : 'Copy Text'}</span>
-              </button>
+          {/* MESSAGE PREVIEW & EDIT SECTION */}
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
+            <div className="flex items-center justify-between border-b border-slate-200/80 pb-2">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                  {isEditing ? '✏️ Edit Reminder Message' : 'Message Preview'}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                {isEditing ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleResetMessage}
+                      className="text-[11px] text-slate-500 hover:text-slate-700 font-semibold px-2 py-1 rounded bg-slate-200/70 flex items-center gap-1"
+                    >
+                      <RotateCcw size={11} />
+                      <span>Reset</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(false)}
+                      className="text-[11px] text-blue-600 hover:text-blue-700 font-bold px-2.5 py-1 rounded bg-blue-50 border border-blue-200 flex items-center gap-1"
+                    >
+                      <Eye size={12} />
+                      <span>Preview</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(true)}
+                      className="text-[11px] text-blue-600 hover:text-blue-700 font-bold px-2 py-1 rounded bg-blue-50 border border-blue-100 flex items-center gap-1"
+                    >
+                      <Edit3 size={12} />
+                      <span>Edit Message</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCopyMessage}
+                      className="text-[11px] text-slate-600 hover:text-slate-800 font-bold px-2 py-1 rounded bg-slate-200/60 flex items-center gap-1 ml-1"
+                    >
+                      {copiedText ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+                      <span>{copiedText ? 'Copied' : 'Copy'}</span>
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
-            <p className="text-xs text-slate-700 font-mono whitespace-pre-wrap bg-white p-2.5 rounded-lg border border-slate-200/80 max-h-28 overflow-y-auto leading-relaxed">
-              {messageText}
-            </p>
+
+            {isEditing ? (
+              <div>
+                <textarea
+                  rows={6}
+                  value={editedMessage}
+                  onChange={(e) => setEditedMessage(e.target.value)}
+                  placeholder="Type custom fee reminder message here..."
+                  className="w-full bg-white border border-blue-400 focus:ring-2 focus:ring-blue-500 rounded-xl p-2.5 text-xs font-mono text-slate-800 leading-relaxed outline-none"
+                />
+                <p className="text-[11px] text-slate-500 mt-1">
+                  💡 Tip: You can customize any line above before sending to WhatsApp.
+                </p>
+              </div>
+            ) : (
+              <p className="text-xs text-slate-700 font-mono whitespace-pre-wrap bg-white p-3 rounded-xl border border-slate-200/90 max-h-36 overflow-y-auto leading-relaxed">
+                {currentMessage}
+              </p>
+            )}
           </div>
 
-          {/* ACTION BUTTONS (48px+ Touch targets for ₹8,000 Android phones) */}
-          <div className="space-y-2 pt-1">
-            {/* Primary Action: Share QR Image & Message directly */}
+          {/* ACTION BUTTONS (Clean Send without attaching QR photo) */}
+          <div className="pt-1">
             <button
-              onClick={handleShareQrImageAndMessage}
-              className="w-full min-h-[48px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-98 transition-transform"
+              onClick={() => window.open(waLink, '_blank')}
+              className="w-full min-h-[50px] bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-98 transition-transform"
             >
               <Send size={18} />
-              <span>Send QR Photo & Message on WhatsApp</span>
+              <span>Send Message on WhatsApp</span>
             </button>
-
-            {/* Secondary: Download QR Photo & Open Chat */}
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={handleDownloadQr}
-                className="min-h-[44px] bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border border-slate-200 active:scale-98 transition-transform"
-              >
-                <Download size={15} />
-                <span>Save QR Photo</span>
-              </button>
-
-              <button
-                onClick={() => window.open(waLink, '_blank')}
-                className="min-h-[44px] bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border border-blue-200 active:scale-98 transition-transform"
-              >
-                <Smartphone size={15} />
-                <span>Open WhatsApp</span>
-              </button>
-            </div>
           </div>
         </div>
       </div>

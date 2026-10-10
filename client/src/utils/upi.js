@@ -50,10 +50,6 @@ This is a gentle reminder from *${instituteName}*.
 
 The fee for *${studentName}* (${month || 'Current Month'}) of *₹${Number(amount).toLocaleString('en-IN')}* is due on *${formattedDueDate}*.
 
-Scan QR or Tap Link to Pay Exact Amount:
-📷 *View & Scan Instant UPI QR Code:*
-${qrImageUrl}
-
 🔗 *Direct UPI App Link (GPay / PhonePe / Paytm):*
 ${upiLink}
 
@@ -111,10 +107,6 @@ This is a gentle reminder from *${instituteName}*.
 
 The total fee dues for *${studentName}* are *₹${Number(totalAmount).toLocaleString('en-IN')}* across ${unpaidMonths.length} unpaid month(s):
 📌 *Months:* ${monthsText}
-
-Scan QR or Tap Link to Pay Exact Amount:
-📷 *View & Scan Instant UPI QR Code:*
-${qrImageUrl}
 
 🔗 *Direct UPI App Link (GPay / PhonePe / Paytm):*
 ${upiLink}
