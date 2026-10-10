@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
+import { SendReminderModal } from '../components/SendReminderModal';
 import { PieChart } from '../components/PieChart';
 import { generateWhatsAppReminder, generateCumulativeWhatsAppReminder } from '../utils/upi';
 
@@ -38,6 +39,7 @@ export const DashboardScreen = () => {
   } = useApp();
 
   const [selectedDue, setSelectedDue] = useState(null);
+  const [reminderModalData, setReminderModalData] = useState(null);
   const [activeChartTab, setActiveChartTab] = useState('fees'); // 'fees' | 'unpaidMonths' | 'batches' | 'attendance'
   const [unpaidMonthFilter, setUnpaidMonthFilter] = useState('all'); // 'all' | '1' | '2' | '3+'
 
@@ -235,43 +237,28 @@ export const DashboardScreen = () => {
     }
   ];
 
-  // Quick 1-click WhatsApp single due
+  // Quick 1-click WhatsApp single due with instant UPI QR photo
   const handleQuickWhatsApp = (due) => {
     const student = getStudent(due.student_id);
     if (!student) return;
 
-    const { whatsappUrl } = generateWhatsAppReminder({
-      studentName: student.name,
-      guardianName: student.guardian_name,
-      guardianPhone: student.guardian_phone,
-      month: due.month,
-      amount: due.amount,
-      dueDate: due.due_date,
-      instituteName: institute.name,
-      upiId: institute.upi_id,
-      upiName: institute.upi_name,
-      dueId: due.id
+    setReminderModalData({
+      due,
+      student,
+      unpaidMonths: [due.month || 'Current Month'],
+      totalAmount: Number(due.amount)
     });
-
-    window.open(whatsappUrl, '_blank');
   };
 
-  // Cumulative WhatsApp reminder for all unpaid months of a student
+  // Cumulative WhatsApp reminder for all unpaid months with instant UPI QR photo
   const handleCumulativeWhatsApp = (record) => {
-    const { student, unpaidMonths, totalAmount } = record;
-    const { whatsappUrl } = generateCumulativeWhatsAppReminder({
-      studentName: student.name,
-      guardianName: student.guardian_name,
-      guardianPhone: student.guardian_phone,
+    const { student, unpaidMonths, totalAmount, dues } = record;
+    setReminderModalData({
+      due: dues && dues[0] ? dues[0] : null,
+      student,
       unpaidMonths,
-      totalAmount,
-      instituteName: institute.name,
-      upiId: institute.upi_id,
-      upiName: institute.upi_name,
-      studentId: student.id
+      totalAmount
     });
-
-    window.open(whatsappUrl, '_blank');
   };
 
   // Filtered list for the Unpaid Months breakdown card
@@ -747,6 +734,19 @@ export const DashboardScreen = () => {
           institute={institute}
           onClose={() => setSelectedDue(null)}
           onRecordPayment={recordPayment}
+        />
+      )}
+
+      {/* Send WhatsApp Reminder with Exact Amount QR Photo Modal */}
+      {reminderModalData && (
+        <SendReminderModal
+          isOpen={Boolean(reminderModalData)}
+          due={reminderModalData.due}
+          student={reminderModalData.student}
+          institute={institute}
+          unpaidMonths={reminderModalData.unpaidMonths}
+          totalAmount={reminderModalData.totalAmount}
+          onClose={() => setReminderModalData(null)}
         />
       )}
     </div>

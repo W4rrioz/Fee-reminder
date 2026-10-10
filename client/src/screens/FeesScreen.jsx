@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
+import { SendReminderModal } from '../components/SendReminderModal';
 import { generateWhatsAppReminder, generateUpiLink } from '../utils/upi';
 
 export const FeesScreen = () => {
@@ -30,6 +31,7 @@ export const FeesScreen = () => {
   const [selectedBatchFilter, setSelectedBatchFilter] = useState('all');
   const [activePaymentDue, setActivePaymentDue] = useState(null);
   const [activeReceiptDue, setActiveReceiptDue] = useState(null);
+  const [reminderModalData, setReminderModalData] = useState(null);
 
   const getStudent = (studentId) => students.find((s) => s.id === studentId);
   const getBatch = (batchId) => classesBatches.find((b) => b.id === batchId);
@@ -68,25 +70,17 @@ export const FeesScreen = () => {
     .filter((d) => d.status === 'paid')
     .reduce((sum, d) => sum + Number(d.amount), 0);
 
-  // Send WhatsApp reminder
+  // Send WhatsApp reminder with instant UPI QR photo
   const handleSendReminder = (due) => {
     const student = getStudent(due.student_id);
     if (!student) return;
 
-    const { whatsappUrl } = generateWhatsAppReminder({
-      studentName: student.name,
-      guardianName: student.guardian_name,
-      guardianPhone: student.guardian_phone,
-      month: due.month,
-      amount: due.amount,
-      dueDate: due.due_date,
-      instituteName: institute.name,
-      upiId: institute.upi_id,
-      upiName: institute.upi_name,
-      dueId: due.id
+    setReminderModalData({
+      due,
+      student,
+      unpaidMonths: [due.fee_head || due.month || 'Current Month'],
+      totalAmount: Number(due.amount)
     });
-
-    window.open(whatsappUrl, '_blank');
   };
 
   return (
@@ -386,6 +380,30 @@ export const FeesScreen = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Payment / Counter QR Modal */}
+      {activePaymentDue && (
+        <PaymentModal
+          due={activePaymentDue}
+          student={getStudent(activePaymentDue.student_id)}
+          institute={institute}
+          onClose={() => setActivePaymentDue(null)}
+          onRecordPayment={recordPayment}
+        />
+      )}
+
+      {/* Send WhatsApp Reminder with Exact Amount QR Photo Modal */}
+      {reminderModalData && (
+        <SendReminderModal
+          isOpen={Boolean(reminderModalData)}
+          due={reminderModalData.due}
+          student={reminderModalData.student}
+          institute={institute}
+          unpaidMonths={reminderModalData.unpaidMonths}
+          totalAmount={reminderModalData.totalAmount}
+          onClose={() => setReminderModalData(null)}
+        />
       )}
     </div>
   );
