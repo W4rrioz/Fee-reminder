@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><title>Fee Dashboard - FeeReminder</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:max(env(safe-area-inset-bottom,0px),12px);}.pt-safe{padding-top:max(env(safe-area-inset-top,0px),0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-tint": "#544fc0", "surface-container-highest": "#d9e3f6", "primary-fixed": "#e2dfff", "on-secondary-fixed": "#2f1500", "inverse-on-surface": "#eaf1ff", "surface-container-high": "#dee9fc", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-container-low": "#eff4ff", "on-primary": "#ffffff", "error": "#ba1a1a", "on-error": "#ffffff", "background": "#f8f9ff", "secondary": "#904d00", "surface-container": "#e6eeff", "outline": "#777584", "primary": "#1f108e", "on-secondary-fixed-variant": "#6e3900", "on-tertiary-container": "#62c378", "tertiary-fixed-dim": "#79db8d", "surface-dim": "#d0dbed", "on-secondary-container": "#663500", "on-error-container": "#93000a", "surface": "#f8f9ff", "inverse-surface": "#27313f", "primary-container": "#3730a3", "on-surface-variant": "#464553", "on-tertiary-fixed": "#00210a", "on-primary-container": "#a9a7ff", "primary-fixed-dim": "#c3c0ff", "tertiary-container": "#004e20", "on-surface": "#121c2a", "inverse-primary": "#c3c0ff", "tertiary-fixed": "#95f8a7", "on-primary-fixed-variant": "#3b35a7", "on-background": "#121c2a", "outline-variant": "#c8c4d5", "secondary-fixed": "#ffdcc3", "secondary-fixed-dim": "#ffb77d", "tertiary": "#003514", "on-tertiary-fixed-variant": "#005323", "surface-bright": "#f8f9ff", "on-primary-fixed": "#0f0069", "on-tertiary": "#ffffff", "surface-variant": "#d9e3f6", "secondary-container": "#fe932c", "error-container": "#ffdad6" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "card-padding": "16px", "stack-gap-lg": "16px", "stack-gap-sm": "8px", "section-gap": "24px", "stack-gap-md": "12px", "gutter-mobile": "16px", "touch-min": "48px" }, fontFamily: { "label-badge": ["Inter"], "headline-lg": ["Inter"], "headline-md": ["Inter"], "headline-sm": ["Inter"], "label-md": ["Inter"], "display-currency": ["Inter"], "body-lg": ["Inter"], "body-md-bold": ["Inter"], "body-md": ["Inter"] }, fontSize: { "label-badge": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "display-currency": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-lg": ["18px", { lineHeight: "26px", fontWeight: "400" }], "body-md-bold": ["16px", { lineHeight: "24px", fontWeight: "600" }], "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-primary-fixed"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-xl mx-auto px-gutter-mobile flex items-center justify-between"><div class="flex items-center gap-stack-gap-sm"><img alt="FeeReminder Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XYOXxrqAAY8WZ6j6Lk4KGcWxhXT1SjBTztoYA1UJQHIIoKWcjL1Fku5RVUnhxa5Z3zU3uJZ8g649LU0PkT2jDMSjpOPAa1pjAuipjsO7F6D56POEddSNfe2M61EvWnjKH-YBHdHLik3br2Z-OwpOuCIuGqfu5C4O2FIQsBZFz8MmlC9mpQrC4Ovsc0fU6wq8AkPAmRAE94HET3tLK1LXnBQPFZWtUy_qNaaCPddzB-zt8NhlEOYIwEulJ2"/><span class="font-headline-sm text-headline-sm text-primary tracking-tight">FeeReminder</span></div><div class="flex items-center gap-stack-gap-md"><span class="font-label-md text-label-md text-on-surface-variant hidden sm:inline-block">Fee Dashboard</span><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full max-w-xl mx-auto px-gutter-mobile pt-16 pb-28 bg-surface"><div class="flex flex-col w-full pb-8">
+<!-- Interactive Top Action / Back Header -->
+<div class="flex items-center gap-stack-gap-md mb-stack-gap-lg">
+<a aria-label="Go Back" class="w-touch-min h-touch-min rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-center text-on-surface active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</a>
+<div class="flex flex-col">
+<h1 class="font-headline-md text-headline-md text-on-surface leading-tight">Institute Settings</h1>
+<span class="font-label-badge text-label-badge text-on-surface-variant font-medium tracking-normal">Setup your collection &amp; payment credentials</span>
+</div>
+</div>
+<!-- Warm Delightful Hero Card: Academy Identity Preview -->
+<div class="relative overflow-hidden rounded-xl bg-primary-container text-on-primary shadow-sm p-card-padding mb-section-gap">
+<div class="flex items-center gap-stack-gap-md relative z-10">
+<div class="w-14 h-14 rounded-xl overflow-hidden bg-primary-fixed flex-shrink-0 flex items-center justify-center shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Warm modern portrait of a dedicated educational mentor and tutor smiling warmly in a tidy Indian coaching academy classroom with bookshelves in soft focus, warm daylight, high resolution natural photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1OMzCtq_MkCnGQu69L0yR-OAfmMjHIftUW5brdyWfG99djCgyE2V1Qa0pOdGO2aLUmBV_Xqc0jPFklhuXxUyY392r4PUK0w5qGIavKVzqKAY54-qoz0LZpUL3dFFXvG48ReRXondIn3m9c7Kew9Tx0p1yCD6IutDqqBo3khg8Gej4Fu59QeOSu4lDFWAm8WrrQ3Ye0mfinbuJY1hOtYG2PFRvnZQD5GzVM0sPo7MAmtfmXUN7zX7JWw"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-stack-gap-sm">
+<span class="font-headline-sm text-headline-sm text-on-primary truncate" id="preview-institute-name">Apex Coaching Academy</span>
+<span class="material-symbols-outlined text-tertiary-fixed text-[18px]" title="Verified Institute">verified</span>
+</div>
+<p class="font-label-badge text-label-badge text-on-primary-container tracking-wider flex items-center gap-1 mt-0.5">
+<span class="inline-block w-2 h-2 rounded-full bg-on-tertiary-container animate-pulse"></span>
+          ACTIVE PAYMENT GATEWAY
+        </p>
+</div>
+</div>
+<!-- Subtle rhythmic background pattern -->
+<svg class="absolute -right-6 -bottom-6 w-32 h-32 opacity-10 pointer-events-none" fill="currentColor" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="4"></circle>
+<path d="M50 15 L50 85 M15 50 L85 50" stroke="currentColor" stroke-width="3"></path>
+</svg>
+</div>
+<!-- Main Settings Card Formulation -->
+<form class="flex flex-col gap-section-gap" id="institute-settings-form" onsubmit="event.preventDefault(); handleSave();">
+<!-- Group: Institute Profile -->
+<div class="rounded-xl bg-surface-container-lowest p-card-padding shadow-sm flex flex-col gap-stack-gap-md">
+<div class="flex items-center justify-between pb-1">
+<label class="font-label-md text-label-md text-on-surface" for="institute-name">Institute Name <span class="text-error font-body-md-bold">*</span></label>
+<span class="font-label-badge text-label-badge text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">Display Name</span>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<input class="w-full h-touch-min pl-11 pr-4 bg-surface-container-low rounded-lg font-body-md-bold text-body-md-bold text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none transition-all shadow-inner" id="institute-name" oninput="document.getElementById('preview-institute-name').textContent = this.value || 'Apex Coaching Academy';" required="" type="text" value="Apex Coaching Academy"/>
+</div>
+<p class="font-label-badge text-label-badge text-on-surface-variant leading-relaxed">
+        Shown at the top of digital fee receipts and automatic WhatsApp payment notifications sent to parents.
+      </p>
+</div>
+<!-- Group: Digital Payment Gateway (UPI) -->
+<div class="rounded-xl bg-surface-container-lowest p-card-padding shadow-sm flex flex-col gap-stack-gap-md">
+<div class="flex items-center justify-between pb-1">
+<label class="font-label-md text-label-md text-on-surface" for="upi-id">Static UPI ID</label>
+<span class="font-label-badge text-label-badge text-on-tertiary-fixed-variant bg-tertiary-fixed px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">bolt</span> Instant QR
+        </span>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<input class="w-full h-touch-min pl-11 pr-12 bg-surface-container-low rounded-lg font-body-md-bold text-body-md-bold text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none transition-all tracking-wide shadow-inner" id="upi-id" type="text" value="apex@okhdfcbank"/>
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-primary-container active:scale-90 transition-transform" onclick="testUpiQr()" title="Verify UPI" type="button">
+<span class="material-symbols-outlined text-[22px]">qr_code_2</span>
+</button>
+</div>
+<div class="flex items-start gap-stack-gap-sm bg-surface-container-low p-2.5 rounded-lg">
+<span class="material-symbols-outlined text-secondary text-[18px] mt-0.5 flex-shrink-0">info</span>
+<p class="font-label-badge text-label-badge text-on-surface-variant leading-tight">
+          This UPI ID is automatically included in every WhatsApp reminder message so parents can pay directly.
+        </p>
+</div>
+</div>
+<!-- Group: Bank Wire Fallback Details -->
+<div class="rounded-xl bg-surface-container-lowest p-card-padding shadow-sm flex flex-col gap-stack-gap-md">
+<div class="flex items-center justify-between pb-1">
+<label class="font-label-md text-label-md text-on-surface" for="bank-details">Bank Details (Optional fallback)</label>
+<span class="font-label-badge text-label-badge text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">NEFT / IMPS</span>
+</div>
+<div class="relative">
+<textarea class="w-full p-3.5 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none transition-all resize-none shadow-inner leading-relaxed" id="bank-details" rows="3">A/C No: 1234567890, IFSC: HDFC0001234, Apex Academy</textarea>
+</div>
+<p class="font-label-badge text-label-badge text-on-surface-variant leading-relaxed">
+        Optional account number / IFSC details for parents paying via NEFT/IMPS.
+      </p>
+</div>
+<!-- Micro-delight: Communication Guarantee Card -->
+<div class="rounded-xl bg-surface-container-high p-card-padding flex items-center gap-stack-gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0 text-on-secondary">
+<span class="material-symbols-outlined text-[20px]">security_update_good</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface">Zero-commission Direct Settlement</span>
+<span class="font-label-badge text-label-badge text-on-surface-variant truncate">Student payments route directly to your institute's bank.</span>
+</div>
+</div>
+<!-- Toast Notification (Hidden by default) -->
+<div class="hidden transition-all duration-300 transform items-center justify-between rounded-xl bg-tertiary text-on-tertiary p-card-padding shadow-md" id="save-toast">
+<div class="flex items-center gap-stack-gap-sm">
+<span class="material-symbols-outlined text-tertiary-fixed text-[20px]">check_circle</span>
+<span class="font-label-md text-label-md">Settings updated successfully!</span>
+</div>
+<span class="font-label-badge text-label-badge text-tertiary-fixed uppercase">Synced</span>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-stack-gap-sm pt-2">
+<!-- Full-width Primary Deep Indigo Save Button -->
+<button class="w-full h-touch-min bg-primary-container active:bg-primary text-on-primary font-body-md-bold text-body-md-bold rounded-lg shadow-sm flex items-center justify-center gap-stack-gap-sm transition-all active:scale-[0.99]" id="save-button" type="submit">
+<span class="material-symbols-outlined text-[20px]">save</span>
+<span>Save Settings</span>
+</button>
+<!-- Full-width Secondary Back to Dashboard Button -->
+<a class="w-full h-11 bg-surface-container-lowest active:bg-surface-container text-on-surface font-body-md-bold text-body-md-bold rounded-lg shadow-sm flex items-center justify-center transition-all active:scale-[0.99]" href="#">
+        Back to Dashboard
+      </a>
+</div>
+</form>
+</div>
+<script>
+  function handleSave() {
+    const btn = document.getElementById('save-button');
+    const toast = document.getElementById('save-toast');
+    
+    // Quick micro-interaction tactile feedback
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">sync</span><span>Saving...</span>';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">done_all</span><span>Saved</span>';
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        setTimeout(() => {
+          toast.classList.add('hidden');
+          toast.classList.remove('flex');
+        }, 3000);
+      }, 1000);
+    }, 600);
+  }
+
+  function testUpiQr() {
+    const upiVal = document.getElementById('upi-id').value;
+    if (upiVal) {
+      alert("Validated UPI handle: " + upiVal + ". Instant pay link ready for reminders.");
+    }
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-body-md-bold"><div class="max-w-xl mx-auto flex items-center justify-around h-16 px-gutter-mobile"><a aria-current="page" class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min transition-colors text-primary font-body-md-bold" data-path="fee-dashboard" href="#"><span class="material-symbols-outlined text-[24px]">dashboard</span><span class="font-label-badge text-label-badge mt-0.5">Overview</span></a><a class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min text-on-surface-variant hover:text-on-surface transition-colors" data-path="student-ledger" href="#"><span class="material-symbols-outlined text-[24px]">group</span><span class="font-label-badge text-label-badge mt-0.5">Students</span></a><a class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min text-on-surface-variant hover:text-on-surface transition-colors" data-path="send-reminders" href="#"><span class="material-symbols-outlined text-[24px]">chat</span><span class="font-label-badge text-label-badge mt-0.5">Remind</span></a><a class="flex flex-col items-center justify-center min-w-touch-min min-h-touch-min text-on-surface-variant hover:text-on-surface transition-colors" data-path="reports" href="#"><span class="material-symbols-outlined text-[24px]">bar_chart</span><span class="font-label-badge text-label-badge mt-0.5">Reports</span></a></div></nav></body></html>

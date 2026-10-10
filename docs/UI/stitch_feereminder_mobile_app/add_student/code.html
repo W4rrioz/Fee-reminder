@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><title>Add Student - FeeReminder</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:max(env(safe-area-inset-bottom,0px),16px);}.pt-safe{padding-top:max(env(safe-area-inset-top,0px),0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-tint": "#544fc0", "surface-container-highest": "#d9e3f6", "primary-fixed": "#e2dfff", "on-secondary-fixed": "#2f1500", "inverse-on-surface": "#eaf1ff", "surface-container-high": "#dee9fc", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-container-low": "#eff4ff", "on-primary": "#ffffff", "error": "#ba1a1a", "on-error": "#ffffff", "background": "#f8f9ff", "secondary": "#904d00", "surface-container": "#e6eeff", "outline": "#777584", "primary": "#1f108e", "on-secondary-fixed-variant": "#6e3900", "on-tertiary-container": "#62c378", "tertiary-fixed-dim": "#79db8d", "surface-dim": "#d0dbed", "on-secondary-container": "#663500", "on-error-container": "#93000a", "surface": "#f8f9ff", "inverse-surface": "#27313f", "primary-container": "#3730a3", "on-surface-variant": "#464553", "on-tertiary-fixed": "#00210a", "on-primary-container": "#a9a7ff", "primary-fixed-dim": "#c3c0ff", "tertiary-container": "#004e20", "on-surface": "#121c2a", "inverse-primary": "#c3c0ff", "tertiary-fixed": "#95f8a7", "on-primary-fixed-variant": "#3b35a7", "on-background": "#121c2a", "outline-variant": "#c8c4d5", "secondary-fixed": "#ffdcc3", "secondary-fixed-dim": "#ffb77d", "tertiary": "#003514", "on-tertiary-fixed-variant": "#005323", "surface-bright": "#f8f9ff", "on-primary-fixed": "#0f0069", "on-tertiary": "#ffffff", "surface-variant": "#d9e3f6", "secondary-container": "#fe932c", "error-container": "#ffdad6" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "card-padding": "16px", "stack-gap-lg": "16px", "stack-gap-sm": "8px", "section-gap": "24px", "stack-gap-md": "12px", "gutter-mobile": "16px", "touch-min": "48px" }, fontFamily: { "label-badge": ["Inter"], "headline-lg": ["Inter"], "headline-md": ["Inter"], "headline-sm": ["Inter"], "label-md": ["Inter"], "display-currency": ["Inter"], "body-lg": ["Inter"], "body-md-bold": ["Inter"], "body-md": ["Inter"] }, fontSize: { "label-badge": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "display-currency": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-lg": ["18px", { lineHeight: "26px", fontWeight: "400" }], "body-md-bold": ["16px", { lineHeight: "24px", fontWeight: "600" }], "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-primary-fixed"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-xl mx-auto px-gutter-mobile flex items-center justify-between"><div class="flex items-center gap-stack-gap-sm"><button aria-label="Go back" class="min-w-touch-min min-h-touch-min flex items-center justify-center text-on-surface hover:text-primary transition-colors" onclick="window.history.back()" type="button"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><img alt="FeeReminder Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XYOXxrqAAY8WZ6j6Lk4KGcWxhXT1SjBTztoYA1UJQHIIoKWcjL1Fku5RVUnhxa5Z3zU3uJZ8g649LU0PkT2jDMSjpOPAa1pjAuipjsO7F6D56POEddSNfe2M61EvWnjKH-YBHdHLik3br2Z-OwpOuCIuGqfu5C4O2FIQsBZFz8MmlC9mpQrC4Ovsc0fU6wq8AkPAmRAE94HET3tLK1LXnBQPFZWtUy_qNaaCPddzB-zt8NhlEOYIwEulJ2"/><h1 class="font-headline-sm text-headline-sm text-on-surface truncate">Add Student</h1></div><div class="flex items-center"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full max-w-xl mx-auto px-gutter-mobile pt-16 pb-safe bg-surface"><div class="flex flex-col w-full pb-safe">
+<div class="mb-4 mt-2 bg-surface-container-low rounded-xl p-card-padding shadow-sm">
+<div class="flex items-center gap-stack-gap-md">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[24px]">person_add</span>
+</div>
+<div class="min-w-0 flex-1">
+<h2 class="font-headline-md text-headline-md text-on-surface truncate">New Enrollment</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Set up ledger profile &amp; reminder schedule</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between mb-3 px-1">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container"></span>
+<span class="font-label-badge text-label-badge text-on-surface-variant uppercase">Direct Ledger Setup</span>
+</div>
+<span class="font-label-badge text-label-badge text-secondary-container bg-surface-container-high px-2 py-0.5 rounded-full">* Required Fields</span>
+</div>
+<form class="flex flex-col gap-stack-md" id="addStudentForm" onsubmit="event.preventDefault(); triggerCelebration();">
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-sm flex flex-col gap-1.5 focus-within:bg-surface-container-low transition-colors">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1" for="studentName">
+          Student Name <span class="text-error">*</span>
+</label>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">badge</span>
+</div>
+<input class="w-full min-h-touch-min px-3 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-body-md-bold text-body-md-bold outline-none transition-all focus:bg-surface-container-lowest focus:shadow-sm" id="studentName" name="studentName" placeholder="e.g. Rahul Sharma" required="" type="text"/>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-sm flex flex-col gap-1.5 focus-within:bg-surface-container-low transition-colors">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1" for="parentWhatsApp">
+          Parent WhatsApp Number <span class="text-error">*</span>
+</label>
+<div class="flex items-center gap-1 text-on-tertiary-container bg-surface-container-high px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[16px]">chat</span>
+<span class="font-label-badge text-label-badge">WhatsApp</span>
+</div>
+</div>
+<div class="relative flex items-center">
+<span class="absolute left-3 font-body-md-bold text-body-md-bold text-on-surface-variant select-none">+91</span>
+<input class="w-full min-h-touch-min pl-12 pr-3 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-body-md-bold text-body-md-bold outline-none transition-all focus:bg-surface-container-lowest focus:shadow-sm tracking-wider" id="parentWhatsApp" name="parentWhatsApp" pattern="[0-9]{10}" placeholder="e.g. 9876543210" required="" type="tel"/>
+</div>
+<p class="font-label-badge text-label-badge text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+        Used to send one-tap WhatsApp fee reminders.
+      </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-stack-md">
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-sm flex flex-col gap-1.5 focus-within:bg-surface-container-low transition-colors">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1" for="feeAmount">
+          Fee Amount (₹) <span class="text-error">*</span>
+</label>
+<div class="relative flex items-center">
+<span class="absolute left-3 font-headline-sm text-headline-sm text-on-surface select-none">₹</span>
+<input class="w-full min-h-touch-min pl-8 pr-3 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-display-currency text-headline-sm outline-none transition-all focus:bg-surface-container-lowest focus:shadow-sm tabular-nums" id="feeAmount" min="1" name="feeAmount" placeholder="e.g. 1500" required="" type="number"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-sm flex flex-col gap-1.5 focus-within:bg-surface-container-low transition-colors">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1" for="dueDate">
+          Due Date <span class="text-error">*</span>
+</label>
+<div class="relative flex items-center">
+<input class="w-full min-h-touch-min pl-3 pr-10 rounded-lg bg-surface-container text-on-surface font-body-md-bold text-body-md-bold outline-none transition-all focus:bg-surface-container-lowest focus:shadow-sm" id="dueDate" name="dueDate" required="" type="date" value="2026-09-09"/>
+<span class="material-symbols-outlined absolute right-3 pointer-events-none text-on-surface-variant text-[22px]">calendar_today</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-sm flex flex-col gap-1.5 focus-within:bg-surface-container-low transition-colors">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface" for="note">
+          Note <span class="font-label-badge text-label-badge text-on-surface-variant font-normal">(Optional)</span>
+</label>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">edit_note</span>
+</div>
+<textarea class="w-full min-h-[56px] py-2 px-3 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-body-md text-body-md outline-none transition-all focus:bg-surface-container-lowest focus:shadow-sm resize-none" id="note" name="note" placeholder="e.g. Sibling discount, Class 10 Batch A" rows="2"></textarea>
+</div>
+<div class="bg-surface-container-low rounded-xl p-card-padding flex items-start gap-stack-sm mt-1">
+<span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5">verified_user</span>
+<div class="min-w-0 flex-1">
+<p class="font-label-badge text-label-badge text-on-surface uppercase">Direct Reminders Activated</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-xs">Payment alert cards and customizable templates generate automatically on monthly due dates.</p>
+</div>
+</div>
+<div class="flex flex-col gap-stack-sm pt-2">
+<button class="w-full min-h-touch-min bg-primary-container hover:bg-primary active:scale-[0.98] text-on-primary font-body-md-bold text-body-md-bold rounded-xl flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer" id="saveBtn" type="submit">
+<span class="material-symbols-outlined text-[20px]">save</span>
+<span>Save Student</span>
+</button>
+<button class="w-full min-h-touch-min bg-surface-container-high hover:bg-surface-container-highest active:scale-[0.98] text-on-surface font-body-md-bold text-body-md-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm" onclick="window.history.back()" type="button">
+<span>Cancel</span>
+</button>
+</div>
+</form>
+<div class="fixed bottom-6 left-4 right-4 max-w-sm mx-auto bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none z-50" id="toastSuccess">
+<div class="w-8 h-8 rounded-full bg-tertiary-container text-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="font-body-md-bold text-body-md-bold text-sm">Student Record Saved!</p>
+<p class="font-label-badge text-label-badge text-surface-container-highest">Ledger &amp; reminder cycle configured.</p>
+</div>
+</div>
+</div>
+<script>
+  function triggerCelebration() {
+    const saveBtn = document.getElementById('saveBtn');
+    const toast = document.getElementById('toastSuccess');
+    
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span><span>Saving...</span>';
+
+    setTimeout(() => {
+      saveBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check</span><span>Saved Successfully</span>';
+      saveBtn.classList.replace('bg-primary-container', 'bg-tertiary-container');
+      
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        window.history.back();
+      }, 1200);
+    }, 600);
+  }
+</script></main></body></html>
