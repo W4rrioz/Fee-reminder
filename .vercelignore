@@ -1,0 +1,9 @@
+.git
+node_modules
+client/node_modules
+server/node_modules
+remotion-video
+docs
+*.db
+uploads
+server/uploads
