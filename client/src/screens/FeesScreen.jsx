@@ -2,19 +2,15 @@ import React, { useState } from 'react';
 import {
   CreditCard,
   Send,
-  QrCode,
   Search,
-  Filter,
   CheckCircle,
   Clock,
   AlertTriangle,
-  Receipt,
-  Share2
+  Receipt
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
 import { SendReminderModal } from '../components/SendReminderModal';
-import { generateWhatsAppReminder, generateUpiLink } from '../utils/upi';
 
 export const FeesScreen = () => {
   const {
@@ -84,31 +80,40 @@ export const FeesScreen = () => {
   };
 
   return (
-    <div className="space-y-4 pb-20">
-      {/* Header & Stats Banner */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+    <div className="space-y-3.5 pb-20">
+      {/* Header & Stats Banner - Ledger Calm */}
+      <div className="bg-white border border-stone-200 rounded-lg p-3.5">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-black text-slate-900">Fee Management</h2>
-          <span className="text-xs font-bold text-slate-500">
+          <h2 className="text-base font-bold text-stone-900">Fee Ledger</h2>
+          <span className="text-xs font-semibold text-stone-500">
             {filteredDues.length} Records
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 text-center">
-          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5">
-            <span className="text-[10px] font-bold text-emerald-700 uppercase block">
+        <div className="grid grid-cols-3 gap-2 text-center">
+          <div className="bg-stone-50 border border-stone-200 rounded-lg p-2.5">
+            <span className="text-[10px] font-bold text-stone-600 uppercase block">
+              Billed
+            </span>
+            <span className="text-sm sm:text-base font-bold text-stone-900 tabular-nums">
+              ₹{totalAmount.toLocaleString('en-IN')}
+            </span>
+          </div>
+
+          <div className="bg-emerald-50/60 border border-emerald-200 rounded-lg p-2.5">
+            <span className="text-[10px] font-bold text-[#15803D] uppercase block">
               Collected
             </span>
-            <span className="text-base font-black text-emerald-800">
+            <span className="text-sm sm:text-base font-bold text-[#15803D] tabular-nums">
               ₹{collectedAmount.toLocaleString('en-IN')}
             </span>
           </div>
 
-          <div className="bg-rose-50 border border-rose-200 rounded-xl p-2.5">
-            <span className="text-[10px] font-bold text-rose-700 uppercase block">
-              Remaining Due
+          <div className="bg-rose-50/60 border border-rose-200 rounded-lg p-2.5">
+            <span className="text-[10px] font-bold text-[#DC2626] uppercase block">
+              Remaining
             </span>
-            <span className="text-base font-black text-rose-800">
+            <span className="text-sm sm:text-base font-bold text-[#DC2626] tabular-nums">
               ₹{pendingAmount.toLocaleString('en-IN')}
             </span>
           </div>
@@ -119,24 +124,24 @@ export const FeesScreen = () => {
           <div className="relative">
             <Search
               size={16}
-              className="absolute left-3 top-3 text-slate-400 pointer-events-none"
+              className="absolute left-3 top-3 text-stone-400 pointer-events-none"
             />
             <input
               type="text"
               placeholder="Search student, roll number, or phone..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-stone-50 border border-stone-300 rounded-lg pl-9 pr-3 py-2 text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#3730A3]"
             />
           </div>
 
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <button
               onClick={() => setSelectedBatchFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+              className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
                 selectedBatchFilter === 'all'
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-stone-900 text-white'
+                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
               All {terms.classesOrBatches}
@@ -145,10 +150,10 @@ export const FeesScreen = () => {
               <button
                 key={cb.id}
                 onClick={() => setSelectedBatchFilter(cb.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
                   selectedBatchFilter === cb.id
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-[#3730A3] text-white'
+                    : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                 }`}
               >
                 {cb.name}
@@ -158,7 +163,7 @@ export const FeesScreen = () => {
         </div>
 
         {/* Status Chips */}
-        <div className="grid grid-cols-4 gap-1.5 mt-3 pt-3 border-t border-slate-100">
+        <div className="grid grid-cols-4 gap-1.5 mt-3 pt-3 border-t border-stone-100">
           {[
             { id: 'all', label: 'All' },
             { id: 'overdue', label: 'Overdue' },
@@ -168,10 +173,10 @@ export const FeesScreen = () => {
             <button
               key={chip.id}
               onClick={() => setActiveFilter(chip.id)}
-              className={`py-1.5 rounded-lg text-xs font-bold transition-all text-center ${
+              className={`py-1.5 rounded-md text-xs font-bold transition-all text-center ${
                 activeFilter === chip.id
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#3730A3] text-white'
+                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
               {chip.label}
@@ -183,9 +188,9 @@ export const FeesScreen = () => {
       {/* DUES LIST */}
       <div className="space-y-2.5">
         {filteredDues.length === 0 ? (
-          <div className="bg-white rounded-2xl p-8 text-center border border-slate-200">
-            <p className="text-sm font-semibold text-slate-600">
-              No fee dues found matching criteria.
+          <div className="bg-white rounded-lg p-8 text-center border border-stone-200">
+            <p className="text-xs font-semibold text-stone-500">
+              No fee records found matching criteria.
             </p>
           </div>
         ) : (
@@ -200,42 +205,42 @@ export const FeesScreen = () => {
             return (
               <div
                 key={due.id}
-                className={`bg-white rounded-2xl p-4 border transition-all shadow-xs ${
+                className={`bg-white rounded-lg p-3.5 border transition-all ${
                   isPaid
-                    ? 'border-emerald-200/80 bg-emerald-50/10'
+                    ? 'border-stone-200 border-l-[5px] border-l-[#15803D]'
                     : isOverdue
-                    ? 'border-rose-200 bg-rose-50/20'
-                    : 'border-slate-200'
+                    ? 'border-stone-200 border-l-[5px] border-l-[#DC2626]'
+                    : 'border-stone-200 border-l-[5px] border-l-[#D97706]'
                 }`}
               >
                 {/* Top Row: Name and Amount */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <h4 className="font-bold text-slate-900 text-sm truncate">
+                      <h4 className="font-bold text-stone-900 text-sm truncate">
                         {student.name}
                       </h4>
-                      <span className="text-[10px] text-slate-500 font-medium">
+                      <span className="text-[11px] text-stone-400 font-medium">
                         (#{student.roll_no})
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-0.5 truncate">
+                    <p className="text-xs text-stone-500 mt-0.5 truncate">
                       {batch?.name || terms.classOrBatch} • Parent: {student.guardian_name}
                     </p>
                   </div>
 
                   <div className="text-right shrink-0">
-                    <div className="text-base font-black text-slate-900">
+                    <div className="text-base font-bold text-stone-900 tabular-nums">
                       ₹{Number(due.amount).toLocaleString('en-IN')}
                     </div>
                     {/* Status Badge */}
                     <span
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-0.5 ${
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-0.5 uppercase tracking-wide ${
                         isPaid
-                          ? 'bg-emerald-100 text-emerald-800'
+                          ? 'bg-emerald-100 text-[#15803D]'
                           : isOverdue
-                          ? 'bg-rose-100 text-rose-800'
-                          : 'bg-amber-100 text-amber-800'
+                          ? 'bg-rose-100 text-[#DC2626]'
+                          : 'bg-amber-100 text-[#D97706]'
                       }`}
                     >
                       {isPaid ? (
@@ -256,27 +261,27 @@ export const FeesScreen = () => {
                 </div>
 
                 {/* Sub details: Month and Due Date */}
-                <div className="mt-2 text-[11px] text-slate-500 flex items-center justify-between border-t border-slate-100 pt-2">
+                <div className="mt-2 text-xs text-stone-500 flex items-center justify-between border-t border-stone-100 pt-2">
                   <span>{due.fee_head || due.month}</span>
                   {isPaid ? (
-                    <span className="text-emerald-700 font-medium font-mono">
+                    <span className="text-[#15803D] font-medium font-mono text-[11px]">
                       Paid on {due.paid_at} ({due.payment_method?.toUpperCase()})
                     </span>
                   ) : (
-                    <span className="font-medium text-slate-600">
+                    <span className="font-medium text-stone-600 text-[11px]">
                       Due: {due.due_date}
                     </span>
                   )}
                 </div>
 
-                {/* ACTION BUTTONS (48px+ touch targets) */}
+                {/* ACTION BUTTONS (48px minimum touch targets) */}
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   {!isPaid ? (
                     <>
                       {/* Button 1: WhatsApp Reminder with UPI Deep Link */}
                       <button
                         onClick={() => handleSendReminder(due)}
-                        className="min-h-[46px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs active:scale-98 transition-transform"
+                        className="min-h-[48px] bg-[#D97706] hover:bg-amber-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-transform"
                       >
                         <Send size={15} />
                         <span>WhatsApp Reminder</span>
@@ -285,7 +290,7 @@ export const FeesScreen = () => {
                       {/* Button 2: Record Payment / Dynamic QR Code */}
                       <button
                         onClick={() => setActivePaymentDue(due)}
-                        className="min-h-[46px] bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs active:scale-98 transition-transform"
+                        className="min-h-[48px] bg-[#3730A3] hover:bg-indigo-900 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-transform"
                       >
                         <CreditCard size={15} />
                         <span>Record / UPI QR</span>
@@ -296,7 +301,7 @@ export const FeesScreen = () => {
                       {/* View Receipt */}
                       <button
                         onClick={() => setActiveReceiptDue(due)}
-                        className="min-h-[44px] bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 col-span-2 border border-slate-200 active:scale-98"
+                        className="min-h-[48px] bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 col-span-2 border border-stone-200 active:scale-98"
                       >
                         <Receipt size={15} />
                         <span>View Shareable Receipt</span>
@@ -324,73 +329,62 @@ export const FeesScreen = () => {
       {/* Simple Shareable Receipt Modal */}
       {activeReceiptDue && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-4">
-            <div className="text-center border-b border-slate-100 pb-3">
-              <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">
+          <div className="bg-white rounded-lg max-w-sm w-full p-5 shadow-xl space-y-4 border border-stone-200">
+            <div className="text-center border-b border-stone-100 pb-3">
+              <span className="text-xs font-bold text-[#15803D] bg-emerald-50 px-2.5 py-1 rounded-full uppercase">
                 Payment Receipt
               </span>
-              <h3 className="text-base font-black text-slate-900 mt-2">
+              <h3 className="text-base font-bold text-stone-900 mt-2">
                 {institute.name}
               </h3>
-              <p className="text-xs text-slate-500">{institute.city}</p>
+              <p className="text-xs text-stone-500">{institute.city}</p>
             </div>
 
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-slate-500">Student:</span>
-                <span className="font-bold text-slate-900">
+                <span className="text-stone-500">Student:</span>
+                <span className="font-bold text-stone-900">
                   {getStudent(activeReceiptDue.student_id)?.name}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Fee Head:</span>
-                <span className="font-semibold text-slate-800">
+                <span className="text-stone-500">Fee Head:</span>
+                <span className="font-semibold text-stone-800">
                   {activeReceiptDue.fee_head}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Paid Amount:</span>
-                <span className="font-black text-emerald-700 text-sm">
+                <span className="text-stone-500">Paid Amount:</span>
+                <span className="font-bold text-[#15803D] text-sm tabular-nums">
                   ₹{Number(activeReceiptDue.amount).toLocaleString('en-IN')}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Mode:</span>
-                <span className="font-bold uppercase text-slate-800">
+                <span className="text-stone-500">Mode:</span>
+                <span className="font-bold uppercase text-stone-800">
                   {activeReceiptDue.payment_method}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Ref ID:</span>
-                <span className="font-mono text-slate-700">
+                <span className="text-stone-500">Ref ID:</span>
+                <span className="font-mono text-stone-700">
                   {activeReceiptDue.reference_id || 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Paid Date:</span>
-                <span className="text-slate-800">{activeReceiptDue.paid_at}</span>
+                <span className="text-stone-500">Paid Date:</span>
+                <span className="text-stone-800">{activeReceiptDue.paid_at}</span>
               </div>
             </div>
 
             <button
               onClick={() => setActiveReceiptDue(null)}
-              className="w-full min-h-[46px] bg-slate-900 text-white font-bold rounded-xl text-xs"
+              className="w-full min-h-[48px] bg-stone-900 hover:bg-black text-white font-bold rounded-lg text-xs"
             >
               Close Receipt
             </button>
           </div>
         </div>
-      )}
-
-      {/* Payment / Counter QR Modal */}
-      {activePaymentDue && (
-        <PaymentModal
-          due={activePaymentDue}
-          student={getStudent(activePaymentDue.student_id)}
-          institute={institute}
-          onClose={() => setActivePaymentDue(null)}
-          onRecordPayment={recordPayment}
-        />
       )}
 
       {/* Send WhatsApp Reminder with Exact Amount QR Photo Modal */}

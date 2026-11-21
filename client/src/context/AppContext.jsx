@@ -18,6 +18,12 @@ import {
 
 const AppContext = createContext();
 
+const pad = (n) => String(n).padStart(2, '0');
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
 export const AppProvider = ({ children }) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [institute, setInstituteState] = useState(INITIAL_INSTITUTE);
@@ -41,7 +47,7 @@ export const AppProvider = ({ children }) => {
     if (local !== null) {
       try {
         return JSON.parse(local);
-      } catch (e) {
+      } catch {
         return true;
       }
     }
@@ -54,24 +60,21 @@ export const AppProvider = ({ children }) => {
   });
 
   // Real-time Calendar & Server Time State
-  const pad = (n) => String(n).padStart(2, '0');
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-  const initialNow = new Date();
-  const initialDateStr = `${initialNow.getFullYear()}-${pad(initialNow.getMonth() + 1)}-${pad(initialNow.getDate())}`;
-  const initialMonthStr = `${monthNames[initialNow.getMonth()]} ${initialNow.getFullYear()}`;
-
-  const [serverTime, setServerTime] = useState(initialNow.toISOString());
-  const [currentDate, setCurrentDate] = useState(initialDateStr);
-  const [currentMonth, setCurrentMonth] = useState(initialMonthStr);
+  const [serverTime, setServerTime] = useState(() => new Date().toISOString());
+  const [currentDate, setCurrentDate] = useState(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  });
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const d = new Date();
+    return `${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`;
+  });
 
   // Synchronize with real-time server calendar and perform monthly rollover check
   const syncServerTimeAndRollover = async (activeStudents, activeDues) => {
     let now = new Date();
     let dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-    let monthStr = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+    let monthStr = `${MONTH_NAMES[now.getMonth()]} ${now.getFullYear()}`;
     let isoStr = now.toISOString();
 
     if (navigator.onLine) {
@@ -158,6 +161,19 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Sync offline queue when back online
+  const syncOfflineChanges = async () => {
+    const queue = getSyncQueue();
+    if (queue.length === 0) return;
+    setIsSyncing(true);
+    // Simulate backend sync latency for 2G/3G realistic feel
+    setTimeout(() => {
+      clearSyncQueue();
+      setSyncQueueState([]);
+      setIsSyncing(false);
+    }, 1200);
+  };
+
   // Initialize from storage on mount
   useEffect(() => {
     initializeStorage();
@@ -218,19 +234,6 @@ export const AppProvider = ({ children }) => {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
-  // Sync offline queue when back online
-  const syncOfflineChanges = async () => {
-    const queue = getSyncQueue();
-    if (queue.length === 0) return;
-    setIsSyncing(true);
-    // Simulate backend sync latency for 2G/3G realistic feel
-    setTimeout(() => {
-      clearSyncQueue();
-      setSyncQueueState([]);
-      setIsSyncing(false);
-    }, 1200);
-  };
 
   // Helper for terminology
   const isSchool = institute.type === 'school';

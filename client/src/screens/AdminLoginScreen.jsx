@@ -7,13 +7,9 @@ import {
   EyeOff,
   ArrowRight,
   ArrowLeft,
-  Zap,
   AlertCircle,
   Loader2,
-  ShieldCheck,
-  Check,
-  Compass,
-  Sparkles
+  Compass
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 

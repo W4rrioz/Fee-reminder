@@ -4,10 +4,7 @@ import {
   QrCode,
   Save,
   Check,
-  RefreshCw,
-  Sliders,
   Sparkles,
-  Smartphone,
   LogOut,
   Shield,
   User,
@@ -308,6 +305,12 @@ export const SettingsScreen = () => {
           <div className="flex justify-between">
             <span className="text-slate-400">Email:</span>
             <span className="font-mono text-slate-700">{user?.email || '—'}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Sync Mode:</span>
+            <span className={`font-semibold ${isOnline ? 'text-emerald-600' : 'text-amber-600'}`}>
+              {isOnline ? 'Cloud Synced' : 'Offline Storage Queue'}
+            </span>
           </div>
         </div>
 

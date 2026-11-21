@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import QRCode from 'qrcode';
 import {
   X,
@@ -9,7 +9,6 @@ import {
   Edit3,
   RotateCcw,
   Sparkles,
-  Smartphone,
   Eye
 } from 'lucide-react';
 import { generateUpiLink } from '../utils/upi';
@@ -29,29 +28,31 @@ export const SendReminderModal = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editedMessage, setEditedMessage] = useState('');
 
-  if (!isOpen || !student) return null;
-
   const isCumulative = Array.isArray(unpaidMonths) && unpaidMonths.length > 1;
   const targetAmount = Number(totalAmount !== null ? totalAmount : (due?.amount || 0));
-  const cleanPhone = String(student.guardian_phone || student.phone || '').replace(/\D/g, '');
+  const studentName = student?.name || '';
+  const cleanPhone = String(student?.guardian_phone || student?.phone || '').replace(/\D/g, '');
   const formattedPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
 
   // Build standard NPCI UPI Link with exact amount preset
   const note = isCumulative
-    ? `Fees (${unpaidMonths.length} mos) for ${student.name}`
-    : `Fees for ${student.name} - ${due?.month || 'Current Month'}`;
-  
-  const upiLink = generateUpiLink({
-    upiId: institute.upi_id,
-    upiName: institute.upi_name || institute.name,
-    amount: targetAmount,
-    note,
-    refId: due?.id || `REM-${student.id}-${Date.now().toString().slice(-6)}`
-  });
+    ? `Fees (${unpaidMonths.length} mos) for ${studentName}`
+    : `Fees for ${studentName} - ${due?.month || 'Current Month'}`;
+
+  const upiLink = useMemo(() => {
+    if (!institute?.upi_id) return '';
+    return generateUpiLink({
+      upiId: institute.upi_id,
+      upiName: institute.upi_name || institute.name,
+      amount: targetAmount,
+      note,
+      refId: due?.id || `REM-${student?.id || '0'}`
+    });
+  }, [institute, targetAmount, note, due?.id, student?.id]);
 
   // Generate high-resolution local QR code image for counter display & local saving
   useEffect(() => {
-    if (institute?.upi_id) {
+    if (institute?.upi_id && upiLink && isOpen) {
       QRCode.toDataURL(
         upiLink,
         {
@@ -69,15 +70,16 @@ export const SendReminderModal = ({
         }
       );
     }
-  }, [upiLink, institute]);
+  }, [upiLink, institute?.upi_id, isOpen]);
 
   const monthsText = isCumulative
     ? unpaidMonths.join(', ')
     : (due?.month || 'Current Month');
 
   // Default clean message text without QR photo link
-  const defaultMessage = 
-`Namaste ${student.guardian_name || 'Parent'},
+  const defaultMessage = useMemo(() => {
+    if (!student || !institute) return '';
+    return `Namaste ${student.guardian_name || 'Parent'},
 This is a gentle reminder from *${institute.name}*.
 
 Student: *${student.name}*
@@ -92,14 +94,11 @@ ${upiLink}
 
 If already paid, kindly reply with the transaction screenshot.
 Thank you!`;
+  }, [student, institute, monthsText, targetAmount, upiLink]);
 
-  // Initialize or reset edited message
-  useEffect(() => {
-    setEditedMessage(defaultMessage);
-    setIsEditing(false);
-  }, [isOpen, due, student]);
+  if (!isOpen || !student) return null;
 
-  const currentMessage = editedMessage || defaultMessage;
+  const currentMessage = isEditing ? editedMessage : defaultMessage;
   const waLink = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(currentMessage)}`;
 
   // Download QR photo to local device
@@ -119,7 +118,8 @@ Thank you!`;
   };
 
   const handleResetMessage = () => {
-    setEditedMessage(defaultMessage);
+    setEditedMessage('');
+    setIsEditing(false);
   };
 
   return (
@@ -245,7 +245,10 @@ Thank you!`;
                   <>
                     <button
                       type="button"
-                      onClick={() => setIsEditing(true)}
+                      onClick={() => {
+                        if (!editedMessage) setEditedMessage(defaultMessage);
+                        setIsEditing(true);
+                      }}
                       className="text-[11px] text-blue-600 hover:text-blue-700 font-bold px-2 py-1 rounded bg-blue-50 border border-blue-100 flex items-center gap-1"
                     >
                       <Edit3 size={12} />

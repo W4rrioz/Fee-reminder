@@ -38,3 +38,8 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Graphify & Brag artifacts
+graphify-out/
+brag*/
+bin/

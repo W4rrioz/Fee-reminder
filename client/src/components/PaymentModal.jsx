@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
-import { X, Copy, Check, ExternalLink, QrCode as QrIcon } from 'lucide-react';
+import { X, Copy, Check, QrCode as QrIcon } from 'lucide-react';
 
 export const PaymentModal = ({ due, student, institute, onClose, onRecordPayment }) => {
   const [method, setMethod] = React.useState('upi');

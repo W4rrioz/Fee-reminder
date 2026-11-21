@@ -1,19 +1,14 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   TrendingUp,
   AlertCircle,
-  Users,
   CheckCircle2,
   Send,
   CalendarCheck,
   CreditCard,
   ChevronRight,
-  ArrowUpRight,
-  Sparkles,
   WifiOff,
   PieChart as PieChartIcon,
-  Layers,
-  Calendar,
   Clock,
   CheckCircle
 } from 'lucide-react';
@@ -21,7 +16,6 @@ import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
 import { SendReminderModal } from '../components/SendReminderModal';
 import { PieChart } from '../components/PieChart';
-import { generateWhatsAppReminder, generateCumulativeWhatsAppReminder } from '../utils/upi';
 
 export const DashboardScreen = () => {
   const {
@@ -44,12 +38,7 @@ export const DashboardScreen = () => {
   const [unpaidMonthFilter, setUnpaidMonthFilter] = useState('all'); // 'all' | '1' | '2' | '3+'
 
   const isAttendanceEnabled = attendanceEnabled !== undefined ? attendanceEnabled : (institute.enable_attendance !== false);
-
-  useEffect(() => {
-    if (!isAttendanceEnabled && activeChartTab === 'attendance') {
-      setActiveChartTab('fees');
-    }
-  }, [isAttendanceEnabled, activeChartTab]);
+  const currentChartTab = (!isAttendanceEnabled && activeChartTab === 'attendance') ? 'fees' : activeChartTab;
 
   // 1. Calculate Fees (Collected vs Due vs Overdue)
   const currentMonthDues = feeDues.filter(
@@ -195,12 +184,14 @@ export const DashboardScreen = () => {
 
   // Chart Data 3: Batch-wise Fee Pending Breakdown
   const batchFeeChartData = useMemo(() => {
+    const studentMap = new Map(students.map((s) => [s.id, s]));
+    const batchLookup = new Map(classesBatches.map((b) => [b.id, b]));
     const batchMap = {};
     feeDues.forEach((due) => {
       if (due.status === 'pending' || due.status === 'overdue') {
-        const student = getStudent(due.student_id);
+        const student = studentMap.get(due.student_id);
         const batchId = student?.class_batch_id || 'unassigned';
-        const batch = getBatch(batchId);
+        const batch = batchLookup.get(batchId);
         const batchName = batch ? batch.name.replace(/^Batch\s*/i, '') : 'Other';
         batchMap[batchName] = (batchMap[batchName] || 0) + Number(due.amount);
       }
@@ -275,17 +266,17 @@ export const DashboardScreen = () => {
 
   return (
     <div className="space-y-4 pb-16">
-      {/* Institute Badge & Offline toggle tester */}
+      {/* Institute Badge & Offline toggle */}
       <div className="flex items-center justify-between pt-1">
         <div>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#3730A3] bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
             {institute.type === 'school'
               ? 'School Campus'
               : institute.type === 'tutor'
               ? 'Private Tutor'
               : 'Coaching Center'}
           </span>
-          <h2 className="text-xl font-extrabold text-slate-900 mt-1 leading-tight">
+          <h2 className="text-lg font-bold text-stone-900 mt-1 leading-tight">
             {institute.name}
           </h2>
         </div>
@@ -293,44 +284,44 @@ export const DashboardScreen = () => {
         {/* Quick Offline toggle */}
         <button
           onClick={() => setIsOnline(!isOnline)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border transition-all ${
             isOnline
-              ? 'bg-white border-slate-200 text-slate-700 shadow-xs'
+              ? 'bg-white border-stone-200 text-stone-700'
               : 'bg-amber-100 border-amber-300 text-amber-900'
           }`}
           title="Toggle online/offline to test spotty 2G network"
         >
           {isOnline ? (
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="inline-block w-2 h-2 rounded-full bg-[#15803D]"></span>
           ) : (
-            <WifiOff size={13} className="text-amber-600" />
+            <WifiOff size={13} className="text-amber-700" />
           )}
-          <span>{isOnline ? 'Online' : 'Simulate 2G Offline'}</span>
+          <span>{isOnline ? 'Online' : 'Offline'}</span>
         </button>
       </div>
 
-      {/* 3 BIG NUMBERS */}
-      <div className={`grid ${isAttendanceEnabled ? 'grid-cols-3' : 'grid-cols-2'} gap-2`}>
+      {/* 3 BIG NUMBERS - Ledger Calm */}
+      <div className={`grid ${isAttendanceEnabled ? 'grid-cols-3' : 'grid-cols-2'} gap-2.5`}>
         {/* Card 1: Collected vs Due */}
         <div 
           onClick={() => setActiveTab('fees')}
-          className="bg-linear-to-br from-blue-600 to-indigo-700 text-white rounded-2xl p-3.5 flex flex-col justify-between shadow-md cursor-pointer active:scale-98 transition-transform"
+          className="bg-white border border-stone-200 rounded-lg p-3.5 flex flex-col justify-between cursor-pointer active:scale-98 transition-transform border-l-4 border-l-[#15803D]"
         >
-          <div className="text-[11px] font-medium text-blue-100 flex items-center justify-between">
+          <div className="text-xs font-semibold text-stone-500 flex items-center justify-between">
             <span>Collected</span>
-            <TrendingUp size={14} className="text-emerald-300" />
+            <TrendingUp size={14} className="text-[#15803D]" />
           </div>
           <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black tracking-tight leading-tight">
+            <div className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 tabular-nums leading-tight">
               ₹{(totalCollectedThisMonth / 1000).toFixed(1)}k
             </div>
-            <div className="text-[10px] text-blue-200 font-medium truncate">
+            <div className="text-[11px] text-stone-500 font-medium truncate tabular-nums">
               Due: ₹{((totalPendingThisMonth + totalOverdueThisMonth) / 1000).toFixed(1)}k
             </div>
           </div>
-          <div className="text-[10px] text-blue-100 flex items-center gap-0.5">
+          <div className="text-xs text-[#3730A3] font-semibold flex items-center gap-0.5">
             <span>View dues</span>
-            <ChevronRight size={10} />
+            <ChevronRight size={12} />
           </div>
         </div>
 
@@ -338,23 +329,23 @@ export const DashboardScreen = () => {
         {isAttendanceEnabled && (
           <div 
             onClick={() => setActiveTab('attendance')}
-            className="bg-white border border-slate-200 rounded-2xl p-3.5 flex flex-col justify-between shadow-xs cursor-pointer active:scale-98 transition-transform"
+            className="bg-white border border-stone-200 rounded-lg p-3.5 flex flex-col justify-between cursor-pointer active:scale-98 transition-transform border-l-4 border-l-[#3730A3]"
           >
-            <div className="text-[11px] font-medium text-slate-500 flex items-center justify-between">
+            <div className="text-xs font-semibold text-stone-500 flex items-center justify-between">
               <span>Attendance</span>
-              <CheckCircle2 size={14} className="text-emerald-500" />
+              <CheckCircle2 size={14} className="text-[#15803D]" />
             </div>
             <div className="my-1.5">
-              <div className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-tight">
+              <div className="text-lg sm:text-xl font-bold text-stone-900 tracking-tight leading-tight tabular-nums">
                 {attendanceRateToday}%
               </div>
-              <div className="text-[10px] text-slate-500 font-medium">
+              <div className="text-[11px] text-stone-500 font-medium">
                 Today's Rate
               </div>
             </div>
-            <div className="text-[10px] text-blue-600 font-semibold flex items-center gap-0.5">
-              <span>Mark now</span>
-              <ChevronRight size={10} />
+            <div className="text-xs text-[#3730A3] font-semibold flex items-center gap-0.5">
+              <span>Mark roll</span>
+              <ChevronRight size={12} />
             </div>
           </div>
         )}
@@ -362,23 +353,23 @@ export const DashboardScreen = () => {
         {/* Card 3: Defaulter Count */}
         <div 
           onClick={() => setActiveTab('defaulters')}
-          className="bg-linear-to-br from-rose-50 to-rose-100/70 border border-rose-200 rounded-2xl p-3.5 flex flex-col justify-between shadow-xs cursor-pointer active:scale-98 transition-transform"
+          className="bg-white border border-stone-200 rounded-lg p-3.5 flex flex-col justify-between cursor-pointer active:scale-98 transition-transform border-l-4 border-l-[#DC2626]"
         >
-          <div className="text-[11px] font-medium text-rose-700 flex items-center justify-between">
+          <div className="text-xs font-semibold text-[#DC2626] flex items-center justify-between">
             <span>Defaulters</span>
-            <AlertCircle size={14} className="text-rose-600" />
+            <AlertCircle size={14} className="text-[#DC2626]" />
           </div>
           <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black text-rose-700 tracking-tight leading-tight">
+            <div className="text-lg sm:text-xl font-bold text-[#DC2626] tracking-tight leading-tight tabular-nums">
               {defaulterCount}
             </div>
-            <div className="text-[10px] text-rose-600 font-medium truncate">
+            <div className="text-[11px] text-stone-500 font-medium truncate tabular-nums">
               ₹{(totalOverdueAmount / 1000).toFixed(1)}k due
             </div>
           </div>
-          <div className="text-[10px] text-rose-700 font-bold flex items-center gap-0.5">
+          <div className="text-xs text-[#DC2626] font-bold flex items-center gap-0.5">
             <span>Remind all</span>
-            <ChevronRight size={10} />
+            <ChevronRight size={12} />
           </div>
         </div>
       </div>
@@ -386,17 +377,17 @@ export const DashboardScreen = () => {
       {/* ============================================================ */}
       {/* INTERACTIVE ANALYTICS & PIE CHARTS SECTION                    */}
       {/* ============================================================ */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+      <div className="bg-white border border-stone-200 rounded-lg p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center">
+            <div className="w-7 h-7 rounded bg-indigo-50 border border-indigo-100 text-[#3730A3] flex items-center justify-center">
               <PieChartIcon size={16} />
             </div>
             <div>
-              <h3 className="font-extrabold text-slate-900 text-sm">
+              <h3 className="font-bold text-stone-900 text-sm">
                 Visual Analytics & Distribution
               </h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-stone-500">
                 Interactive breakdowns with percentages and ₹ amounts
               </p>
             </div>
@@ -404,54 +395,54 @@ export const DashboardScreen = () => {
         </div>
 
         {/* Chart Selector Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none border-b border-slate-100">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none border-b border-stone-100">
           <button
             onClick={() => setActiveChartTab('fees')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-              activeChartTab === 'fees'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
+              currentChartTab === 'fees'
+                ? 'bg-[#3730A3] text-white'
+                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
             }`}
           >
-            💰 Fee Collection
+            Fee Collection
           </button>
           <button
             onClick={() => setActiveChartTab('unpaidMonths')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-              activeChartTab === 'unpaidMonths'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
+              currentChartTab === 'unpaidMonths'
+                ? 'bg-[#3730A3] text-white'
+                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
             }`}
           >
-            📅 Unpaid Months
+            Unpaid Months
           </button>
           <button
             onClick={() => setActiveChartTab('batches')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-              activeChartTab === 'batches'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
+              currentChartTab === 'batches'
+                ? 'bg-[#3730A3] text-white'
+                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
             }`}
           >
-            🏫 {terms.classesOrBatches}
+            {terms.classesOrBatches}
           </button>
           {isAttendanceEnabled && (
             <button
               onClick={() => setActiveChartTab('attendance')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                activeChartTab === 'attendance'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
+                currentChartTab === 'attendance'
+                  ? 'bg-[#15803D] text-white'
+                  : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
               }`}
             >
-              👥 Attendance
+              Attendance
             </button>
           )}
         </div>
 
         {/* Selected Chart Rendering */}
         <div className="pt-3">
-          {activeChartTab === 'fees' && (
+          {currentChartTab === 'fees' && (
             <PieChart
               data={feeStatusChartData}
               size={190}
@@ -463,7 +454,7 @@ export const DashboardScreen = () => {
             />
           )}
 
-          {activeChartTab === 'unpaidMonths' && (
+          {currentChartTab === 'unpaidMonths' && (
             <PieChart
               data={unpaidMonthsChartData}
               size={190}
@@ -475,7 +466,7 @@ export const DashboardScreen = () => {
             />
           )}
 
-          {activeChartTab === 'batches' && (
+          {currentChartTab === 'batches' && (
             <PieChart
               data={batchFeeChartData}
               size={190}
@@ -487,7 +478,7 @@ export const DashboardScreen = () => {
             />
           )}
 
-          {activeChartTab === 'attendance' && isAttendanceEnabled && (
+          {currentChartTab === 'attendance' && isAttendanceEnabled && (
             <PieChart
               data={attendanceChartData}
               size={190}
@@ -504,24 +495,24 @@ export const DashboardScreen = () => {
       {/* ============================================================ */}
       {/* UNPAID MONTHS RECORD CARD                                     */}
       {/* ============================================================ */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+      <div className="bg-white border border-stone-200 rounded-lg p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center">
+            <div className="w-7 h-7 rounded bg-amber-50 border border-amber-100 text-[#D97706] flex items-center justify-center">
               <Clock size={16} />
             </div>
             <div>
-              <h3 className="font-extrabold text-slate-900 text-sm">
+              <h3 className="font-bold text-stone-900 text-sm">
                 Unpaid Months Record
               </h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-stone-500">
                 Multi-month dues with 1-click cumulative WhatsApp reminder
               </p>
             </div>
           </div>
           <button
             onClick={() => setActiveTab('defaulters')}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+            className="text-xs font-semibold text-[#3730A3] hover:underline"
           >
             Defaulter Hub
           </button>
@@ -538,10 +529,10 @@ export const DashboardScreen = () => {
             <button
               key={f.id}
               onClick={() => setUnpaidMonthFilter(f.id)}
-              className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+              className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${
                 unpaidMonthFilter === f.id
-                  ? 'bg-rose-600 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-stone-900 text-white'
+                  : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
               }`}
             >
               {f.label} ({f.count})
@@ -552,8 +543,8 @@ export const DashboardScreen = () => {
         {/* List of students with multi-month unpaid status */}
         <div className="space-y-2 mt-2">
           {filteredUnpaidStudents.length === 0 ? (
-            <div className="py-6 text-center text-slate-500 text-xs">
-              <CheckCircle size={24} className="mx-auto text-emerald-500 mb-1" />
+            <div className="py-6 text-center text-stone-500 text-xs">
+              <CheckCircle size={24} className="mx-auto text-[#15803D] mb-1" />
               <span>No students matching this unpaid month filter!</span>
             </div>
           ) : (
@@ -564,35 +555,35 @@ export const DashboardScreen = () => {
               return (
                 <div
                   key={student.id}
-                  className="p-3 bg-slate-50 hover:bg-slate-100/90 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
+                  className="p-3 bg-white border border-stone-200 border-l-[5px] border-l-[#DC2626] rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-slate-900 text-sm truncate">
+                      <span className="font-bold text-stone-900 text-sm truncate">
                         {student.name}
                       </span>
                       <span
-                        className={`text-[10px] font-black px-1.5 py-0.5 rounded ${
+                        className={`text-[11px] font-bold px-1.5 py-0.5 rounded ${
                           unpaidCount >= 3
-                            ? 'bg-rose-100 text-rose-800'
+                            ? 'bg-rose-100 text-[#DC2626]'
                             : unpaidCount === 2
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-blue-100 text-blue-800'
+                            ? 'bg-amber-100 text-[#D97706]'
+                            : 'bg-indigo-50 text-[#3730A3]'
                         }`}
                       >
                         {unpaidCount} {unpaidCount === 1 ? 'Month Unpaid' : 'Months Unpaid'}
                       </span>
                     </div>
 
-                    <div className="text-xs text-slate-500 mt-0.5 flex flex-wrap items-center gap-1">
+                    <div className="text-xs text-stone-500 mt-0.5 flex flex-wrap items-center gap-1">
                       <span>{batch?.name || 'Class'}</span>
                       <span>•</span>
-                      <span className="font-medium text-slate-700">
+                      <span className="font-medium text-stone-700">
                         {unpaidMonths.join(', ')}
                       </span>
                     </div>
 
-                    <div className="text-xs text-rose-700 font-extrabold mt-0.5">
+                    <div className="text-xs text-[#DC2626] font-bold mt-0.5 tabular-nums">
                       ₹{totalAmount.toLocaleString('en-IN')} pending
                     </div>
                   </div>
@@ -601,7 +592,7 @@ export const DashboardScreen = () => {
                     <button
                       onClick={() => handleCumulativeWhatsApp(record)}
                       title={`Send 1-Click WhatsApp Reminder for all ${unpaidCount} unpaid months with UPI deep link`}
-                      className="w-full sm:w-auto min-h-[42px] px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
+                      className="w-full sm:w-auto min-h-[48px] px-3.5 bg-[#D97706] hover:bg-amber-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-transform"
                     >
                       <Send size={14} />
                       <span>WhatsApp ({unpaidCount} mos)</span>
@@ -615,8 +606,8 @@ export const DashboardScreen = () => {
       </div>
 
       {/* QUICK ACTIONS BAR */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-xs">
-        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5 px-1">
+      <div className="bg-white border border-stone-200 rounded-lg p-3.5">
+        <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2.5 px-0.5">
           Quick Actions
         </h3>
         <div className={`grid ${isAttendanceEnabled ? 'grid-cols-3' : 'grid-cols-2'} gap-2`}>
@@ -624,10 +615,10 @@ export const DashboardScreen = () => {
           {isAttendanceEnabled && (
             <button
               onClick={() => setActiveTab('attendance')}
-              className="flex flex-col items-center justify-center p-3 rounded-xl bg-blue-50/70 hover:bg-blue-100 text-blue-800 transition-colors border border-blue-100 min-h-[64px]"
+              className="flex flex-col items-center justify-center p-3 rounded-lg bg-stone-50 hover:bg-stone-100 text-stone-800 transition-colors border border-stone-200 min-h-[56px]"
             >
-              <CalendarCheck size={22} className="text-blue-600 mb-1" />
-              <span className="text-xs font-bold text-center leading-tight">
+              <CalendarCheck size={20} className="text-[#3730A3] mb-1" />
+              <span className="text-xs font-semibold text-center leading-tight">
                 Mark Attendance
               </span>
             </button>
@@ -636,10 +627,10 @@ export const DashboardScreen = () => {
           {/* Quick Action 2: Record Payment */}
           <button
             onClick={() => setActiveTab('fees')}
-            className="flex flex-col items-center justify-center p-3 rounded-xl bg-emerald-50/70 hover:bg-emerald-100 text-emerald-800 transition-colors border border-emerald-100 min-h-[64px]"
+            className="flex flex-col items-center justify-center p-3 rounded-lg bg-stone-50 hover:bg-stone-100 text-stone-800 transition-colors border border-stone-200 min-h-[56px]"
           >
-            <CreditCard size={22} className="text-emerald-600 mb-1" />
-            <span className="text-xs font-bold text-center leading-tight">
+            <CreditCard size={20} className="text-[#15803D] mb-1" />
+            <span className="text-xs font-semibold text-center leading-tight">
               Record Fee
             </span>
           </button>
@@ -647,10 +638,10 @@ export const DashboardScreen = () => {
           {/* Quick Action 3: Send Reminder */}
           <button
             onClick={() => setActiveTab('defaulters')}
-            className="flex flex-col items-center justify-center p-3 rounded-xl bg-amber-50/70 hover:bg-amber-100 text-amber-900 transition-colors border border-amber-100 min-h-[64px]"
+            className="flex flex-col items-center justify-center p-3 rounded-lg bg-stone-50 hover:bg-stone-100 text-stone-800 transition-colors border border-stone-200 min-h-[56px]"
           >
-            <Send size={22} className="text-amber-700 mb-1" />
-            <span className="text-xs font-bold text-center leading-tight">
+            <Send size={20} className="text-[#D97706] mb-1" />
+            <span className="text-xs font-semibold text-center leading-tight">
               Send Reminders
             </span>
           </button>
@@ -658,17 +649,17 @@ export const DashboardScreen = () => {
       </div>
 
       {/* URGENT PENDING FEES / REMINDERS LIST */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+      <div className="bg-white border border-stone-200 rounded-lg p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-            <h3 className="font-bold text-slate-900 text-sm">
+            <span className="w-2 h-2 rounded-full bg-[#DC2626]"></span>
+            <h3 className="font-bold text-stone-900 text-sm">
               Urgent Fee Defaulters ({overdueDues.length})
             </h3>
           </div>
           <button
             onClick={() => setActiveTab('defaulters')}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+            className="text-xs font-semibold text-[#3730A3] hover:underline"
           >
             See All
           </button>
@@ -681,32 +672,32 @@ export const DashboardScreen = () => {
             return (
               <div
                 key={due.id}
-                className="p-3 bg-slate-50 hover:bg-slate-100/80 rounded-xl border border-slate-200 flex items-center justify-between gap-2"
+                className="p-3 bg-white border border-stone-200 border-l-[5px] border-l-[#DC2626] rounded-lg flex items-center justify-between gap-2"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-slate-900 text-sm truncate">
+                    <span className="font-bold text-stone-900 text-sm truncate">
                       {student.name}
                     </span>
-                    <span className="text-[10px] bg-rose-100 text-rose-700 font-semibold px-1.5 py-0.5 rounded">
+                    <span className="text-[10px] bg-rose-100 text-[#DC2626] font-bold px-1.5 py-0.5 rounded">
                       Overdue
                     </span>
                   </div>
-                  <div className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                  <div className="text-xs text-stone-500 flex items-center gap-1 mt-0.5">
                     <span>{due.month}</span>
                     <span>•</span>
-                    <span className="font-bold text-slate-800">
+                    <span className="font-bold text-stone-900 tabular-nums">
                       ₹{Number(due.amount).toLocaleString('en-IN')}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-1.5 shrink-0">
-                  {/* WhatsApp Reminder Button */}
+                  {/* WhatsApp Reminder Button (Min 48px touch target) */}
                   <button
                     onClick={() => handleQuickWhatsApp(due)}
                     title="Send WhatsApp Reminder with UPI Deep Link"
-                    className="min-h-[44px] min-w-[44px] p-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs flex items-center justify-center active:scale-95 transition-transform"
+                    className="min-h-[48px] min-w-[48px] p-3 bg-[#D97706] hover:bg-amber-700 text-white rounded-lg flex items-center justify-center active:scale-98 transition-transform"
                   >
                     <Send size={16} />
                   </button>
@@ -715,7 +706,7 @@ export const DashboardScreen = () => {
                   <button
                     onClick={() => setSelectedDue(due)}
                     title="Record Payment / Show QR"
-                    className="min-h-[44px] px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-1 active:scale-95 transition-transform"
+                    className="min-h-[48px] px-3.5 bg-[#3730A3] hover:bg-indigo-900 text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-98 transition-transform"
                   >
                     <span>Pay</span>
                   </button>

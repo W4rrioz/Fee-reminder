@@ -86,12 +86,10 @@ export const PieChart = ({
   };
 
   // Build SVG path for slice
-  let currentAngle = 0;
   const slices = validData.map((item, idx) => {
+    const startAngle = validData.slice(0, idx).reduce((sum, d) => sum + (d.value / total) * 360, 0);
     const sliceAngle = (item.value / total) * 360;
-    const startAngle = currentAngle;
-    const endAngle = currentAngle + sliceAngle;
-    currentAngle = endAngle;
+    const endAngle = startAngle + sliceAngle;
 
     const percentage = ((item.value / total) * 100).toFixed(1);
     const color = item.color || DEFAULT_COLORS[idx % DEFAULT_COLORS.length];

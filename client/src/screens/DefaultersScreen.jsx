@@ -3,20 +3,14 @@ import {
   AlertTriangle,
   Send,
   CreditCard,
-  Filter,
   CheckCircle,
-  ExternalLink,
   MessageSquare,
-  Clock,
-  PieChart as PieChartIcon,
-  ChevronDown,
-  Layers
+  Clock
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
 import { SendReminderModal } from '../components/SendReminderModal';
 import { PieChart } from '../components/PieChart';
-import { generateWhatsAppReminder, generateCumulativeWhatsAppReminder } from '../utils/upi';
 
 export const DefaultersScreen = () => {
   const {
@@ -38,15 +32,17 @@ export const DefaultersScreen = () => {
   const getBatch = (id) => classesBatches.find((b) => b.id === id);
 
   // Filter overdue and pending dues
-  const defaulterDues = feeDues.filter((d) => {
-    if (d.status !== 'overdue') return false;
-    const student = getStudent(d.student_id);
-    if (!student) return false;
-    if (selectedBatchFilter !== 'all' && student.class_batch_id !== selectedBatchFilter) {
-      return false;
-    }
-    return true;
-  });
+  const defaulterDues = useMemo(() => {
+    return feeDues.filter((d) => {
+      if (d.status !== 'overdue') return false;
+      const student = students.find((s) => s.id === d.student_id);
+      if (!student) return false;
+      if (selectedBatchFilter !== 'all' && student.class_batch_id !== selectedBatchFilter) {
+        return false;
+      }
+      return true;
+    });
+  }, [feeDues, students, selectedBatchFilter]);
 
   const totalOverdue = defaulterDues.reduce((sum, d) => sum + Number(d.amount), 0);
 
@@ -122,11 +118,13 @@ export const DefaultersScreen = () => {
 
   // Chart Data: Batch-wise Defaulter Dues
   const batchDefaultersChartData = useMemo(() => {
+    const studentMap = new Map(students.map((s) => [s.id, s]));
+    const batchLookup = new Map(classesBatches.map((b) => [b.id, b]));
     const batchMap = {};
     defaulterDues.forEach((due) => {
-      const student = getStudent(due.student_id);
+      const student = studentMap.get(due.student_id);
       const batchId = student?.class_batch_id || 'unassigned';
-      const batch = getBatch(batchId);
+      const batch = batchLookup.get(batchId);
       const batchName = batch ? batch.name.replace(/^Batch\s*/i, '') : 'Other';
       batchMap[batchName] = (batchMap[batchName] || 0) + Number(due.amount);
     });
@@ -180,58 +178,58 @@ export const DefaultersScreen = () => {
   }, [studentsUnpaidRecords, unpaidMonthFilter, selectedBatchFilter]);
 
   return (
-    <div className="space-y-4 pb-20">
-      {/* Overview Banner */}
-      <div className="bg-linear-to-r from-rose-600 to-rose-700 text-white rounded-2xl p-4 shadow-md">
+    <div className="space-y-3.5 pb-20">
+      {/* Overview Banner - Ledger Calm */}
+      <div className="bg-white border border-stone-200 border-l-[5px] border-l-[#DC2626] rounded-lg p-3.5">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-200">
-              Fee Recovery & Defaulter Center
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#DC2626]">
+              Fee Recovery Center
             </span>
-            <h2 className="text-xl font-black mt-0.5">
+            <h2 className="text-xl font-bold text-stone-900 mt-0.5 tabular-nums">
               ₹{totalOverdue.toLocaleString('en-IN')} Outstanding
             </h2>
           </div>
-          <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center">
-            <AlertTriangle size={22} className="text-white" />
+          <div className="w-10 h-10 bg-rose-50 rounded-lg flex items-center justify-center text-[#DC2626]">
+            <AlertTriangle size={20} />
           </div>
         </div>
-        <p className="text-xs text-rose-100 mt-2">
-          {defaulterDues.length} overdue dues across {unpaidBins.one + unpaidBins.two + unpaidBins.threePlus} students. Send pre-composed WhatsApp reminders with UPI deep-link.
+        <p className="text-xs text-stone-500 mt-1.5">
+          {defaulterDues.length} overdue records across {unpaidBins.one + unpaidBins.two + unpaidBins.threePlus} students. 1-tap WhatsApp reminders with 0% UPI link.
         </p>
       </div>
 
       {/* Tab Switcher: Unpaid Months Breakdown vs All Overdue List vs Analytics */}
-      <div className="grid grid-cols-3 gap-1 bg-slate-200/80 p-1 rounded-2xl">
+      <div className="grid grid-cols-3 gap-1 bg-stone-200/80 p-1 rounded-lg">
         <button
           onClick={() => setActiveDefaulterTab('unpaidMonths')}
-          className={`py-2 px-1 text-center rounded-xl text-xs font-bold transition-all ${
+          className={`py-2 px-1 text-center rounded-md text-xs font-bold transition-all ${
             activeDefaulterTab === 'unpaidMonths'
-              ? 'bg-white text-slate-900 shadow-xs'
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-white text-stone-900 shadow-xs'
+              : 'text-stone-600 hover:text-stone-900'
           }`}
         >
-          📅 By Unpaid Mos
+          By Unpaid Mos
         </button>
         <button
           onClick={() => setActiveDefaulterTab('allOverdue')}
-          className={`py-2 px-1 text-center rounded-xl text-xs font-bold transition-all ${
+          className={`py-2 px-1 text-center rounded-md text-xs font-bold transition-all ${
             activeDefaulterTab === 'allOverdue'
-              ? 'bg-white text-slate-900 shadow-xs'
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-white text-stone-900 shadow-xs'
+              : 'text-stone-600 hover:text-stone-900'
           }`}
         >
-          📋 Individual Dues ({defaulterDues.length})
+          Overdue ({defaulterDues.length})
         </button>
         <button
           onClick={() => setActiveDefaulterTab('analytics')}
-          className={`py-2 px-1 text-center rounded-xl text-xs font-bold transition-all ${
+          className={`py-2 px-1 text-center rounded-md text-xs font-bold transition-all ${
             activeDefaulterTab === 'analytics'
-              ? 'bg-white text-slate-900 shadow-xs'
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-white text-stone-900 shadow-xs'
+              : 'text-stone-600 hover:text-stone-900'
           }`}
         >
-          📊 Pie Charts
+          Analytics
         </button>
       </div>
 
@@ -239,10 +237,10 @@ export const DefaultersScreen = () => {
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
         <button
           onClick={() => setSelectedBatchFilter('all')}
-          className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
+          className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
             selectedBatchFilter === 'all'
-              ? 'bg-slate-900 text-white'
-              : 'bg-white border border-slate-200 text-slate-700'
+              ? 'bg-stone-900 text-white'
+              : 'bg-white border border-stone-200 text-stone-700'
           }`}
         >
           All {terms.classesOrBatches}
@@ -251,10 +249,10 @@ export const DefaultersScreen = () => {
           <button
             key={cb.id}
             onClick={() => setSelectedBatchFilter(cb.id)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
+            className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap transition-colors ${
               selectedBatchFilter === cb.id
-                ? 'bg-rose-600 text-white'
-                : 'bg-white border border-slate-200 text-slate-700'
+                ? 'bg-[#3730A3] text-white'
+                : 'bg-white border border-stone-200 text-stone-700'
             }`}
           >
             {cb.name}
@@ -268,24 +266,24 @@ export const DefaultersScreen = () => {
       {activeDefaulterTab === 'unpaidMonths' && (
         <div className="space-y-3">
           {/* Unpaid Month Filter Badges */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-xs">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+          <div className="bg-white border border-stone-200 rounded-lg p-3">
+            <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block mb-2">
               Filter by Pending Period:
             </span>
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
               {[
                 { id: 'all', label: 'All Due', count: unpaidBins.one + unpaidBins.two + unpaidBins.threePlus },
-                { id: '1', label: '1 Month Due', count: unpaidBins.one, color: 'text-amber-700 bg-amber-50 border-amber-200' },
-                { id: '2', label: '2 Months Due', count: unpaidBins.two, color: 'text-orange-700 bg-orange-50 border-orange-200' },
-                { id: '3+', label: '3+ Months Due', count: unpaidBins.threePlus, color: 'text-rose-700 bg-rose-50 border-rose-200' }
+                { id: '1', label: '1 Month', count: unpaidBins.one },
+                { id: '2', label: '2 Months', count: unpaidBins.two },
+                { id: '3+', label: '3+ Months', count: unpaidBins.threePlus }
               ].map((f) => (
                 <button
                   key={f.id}
                   onClick={() => setUnpaidMonthFilter(f.id)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap border transition-all ${
+                  className={`px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap border transition-all ${
                     unpaidMonthFilter === f.id
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                      : `${f.color || 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}`
+                      ? 'bg-stone-900 text-white border-stone-900'
+                      : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100'
                   }`}
                 >
                   {f.label} ({f.count})
@@ -297,12 +295,12 @@ export const DefaultersScreen = () => {
           {/* Student Unpaid Records List */}
           <div className="space-y-2.5">
             {filteredUnpaidStudents.length === 0 ? (
-              <div className="bg-white rounded-2xl p-8 text-center border border-slate-200">
-                <CheckCircle size={36} className="mx-auto text-emerald-500 mb-2" />
-                <h3 className="font-bold text-slate-900 text-base">
+              <div className="bg-white rounded-lg p-8 text-center border border-stone-200">
+                <CheckCircle size={32} className="mx-auto text-[#15803D] mb-2" />
+                <h3 className="font-bold text-stone-900 text-sm">
                   No Unpaid Records in This Filter!
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-stone-500 mt-1">
                   Students have cleared all dues for the selected criteria.
                 </p>
               </div>
@@ -314,57 +312,57 @@ export const DefaultersScreen = () => {
                 return (
                   <div
                     key={student.id}
-                    className="bg-white border border-rose-200/90 rounded-2xl p-4 shadow-xs space-y-3"
+                    className="bg-white border border-stone-200 border-l-[5px] border-l-[#DC2626] rounded-lg p-3.5 space-y-3"
                   >
                     <div className="flex items-start justify-between">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="font-extrabold text-slate-900 text-sm">
+                          <h4 className="font-bold text-stone-900 text-sm">
                             {student.name}
                           </h4>
                           <span
-                            className={`text-[10px] font-black px-2 py-0.5 rounded-md ${
+                            className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                               unpaidCount >= 3
-                                ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                                ? 'bg-rose-100 text-[#DC2626]'
                                 : unpaidCount === 2
-                                ? 'bg-orange-100 text-orange-800 border border-orange-200'
-                                : 'bg-amber-100 text-amber-800 border border-amber-200'
+                                ? 'bg-amber-100 text-[#D97706]'
+                                : 'bg-indigo-50 text-[#3730A3]'
                             }`}
                           >
                             {unpaidCount} {unpaidCount === 1 ? 'Month Unpaid' : 'Months Unpaid'}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-500 mt-0.5">
+                        <p className="text-xs text-stone-500 mt-0.5">
                           {batch?.name} • Parent: {student.guardian_name} ({student.guardian_phone})
                         </p>
                       </div>
 
                       <div className="text-right">
-                        <div className="text-base font-black text-rose-700">
+                        <div className="text-base font-bold text-[#DC2626] tabular-nums">
                           ₹{Number(totalAmount).toLocaleString('en-IN')}
                         </div>
-                        <div className="text-[10px] text-slate-400 font-medium">
+                        <div className="text-[10px] text-stone-400 font-medium">
                           Total Pending
                         </div>
                       </div>
                     </div>
 
                     {/* Pending Months breakdown badge display */}
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 space-y-1">
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-700">
-                        <Clock size={13} className="text-rose-500" />
+                    <div className="bg-stone-50 border border-stone-200 rounded-lg p-2.5 space-y-1">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold text-stone-700">
+                        <Clock size={13} className="text-[#DC2626]" />
                         <span>Unpaid Months: <b>{unpaidMonths.join(', ')}</b></span>
                       </div>
-                      <div className="text-[10px] text-slate-500">
-                        Individual fees: {dues.map(d => `${d.month}: ₹${d.amount}`).join(' • ')}
+                      <div className="text-[11px] text-stone-500">
+                        Fees: {dues.map(d => `${d.month}: ₹${d.amount}`).join(' • ')}
                       </div>
                     </div>
 
-                    {/* Action buttons */}
+                    {/* Action buttons (48px touch targets) */}
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         onClick={() => handleCumulativeWhatsApp(record)}
-                        className="min-h-[46px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs active:scale-98 transition-transform"
+                        className="min-h-[48px] bg-[#D97706] hover:bg-amber-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-transform"
                       >
                         <Send size={15} />
                         <span>WhatsApp ({unpaidCount} Mos)</span>
@@ -372,7 +370,7 @@ export const DefaultersScreen = () => {
 
                       <button
                         onClick={() => setSelectedDue(dues[0])}
-                        className="min-h-[46px] bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs active:scale-98 transition-transform"
+                        className="min-h-[48px] bg-[#3730A3] hover:bg-indigo-900 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-transform"
                       >
                         <CreditCard size={15} />
                         <span>Collect / QR</span>
@@ -392,12 +390,12 @@ export const DefaultersScreen = () => {
       {activeDefaulterTab === 'allOverdue' && (
         <div className="space-y-2.5">
           {defaulterDues.length === 0 ? (
-            <div className="bg-white rounded-2xl p-8 text-center border border-slate-200">
-              <CheckCircle size={36} className="mx-auto text-emerald-500 mb-2" />
-              <h3 className="font-bold text-slate-900 text-base">
+            <div className="bg-white rounded-lg p-8 text-center border border-stone-200">
+              <CheckCircle size={32} className="mx-auto text-[#15803D] mb-2" />
+              <h3 className="font-bold text-stone-900 text-sm">
                 Zero Overdue Defaulters!
               </h3>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-stone-500 mt-1">
                 All students have cleared their scheduled fees.
               </p>
             </div>
@@ -410,46 +408,46 @@ export const DefaultersScreen = () => {
               return (
                 <div
                   key={due.id}
-                  className="bg-white border border-rose-200/90 rounded-2xl p-4 shadow-xs space-y-3"
+                  className="bg-white border border-stone-200 border-l-[5px] border-l-[#DC2626] rounded-lg p-3.5 space-y-3"
                 >
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-extrabold text-slate-900 text-sm">
+                        <h4 className="font-bold text-stone-900 text-sm">
                           {student.name}
                         </h4>
-                        <span className="text-[10px] bg-rose-100 text-rose-800 font-bold px-1.5 py-0.5 rounded">
-                          OVERDUE
+                        <span className="text-[10px] bg-rose-100 text-[#DC2626] font-bold px-1.5 py-0.5 rounded uppercase">
+                          Overdue
                         </span>
                       </div>
-                      <p className="text-xs text-slate-500 mt-0.5">
+                      <p className="text-xs text-stone-500 mt-0.5">
                         {batch?.name} • Parent: {student.guardian_name} ({student.guardian_phone})
                       </p>
                     </div>
 
                     <div className="text-right">
-                      <div className="text-base font-black text-rose-700">
+                      <div className="text-base font-bold text-[#DC2626] tabular-nums">
                         ₹{Number(due.amount).toLocaleString('en-IN')}
                       </div>
-                      <div className="text-[10px] text-slate-400 font-medium">
+                      <div className="text-[10px] text-stone-400 font-medium">
                         Due: {due.due_date}
                       </div>
                     </div>
                   </div>
 
                   {/* Pre-formatted message preview */}
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-[11px] text-slate-600 flex items-start gap-2">
-                    <MessageSquare size={14} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <div className="bg-stone-50 border border-stone-200 rounded-lg p-2.5 text-xs text-stone-600 flex items-start gap-2">
+                    <MessageSquare size={14} className="text-[#15803D] shrink-0 mt-0.5" />
                     <span className="line-clamp-2">
                       "Namaste {student.guardian_name}, fee for {student.name} of ₹{due.amount} is due for {due.month}..."
                     </span>
                   </div>
 
-                  {/* Action buttons */}
+                  {/* Action buttons (48px touch targets) */}
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => handleSendReminder(due)}
-                      className="min-h-[46px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs active:scale-98 transition-transform"
+                      className="min-h-[48px] bg-[#D97706] hover:bg-amber-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-transform"
                     >
                       <Send size={15} />
                       <span>WhatsApp with UPI</span>
@@ -457,7 +455,7 @@ export const DefaultersScreen = () => {
 
                     <button
                       onClick={() => setSelectedDue(due)}
-                      className="min-h-[46px] bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs active:scale-98 transition-transform"
+                      className="min-h-[48px] bg-[#3730A3] hover:bg-indigo-900 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-transform"
                     >
                       <CreditCard size={15} />
                       <span>Collect / QR</span>
@@ -476,7 +474,7 @@ export const DefaultersScreen = () => {
       {activeDefaulterTab === 'analytics' && (
         <div className="space-y-4">
           {/* Chart 1: Unpaid Months Frequency */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+          <div className="bg-white border border-stone-200 rounded-lg p-4">
             <PieChart
               data={unpaidMonthsChartData}
               size={190}
@@ -489,7 +487,7 @@ export const DefaultersScreen = () => {
           </div>
 
           {/* Chart 2: Defaulter Dues by Batch */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+          <div className="bg-white border border-stone-200 rounded-lg p-4">
             <PieChart
               data={batchDefaultersChartData}
               size={190}

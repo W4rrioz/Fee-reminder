@@ -1,19 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Tag,
-  CheckCircle2,
-  Calendar,
-  Sparkles,
-  Zap,
-  ShieldCheck,
-  ChevronRight,
-  QrCode,
-  PieChart,
-  Sliders,
-  ExternalLink,
-  Info,
-  X
-} from 'lucide-react';
+import { Sparkles, X } from 'lucide-react';
 
 export const VersionBadge = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -59,25 +45,15 @@ export const VersionBadge = () => {
 
   return (
     <>
-      {/* Interactive Version Pill Button */}
+      {/* Calm Version Pill Button */}
       <button
         type="button"
         onClick={() => setModalOpen(true)}
-        className="group relative inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-emerald-600/10 hover:from-blue-600/20 hover:to-emerald-600/20 border border-blue-200/80 hover:border-blue-300 text-slate-800 transition-all shadow-2xs hover:shadow-xs active:scale-95"
-        title="Click to view What's New in this Version"
+        className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-700 text-xs font-semibold transition-colors"
+        title="View Version Notes"
       >
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-        </span>
-
-        <span className="text-[11px] font-black tracking-tight bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
-          {versionDetails.version}
-        </span>
-
-        <span className="text-[9px] font-bold uppercase tracking-wider bg-white/90 px-1.5 py-0.2 rounded-md text-slate-600 border border-slate-200/80 shadow-3xs group-hover:bg-blue-50 transition-colors">
-          Changelog
-        </span>
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+        <span>{versionDetails.version}</span>
       </button>
 
       {/* Version & Release Notes Modal */}

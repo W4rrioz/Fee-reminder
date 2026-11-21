@@ -4,9 +4,9 @@ const path = require('path');
 require('dotenv').config();
 
 // Determine whether to use Supabase PostgreSQL or local SQLite
-const useSupabase = Boolean(process.env.SUPABASE_URL && (process.env.SUPABASE_DB_PASSWORD || process.env.SUPABASE_SECRET_KEY));
+const useSupabase = process.env.USE_SUPABASE === 'true' && Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_DB_PASSWORD);
 
-let run, get, all, initDb;
+let run, get, all, initDb, dbInstance;
 
 if (useSupabase) {
   const password = encodeURIComponent(process.env.SUPABASE_DB_PASSWORD || 'Amaniitk##2010');
@@ -69,6 +69,7 @@ if (useSupabase) {
   console.log('[Database] Connecting to local SQLite database at:', DB_PATH);
 
   const db = new sqlite3.Database(DB_PATH);
+  dbInstance = db;
 
   run = (sql, params = []) => {
     return new Promise((resolve, reject) => {
@@ -125,5 +126,6 @@ module.exports = {
   run,
   get,
   all,
-  initDb
+  initDb,
+  db: dbInstance
 };

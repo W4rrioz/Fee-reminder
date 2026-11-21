@@ -18,14 +18,37 @@ import {
   Laptop,
   CheckSquare,
   Play,
-  Film,
-  Video
+  Film
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { VersionBadge } from '../components/VersionBadge';
 
 export const WelcomeLandingScreen = () => {
-  const { setAuthView } = useApp();
+  const { setAuthView, loginUser } = useApp();
+
+  const handleQuickDemo = () => {
+    loginUser({
+      token: `token_guest_${Date.now()}`,
+      user: {
+        id: 'guest_explorer',
+        name: 'Guest Administrator',
+        email: 'demo@edumanage.in',
+        phone: '+91 9876543210',
+        role: 'ADMIN',
+        isGuest: true,
+        created_at: new Date().toISOString()
+      },
+      institute: {
+        id: 'inst_apex_01',
+        name: 'Apex Coaching Academy',
+        type: 'coaching_center',
+        city: 'Kanpur',
+        upi_id: 'apexacademy@upi',
+        upi_name: 'Apex Academy Kanpur',
+        enable_attendance: true
+      }
+    });
+  };
 
   // 1. Savings Calculator State
   const [studentCount, setStudentCount] = useState(150);
@@ -275,11 +298,11 @@ export const WelcomeLandingScreen = () => {
 
               <button
                 type="button"
-                onClick={() => setAuthView('login')}
-                className="w-full sm:w-auto min-h-[50px] px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-base font-bold transition-all flex items-center justify-center gap-2 border border-slate-200"
+                onClick={handleQuickDemo}
+                className="w-full sm:w-auto min-h-[50px] px-6 py-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-900 text-base font-bold transition-all flex items-center justify-center gap-2 border border-stone-300"
               >
-                <span>Explore Live Demo</span>
-                <Laptop size={18} className="text-slate-600" />
+                <span>⚡ Instant 1-Tap Demo</span>
+                <Laptop size={18} className="text-stone-700" />
               </button>
 
               <a

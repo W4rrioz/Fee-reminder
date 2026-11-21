@@ -273,8 +273,11 @@ export const StudentsScreen = () => {
                         <h4 className="text-sm font-bold text-slate-900 truncate">
                           {st.name}
                         </h4>
-                        <p className="text-xs text-slate-500 truncate">
-                          {batch?.name || terms.classOrBatch} • {st.phone || 'No phone'}
+                        <p className="text-xs text-slate-500 truncate flex items-center gap-1">
+                          <span>{batch?.name || terms.classOrBatch}</span>
+                          <span>•</span>
+                          <Phone size={11} className="text-slate-400 shrink-0" />
+                          <span>{st.phone || 'No phone'}</span>
                         </p>
                       </div>
                     </div>
@@ -544,9 +547,10 @@ export const StudentsScreen = () => {
                   {selectedStudent.guardian_name}
                 </span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-slate-500">WhatsApp Phone:</span>
-                <span className="font-mono font-semibold text-slate-800">
+                <span className="font-mono font-semibold text-slate-800 flex items-center gap-1">
+                  <Phone size={12} className="text-blue-500" />
                   {selectedStudent.guardian_phone || 'None'}
                 </span>
               </div>

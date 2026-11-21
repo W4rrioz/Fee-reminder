@@ -10,8 +10,7 @@ import {
   ArrowRight,
   ArrowLeft,
   AlertCircle,
-  Loader2,
-  CheckCircle2
+  Loader2
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 

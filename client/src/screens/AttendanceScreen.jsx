@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
-  Calendar,
   Check,
   X,
   Clock,
@@ -25,29 +24,39 @@ export const AttendanceScreen = () => {
     classesBatches[0]?.id || ''
   );
   const [selectedDate, setSelectedDate] = useState('2026-10-07');
-  const [statusMap, setStatusMap] = useState({});
+  const [dirtyMap, setDirtyMap] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   // Filter students by selected batch
-  const batchStudents = students.filter(
-    (s) => s.class_batch_id === selectedBatchId
-  );
+  const batchStudents = useMemo(() => {
+    return students.filter((s) => s.class_batch_id === selectedBatchId);
+  }, [students, selectedBatchId]);
 
-  // Load existing records on batch or date change
-  React.useEffect(() => {
+  // Merge default records from storage with unsaved edits
+  const statusMap = useMemo(() => {
     const key = `${selectedDate}_${selectedBatchId}`;
     const existing = attendance[key] || {};
-
-    const initial = {};
+    const map = {};
     batchStudents.forEach((st) => {
-      // Default to existing record or 'present'
-      initial[st.id] = existing[st.id] || 'present';
+      map[st.id] = dirtyMap[st.id] !== undefined ? dirtyMap[st.id] : (existing[st.id] || 'present');
     });
-    setStatusMap(initial);
+    return map;
+  }, [selectedBatchId, selectedDate, attendance, batchStudents, dirtyMap]);
+
+  const handleSelectBatch = (id) => {
+    setSelectedBatchId(id);
+    setDirtyMap({});
     setHasChanges(false);
     setSavedSuccess(false);
-  }, [selectedBatchId, selectedDate, attendance, students]);
+  };
+
+  const handleSelectDate = (date) => {
+    setSelectedDate(date);
+    setDirtyMap({});
+    setHasChanges(false);
+    setSavedSuccess(false);
+  };
 
   // Bulk action: Mark All Present
   const handleMarkAllPresent = () => {
@@ -55,7 +64,7 @@ export const AttendanceScreen = () => {
     batchStudents.forEach((st) => {
       next[st.id] = 'present';
     });
-    setStatusMap(next);
+    setDirtyMap(next);
     setHasChanges(true);
   };
 
@@ -65,7 +74,7 @@ export const AttendanceScreen = () => {
     batchStudents.forEach((st) => {
       next[st.id] = 'absent';
     });
-    setStatusMap(next);
+    setDirtyMap(next);
     setHasChanges(true);
   };
 
@@ -77,7 +86,7 @@ export const AttendanceScreen = () => {
     else if (current === 'absent') nextStatus = 'late';
     else if (current === 'late') nextStatus = 'present';
 
-    setStatusMap((prev) => ({
+    setDirtyMap((prev) => ({
       ...prev,
       [studentId]: nextStatus
     }));
@@ -87,7 +96,7 @@ export const AttendanceScreen = () => {
   // Specific tap button
   const setSpecificStatus = (studentId, status, e) => {
     e.stopPropagation();
-    setStatusMap((prev) => ({
+    setDirtyMap((prev) => ({
       ...prev,
       [studentId]: status
     }));
@@ -97,6 +106,7 @@ export const AttendanceScreen = () => {
   // Save attendance
   const handleSave = () => {
     markBulkAttendance(selectedBatchId, selectedDate, statusMap);
+    setDirtyMap({});
     setHasChanges(false);
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 2500);
@@ -129,7 +139,7 @@ export const AttendanceScreen = () => {
             <div className="relative">
               <select
                 value={selectedBatchId}
-                onChange={(e) => setSelectedBatchId(e.target.value)}
+                onChange={(e) => handleSelectBatch(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {classesBatches.map((cb) => (
@@ -153,7 +163,7 @@ export const AttendanceScreen = () => {
               <input
                 type="date"
                 value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                onChange={(e) => handleSelectDate(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
