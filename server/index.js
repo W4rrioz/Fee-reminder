@@ -1474,6 +1474,90 @@ app.get('/api/reports/unpaid-months-record', async (req, res) => {
   }
 });
 
+// ==========================================
+// AI Chat Copilot (Powered by Google Gemini)
+// ==========================================
+app.post('/api/ai/chat', async (req, res) => {
+  try {
+    const { message, context } = req.body;
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const geminiKey = process.env.GEMINI_API_KEY;
+    if (!geminiKey) {
+      return res.status(500).json({ error: 'Gemini API key is not configured on the server' });
+    }
+
+    // System prompt with live institute context
+    const systemPrompt = `You are the EduManage AI Copilot — an expert operations, finance, and fee recovery assistant for Indian schools, coaching centers, and private tutors across Tier-2/3 cities.
+You have access to the user's real-time institute data:
+- Institute Name: ${context?.instituteName || 'EduManage Institute'}
+- UPI ID: ${context?.upiId || 'institute@upi'}
+- Total Dues Pool: ₹${context?.totalFees || 0}
+- Total Collected: ₹${context?.paidFees || 0} (${context?.collectionPercentage || 0}% collected)
+- Pending Dues: ₹${context?.pendingFees || 0} (${context?.pendingCount || 0} students)
+- Overdue Defaulters: ₹${context?.overdueFees || 0} (${context?.overdueCount || 0} students)
+- Attendance Rate: ${context?.attendanceRate || 90}%
+- Top Defaulters: ${JSON.stringify(context?.defaultersList?.slice(0, 5) || [])}
+- High-Risk Students: ${JSON.stringify(context?.highRiskStudents?.slice(0, 5) || [])}
+
+Instructions:
+1. Answer questions concisely, accurately, and politely using the data provided.
+2. If asked to draft a message, provide a WhatsApp-friendly template (in English, Hindi, or Hinglish as requested) including direct UPI details and polite tone.
+3. Highlight numbers, student names, and amounts using markdown bold.
+4. Keep responses practical and focused on helping the educator recover fees and manage operations smoothly.`;
+
+    const payload = {
+      system_instruction: {
+        parts: [{ text: systemPrompt }]
+      },
+      contents: [
+        {
+          parts: [{ text: message }]
+        }
+      ]
+    };
+
+    // Use gemini-3.5-flash-lite (fastest, verified 200 OK) with fallback
+    const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-3.8-flash'];
+    let aiResponseText = null;
+    let lastError = null;
+
+    for (const model of modelsToTry) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          aiResponseText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (aiResponseText) break;
+        } else {
+          const errData = await response.json().catch(() => ({}));
+          lastError = errData?.error?.message || response.statusText;
+        }
+      } catch (fetchErr) {
+        lastError = fetchErr.message;
+      }
+    }
+
+    if (!aiResponseText) {
+      return res.status(502).json({ error: lastError || 'Gemini API was unable to generate a response' });
+    }
+
+    res.json({ reply: aiResponseText });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Start Server
 if (require.main === module) {
   initDb().then(() => {

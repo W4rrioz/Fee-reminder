@@ -359,7 +359,7 @@ You can ask me specific questions like:
     };
   };
 
-  const handleSend = (textToSend) => {
+  const handleSend = async (textToSend) => {
     const query = textToSend || inputMessage;
     if (!query.trim()) return;
 
@@ -374,7 +374,41 @@ You can ask me specific questions like:
     setInputMessage('');
     setIsTyping(true);
 
-    // Simulate smart AI typing latency
+    try {
+      // 1. Attempt to call secure server-side Gemini API
+      const res = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: query,
+          context: {
+            instituteName: institute.name,
+            upiId: institute.upi_id,
+            ...dataContext
+          }
+        })
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.reply) {
+          const aiMsg = {
+            id: `ai_${Date.now()}`,
+            sender: 'ai',
+            text: json.reply,
+            isGemini: true,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          };
+          setMessages((prev) => [...prev, aiMsg]);
+          setIsTyping(false);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Backend AI API unavailable or offline, using local intelligent engine:', err);
+    }
+
+    // 2. Fallback to deterministic contextual NLU engine
     setTimeout(() => {
       const response = processUserQuery(query);
       const aiMsg = {
