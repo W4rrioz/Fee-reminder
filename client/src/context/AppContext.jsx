@@ -489,6 +489,33 @@ export const AppProvider = ({ children }) => {
     setAuthView('landing');
   };
 
+  // Fast 1-click Guest Demo Login
+  const loginAsGuest = () => {
+    const guestAuthData = {
+      token: `token_guest_${Date.now()}`,
+      user: {
+        id: 'usr_guest_demo',
+        name: 'Guest Administrator',
+        email: 'admin.guest@edumanage.demo',
+        phone: '+91 9876543210',
+        role: 'ADMIN',
+        isGuest: true,
+        created_at: new Date().toISOString()
+      },
+      institute: {
+        id: 'inst-1',
+        name: 'Pratibha Coaching Institute',
+        type: 'coaching_center',
+        city: 'Kanpur',
+        upi_id: 'pratibha.edu@okaxis',
+        upi_name: 'Pratibha Coaching Classes',
+        role: 'admin',
+        attendance_enabled: true
+      }
+    };
+    loginUser(guestAuthData);
+  };
+
   // Logout method
   const logoutUser = () => {
     setUser(null);
@@ -515,6 +542,7 @@ export const AppProvider = ({ children }) => {
         authView,
         setAuthView,
         loginUser,
+        loginAsGuest,
         registerUser,
         completeOnboarding,
         logoutUser,

@@ -240,22 +240,31 @@ export const WelcomeLandingScreen = () => {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={handleQuickDemo}
+              className="text-xs sm:text-sm font-black bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3.5 py-2 rounded-xl shadow-xs transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer ring-2 ring-blue-400/40"
+            >
+              <Sparkles size={14} className="text-amber-300" />
+              <span>⚡ Live Demo</span>
+            </button>
+
             <button
               type="button"
               onClick={() => setAuthView('login')}
               className="text-xs sm:text-sm font-bold text-slate-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-1.5"
             >
               <LogIn size={16} />
-              <span>Sign In</span>
+              <span className="hidden sm:inline">Sign In</span>
             </button>
 
             <button
               type="button"
               onClick={() => setAuthView('register')}
-              className="text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-1.5"
+              className="text-xs sm:text-sm font-bold bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-1.5"
             >
-              <span>Get Started Free</span>
+              <span>Sign Up</span>
               <ArrowRight size={15} />
             </button>
           </div>

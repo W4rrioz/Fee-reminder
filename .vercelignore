@@ -7,3 +7,8 @@ docs
 *.db
 uploads
 server/uploads
+graphify-out
+*.mp4
+videos
+client/public/videos
+client/dist/videos
