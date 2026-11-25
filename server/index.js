@@ -12,15 +12,22 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const os = require('os');
+const path = require('path');
+
 app.use(cors());
 app.use(express.json());
 
-const upload = multer({ dest: 'uploads/' });
-
-// Ensure uploads dir exists
-if (!fs.existsSync('uploads')) {
-  fs.mkdirSync('uploads');
+// Ensure uploads dir in writable temp directory (compatible with Vercel serverless)
+const uploadDir = path.join(os.tmpdir(), 'edumanage_uploads');
+if (!fs.existsSync(uploadDir)) {
+  try {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  } catch (err) {
+    console.warn('Upload dir notice:', err.message);
+  }
 }
+const upload = multer({ dest: uploadDir });
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
