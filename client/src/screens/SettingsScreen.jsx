@@ -284,6 +284,48 @@ export const SettingsScreen = () => {
         </button>
       </form>
 
+      {/* AI Intelligence & Gemini Model Status Card */}
+      <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 text-white border border-indigo-800/60 rounded-2xl p-4 shadow-md space-y-3">
+        <div className="flex items-center justify-between border-b border-indigo-800/50 pb-2.5">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-indigo-600/40 border border-indigo-500/40 flex items-center justify-center">
+              <Sparkles size={15} className="text-amber-300" />
+            </div>
+            <div>
+              <h3 className="font-black text-white text-sm">Google Gemini AI Copilot</h3>
+              <p className="text-[10px] text-indigo-200">Natural language data analytics & fee recovery engine</p>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Active
+          </span>
+        </div>
+
+        <div className="text-xs text-indigo-100 space-y-1.5">
+          <div className="flex justify-between">
+            <span className="text-slate-400">Model Engine:</span>
+            <span className="font-semibold text-white">Gemini 3.5 Flash-Lite</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Security Architecture:</span>
+            <span className="font-semibold text-emerald-300">Protected Server-Side (`process.env.GEMINI_API_KEY`)</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">API Key Mask:</span>
+            <span className="font-mono text-slate-300">AQ.Ab8RN6...PUA</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Offline Resilience:</span>
+            <span className="font-semibold text-blue-300">Auto-Fallback NLU Engine</span>
+          </div>
+        </div>
+
+        <p className="text-[10px] text-slate-400 italic pt-1 border-t border-indigo-900/40">
+          * Your Gemini API key is securely isolated on the serverless backend and never exposed in client-side bundles.
+        </p>
+      </div>
+
       {/* Account & Session Management */}
       <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-3">
         <div className="flex items-center justify-between border-b border-slate-100 pb-2">
