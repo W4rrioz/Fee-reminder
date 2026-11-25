@@ -134,7 +134,8 @@ async function computeUnpaidMonthsRecords({ institute_id, class_batch_id } = {})
     const monthKeySet = new Set();
     const breakdown = unpaidDues.map((d) => {
       const remaining = Math.max(0, Number(d.amount) - Number(d.paid_amount));
-      const monthKey = d.due_date ? d.due_date.substring(0, 7) : '';
+      const rawDueDate = d.due_date ? (typeof d.due_date === 'string' ? d.due_date : new Date(d.due_date).toISOString().slice(0, 10)) : '';
+      const monthKey = rawDueDate ? rawDueDate.substring(0, 7) : '';
       if (monthKey) {
         monthKeySet.add(monthKey);
       }
@@ -267,8 +268,8 @@ const handleMonthlyReset = async (req, res) => {
     let createdCount = 0;
     for (const student of activeStudents) {
       const existing = await get(
-        `SELECT id FROM fee_dues WHERE student_id = ? AND (due_date LIKE ? OR SUBSTR(due_date, 1, 7) = ?)`,
-        [student.id, `${targetMonth}%`, targetMonth]
+        `SELECT id FROM fee_dues WHERE student_id = ? AND (CAST(due_date AS TEXT) LIKE ? OR CAST(due_date AS TEXT) LIKE ?)`,
+        [student.id, `${targetMonth}%`, `${targetMonth}%`]
       );
 
       if (!existing) {
