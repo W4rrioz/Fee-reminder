@@ -4,7 +4,8 @@ const dotenv = require('dotenv');
 const multer = require('multer');
 const csv = require('csv-parser');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
+const uuidv4 = () => crypto.randomUUID();
 const { run, get, all, initDb } = require('./db');
 
 dotenv.config();
@@ -357,7 +358,6 @@ app.get('/api/calendar/monthly-reset', handleMonthlyReset);
 // 0. Authentication & Onboarding Endpoints
 // ==========================================
 
-const crypto = require('crypto');
 const hashPassword = (pw) => crypto.createHash('sha256').update(pw).digest('hex');
 
 // POST /api/auth/login

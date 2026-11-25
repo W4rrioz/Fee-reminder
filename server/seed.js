@@ -1,4 +1,5 @@
-const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
+const uuidv4 = () => crypto.randomUUID();
 const { run, all, get, initDb, db } = require('./db');
 
 async function seed() {
