@@ -2,8 +2,8 @@ const { Client } = require('pg');
 require('dotenv').config();
 
 const password = encodeURIComponent(process.env.SUPABASE_DB_PASSWORD || 'Amaniitk##2010');
-const host = process.env.SUPABASE_DB_HOST || 'aws-0-ap-northeast-1.pooler.supabase.com';
-const projectRef = process.env.SUPABASE_PROJECT_REF || 'ubzzxbllkhlzapiwicsm';
+const host = process.env.SUPABASE_DB_HOST || 'aws-0-ap-northeast-2.pooler.supabase.com';
+const projectRef = process.env.SUPABASE_PROJECT_REF || 'lpvvpqqivhvxchrrthew';
 const cs = `postgresql://postgres.${projectRef}:${password}@${host}:6543/postgres`;
 
 async function seedSupabase() {

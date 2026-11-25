@@ -61,7 +61,7 @@ async function computeUnpaidMonthsRecords({ institute_id, class_batch_id } = {})
            g.phone as guardian_phone
     FROM students s
     LEFT JOIN classes_batches cb ON s.class_batch_id = cb.id
-    LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = 1
+    LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = true
     WHERE s.status = 'active'
   `;
   const studentParams = [];
@@ -820,7 +820,7 @@ app.get('/api/students', async (req, res) => {
              g.relation as guardian_relation
       FROM students s
       LEFT JOIN classes_batches cb ON s.class_batch_id = cb.id
-      LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = 1
+      LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = true
       WHERE 1=1
     `;
     const params = [];
@@ -896,7 +896,7 @@ app.post('/api/students', async (req, res) => {
       await run(
         `INSERT INTO guardians (id, student_id, name, phone, relation, is_primary_contact)
          VALUES (?, ?, ?, ?, ?, ?)`,
-        [uuidv4(), studentId, guardian_name, guardian_phone, guardian_relation || 'Parent', 1]
+        [uuidv4(), studentId, guardian_name, guardian_phone, guardian_relation || 'Parent', true]
       );
     }
 
@@ -907,7 +907,7 @@ app.post('/api/students', async (req, res) => {
               g.phone as guardian_phone
        FROM students s
        LEFT JOIN classes_batches cb ON s.class_batch_id = cb.id
-       LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = 1
+       LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = true
        WHERE s.id = ?`,
       [studentId]
     );
@@ -969,7 +969,7 @@ app.post('/api/students/bulk-import', upload.single('file'), async (req, res) =>
               await run(
                 `INSERT INTO guardians (id, student_id, name, phone, relation, is_primary_contact)
                  VALUES (?, ?, ?, ?, ?, ?)`,
-                [uuidv4(), studentId, guardian_name || 'Guardian', guardian_phone || '', guardian_relation, 1]
+                [uuidv4(), studentId, guardian_name || 'Guardian', guardian_phone || '', guardian_relation, true]
               );
             }
 
@@ -1019,7 +1019,7 @@ app.get('/api/fee-dues', async (req, res) => {
       JOIN students s ON fd.student_id = s.id
       LEFT JOIN classes_batches cb ON s.class_batch_id = cb.id
       LEFT JOIN fee_heads fh ON fd.fee_head_id = fh.id
-      LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = 1
+      LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = true
       WHERE 1=1
     `;
     const params = [];
@@ -1155,7 +1155,7 @@ app.post('/api/fee-dues/:id/remind', async (req, res) => {
        FROM fee_dues fd
        JOIN students s ON fd.student_id = s.id
        JOIN institutes i ON s.institute_id = i.id
-       LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = 1
+       LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = true
        WHERE fd.id = ?`,
       [fee_due_id]
     );
@@ -1380,7 +1380,7 @@ app.get('/api/reports/defaulters', async (req, res) => {
       JOIN students s ON fd.student_id = s.id
       LEFT JOIN classes_batches cb ON s.class_batch_id = cb.id
       LEFT JOIN fee_heads fh ON fd.fee_head_id = fh.id
-      LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = 1
+      LEFT JOIN guardians g ON s.id = g.student_id AND g.is_primary_contact = true
       WHERE (fd.status = 'overdue' OR (fd.status IN ('pending', 'partial') AND fd.due_date < ?))
     `;
     const params = [today];

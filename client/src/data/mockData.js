@@ -1,173 +1,262 @@
-// Mock seed data for instant offline-first experience & testing
+// Realistic production seed data for Apex Coaching Academy (Kanpur)
+// Synchronized with Supabase Cloud PostgreSQL and offline client engine
+
 export const INITIAL_INSTITUTE = {
-  id: 'inst-1',
-  name: 'Pratibha Coaching Institute',
+  id: 'inst_apex_01',
+  name: 'Apex Coaching Academy',
   type: 'coaching_center', // 'school' | 'coaching_center' | 'tutor'
   city: 'Kanpur',
-  upi_id: 'pratibha.edu@okaxis',
-  upi_name: 'Pratibha Coaching Classes',
-  phone: '9876543210',
-  enable_attendance: true
+  upi_id: 'apexacademy@upi',
+  upi_name: 'Apex Academy Kanpur',
+  phone: '+919876543210',
+  enable_attendance: true,
+  attendance_enabled: true,
+  bank_details: 'A/C: 9876543210, IFSC: HDFC0001234, Branch: Civil Lines, Kanpur',
+  reminder_template: 'Namaste {guardian_name}, fee of ₹{amount} for {student_name} is due by {due_date}. Please pay via UPI to {upi_id}.'
 };
 
 export const INITIAL_CLASSES_BATCHES = [
-  { id: 'cb-1', name: 'Batch 10th Science', code: '10-SCI', fee_amount: 1500 },
-  { id: 'cb-2', name: 'Batch 12th Physics & Math', code: '12-PCM', fee_amount: 2200 },
-  { id: 'cb-3', name: 'Batch 9th Foundation', code: '9-FND', fee_amount: 1200 },
-  { id: 'cb-4', name: 'Batch JEE Crash Course', code: 'JEE-CR', fee_amount: 3500 },
+  { id: 'batch_class_10', name: 'Class 10th Board Booster', code: '10-BOOST', fee_amount: 2500 },
+  { id: 'batch_jee_12', name: 'Class 12th JEE Target', code: '12-JEE', fee_amount: 3500 },
+  { id: 'batch_found_09', name: 'Class 9th Foundation', code: '09-FND', fee_amount: 2000 }
 ];
 
 export const INITIAL_STUDENTS = [
   {
-    id: 'std-101',
+    id: 's1',
     name: 'Aarav Sharma',
-    roll_no: '01',
-    class_batch_id: 'cb-1',
-    phone: '9876511001',
+    roll_no: '1001',
+    class_batch_id: 'batch_class_10',
+    phone: '+919876500001',
     guardian_name: 'Rajesh Sharma',
-    guardian_phone: '9876511001',
-    monthly_fee: 1500,
-    attendance_rate: 94,
-    status: 'active'
-  },
-  {
-    id: 'std-102',
-    name: 'Priya Verma',
-    roll_no: '02',
-    class_batch_id: 'cb-1',
-    phone: '9876511002',
-    guardian_name: 'Sunil Verma',
-    guardian_phone: '9876511002',
-    monthly_fee: 1500,
-    attendance_rate: 88,
-    status: 'active'
-  },
-  {
-    id: 'std-103',
-    name: 'Rohan Gupta',
-    roll_no: '03',
-    class_batch_id: 'cb-1',
-    phone: '9876511003',
-    guardian_name: 'Manoj Gupta',
-    guardian_phone: '9876511003',
-    monthly_fee: 1500,
-    attendance_rate: 68,
-    status: 'active'
-  },
-  {
-    id: 'std-104',
-    name: 'Ananya Mishra',
-    roll_no: '04',
-    class_batch_id: 'cb-2',
-    phone: '9876511004',
-    guardian_name: 'Dev Mishra',
-    guardian_phone: '9876511004',
-    monthly_fee: 2200,
+    guardian_phone: '+919876500001',
+    monthly_fee: 2500,
     attendance_rate: 96,
     status: 'active'
   },
   {
-    id: 'std-105',
-    name: 'Vivek Yadav',
-    roll_no: '05',
-    class_batch_id: 'cb-2',
-    phone: '9876511005',
-    guardian_name: 'Ram Yadav',
-    guardian_phone: '9876511005',
-    monthly_fee: 2000, // scholarship override
-    attendance_rate: 72,
-    status: 'active'
-  },
-  {
-    id: 'std-106',
-    name: 'Sneha Patel',
-    roll_no: '06',
-    class_batch_id: 'cb-3',
-    phone: '9876511006',
-    guardian_name: 'Ketan Patel',
-    guardian_phone: '9876511006',
-    monthly_fee: 1200,
+    id: 's2',
+    name: 'Ananya Gupta',
+    roll_no: '1002',
+    class_batch_id: 'batch_class_10',
+    phone: '+919876500002',
+    guardian_name: 'Sanjay Gupta',
+    guardian_phone: '+919876500002',
+    monthly_fee: 2500,
     attendance_rate: 92,
     status: 'active'
   },
   {
-    id: 'std-107',
-    name: 'Aditya Singh',
-    roll_no: '07',
-    class_batch_id: 'cb-4',
-    phone: '9876511007',
-    guardian_name: 'Balwant Singh',
-    guardian_phone: '9876511007',
+    id: 's3',
+    name: 'Rohan Verma',
+    roll_no: '1003',
+    class_batch_id: 'batch_class_10',
+    phone: '+919876500003',
+    guardian_name: 'Sunil Verma',
+    guardian_phone: '+919876500003',
+    monthly_fee: 2500,
+    attendance_rate: 65,
+    status: 'active'
+  },
+  {
+    id: 's4',
+    name: 'Priya Singh',
+    roll_no: '1004',
+    class_batch_id: 'batch_class_10',
+    phone: '+919876500004',
+    guardian_name: 'Alok Singh',
+    guardian_phone: '+919876500004',
+    monthly_fee: 2500,
+    attendance_rate: 88,
+    status: 'active'
+  },
+  {
+    id: 's5',
+    name: 'Kabir Patel',
+    roll_no: '1201',
+    class_batch_id: 'batch_jee_12',
+    phone: '+919876500005',
+    guardian_name: 'Mahesh Patel',
+    guardian_phone: '+919876500005',
     monthly_fee: 3500,
-    attendance_rate: 85,
+    attendance_rate: 95,
+    status: 'active'
+  },
+  {
+    id: 's6',
+    name: 'Sneha Yadav',
+    roll_no: '1202',
+    class_batch_id: 'batch_jee_12',
+    phone: '+919876500006',
+    guardian_name: 'Dinesh Yadav',
+    guardian_phone: '+919876500006',
+    monthly_fee: 3500,
+    attendance_rate: 70,
+    status: 'active'
+  },
+  {
+    id: 's7',
+    name: 'Aditya Tiwari',
+    roll_no: '1203',
+    class_batch_id: 'batch_jee_12',
+    phone: '+919876500007',
+    guardian_name: 'Ramesh Tiwari',
+    guardian_phone: '+919876500007',
+    monthly_fee: 3500,
+    attendance_rate: 89,
+    status: 'active'
+  },
+  {
+    id: 's8',
+    name: 'Diya Saxena',
+    roll_no: '1204',
+    class_batch_id: 'batch_jee_12',
+    phone: '+919876500008',
+    guardian_name: 'Vikas Saxena',
+    guardian_phone: '+919876500008',
+    monthly_fee: 3500,
+    attendance_rate: 98,
+    status: 'active'
+  },
+  {
+    id: 's9',
+    name: 'Vivaan Agarwal',
+    roll_no: '0901',
+    class_batch_id: 'batch_found_09',
+    phone: '+919876500009',
+    guardian_name: 'Pankaj Agarwal',
+    guardian_phone: '+919876500009',
+    monthly_fee: 2000,
+    attendance_rate: 91,
+    status: 'active'
+  },
+  {
+    id: 's10',
+    name: 'Ishita Pandey',
+    roll_no: '0902',
+    class_batch_id: 'batch_found_09',
+    phone: '+919876500010',
+    guardian_name: 'Vinod Pandey',
+    guardian_phone: '+919876500010',
+    monthly_fee: 2000,
+    attendance_rate: 58,
+    status: 'active'
+  },
+  {
+    id: 's11',
+    name: 'Devansh Shukla',
+    roll_no: '0903',
+    class_batch_id: 'batch_found_09',
+    phone: '+919876500011',
+    guardian_name: 'Anil Shukla',
+    guardian_phone: '+919876500011',
+    monthly_fee: 2000,
+    attendance_rate: 94,
+    status: 'active'
+  },
+  {
+    id: 's12',
+    name: 'Khushi Dubey',
+    roll_no: '0904',
+    class_batch_id: 'batch_found_09',
+    phone: '+919876500012',
+    guardian_name: 'Mukesh Dubey',
+    guardian_phone: '+919876500012',
+    monthly_fee: 2000,
+    attendance_rate: 64,
     status: 'active'
   }
 ];
 
 export const INITIAL_FEE_DUES = [
+  // Class 10th
   {
-    id: 'due-201',
-    student_id: 'std-101',
+    id: 'due_1',
+    student_id: 's1',
     fee_head: 'October Tuition Fee',
-    amount: 1500,
-    due_date: '2026-10-10',
-    status: 'pending', // 'paid' | 'pending' | 'overdue'
-    month: 'October 2026'
-  },
-  {
-    id: 'due-202',
-    student_id: 'std-102',
-    fee_head: 'October Tuition Fee',
-    amount: 1500,
+    amount: 2500,
     due_date: '2026-10-10',
     status: 'paid',
-    paid_at: '2026-10-05',
+    paid_at: '2026-10-06',
     payment_method: 'upi',
-    reference_id: 'UPI9823419024',
+    reference_id: 'UPI98234827',
     month: 'October 2026'
   },
   {
-    id: 'due-203',
-    student_id: 'std-103',
+    id: 'due_2',
+    student_id: 's2',
+    fee_head: 'October Tuition Fee',
+    amount: 2500,
+    due_date: '2026-10-10',
+    status: 'pending',
+    month: 'October 2026'
+  },
+  {
+    id: 'due_3_sep',
+    student_id: 's3',
     fee_head: 'September Tuition Fee',
-    amount: 1500,
+    amount: 2500,
     due_date: '2026-09-10',
     status: 'overdue',
     month: 'September 2026'
   },
   {
-    id: 'due-204',
-    student_id: 'std-103',
+    id: 'due_3_oct',
+    student_id: 's3',
     fee_head: 'October Tuition Fee',
-    amount: 1500,
+    amount: 2500,
     due_date: '2026-10-10',
     status: 'overdue',
     month: 'October 2026'
   },
   {
-    id: 'due-205',
-    student_id: 'std-104',
+    id: 'due_4',
+    student_id: 's4',
     fee_head: 'October Tuition Fee',
-    amount: 2200,
+    amount: 2500,
+    paid_amount: 1500,
+    due_date: '2026-10-10',
+    status: 'partial',
+    paid_at: '2026-10-08',
+    payment_method: 'cash',
+    reference_id: 'REC-2026-004',
+    month: 'October 2026'
+  },
+
+  // Class 12th JEE
+  {
+    id: 'due_5',
+    student_id: 's5',
+    fee_head: 'October JEE Batch Fee',
+    amount: 3500,
     due_date: '2026-10-10',
     status: 'paid',
-    paid_at: '2026-10-06',
-    payment_method: 'cash',
-    reference_id: 'CASH-REC-441',
+    paid_at: '2026-10-05',
+    payment_method: 'upi',
+    reference_id: 'UPI77218933',
     month: 'October 2026'
   },
   {
-    id: 'due-206',
-    student_id: 'std-105',
-    fee_head: 'October Tuition Fee',
-    amount: 2000,
-    due_date: '2026-10-05',
+    id: 'due_6_sep',
+    student_id: 's6',
+    fee_head: 'September JEE Batch Fee',
+    amount: 3500,
+    due_date: '2026-09-10',
+    status: 'overdue',
+    month: 'September 2026'
+  },
+  {
+    id: 'due_6_oct',
+    student_id: 's6',
+    fee_head: 'October JEE Batch Fee',
+    amount: 3500,
+    due_date: '2026-10-10',
     status: 'overdue',
     month: 'October 2026'
   },
   {
-    id: 'due-207',
-    student_id: 'std-107',
+    id: 'due_7',
+    student_id: 's7',
     fee_head: 'October JEE Batch Fee',
     amount: 3500,
     due_date: '2026-10-10',
@@ -175,28 +264,81 @@ export const INITIAL_FEE_DUES = [
     month: 'October 2026'
   },
   {
-    id: 'due-208',
-    student_id: 'std-106',
-    fee_head: 'August Tuition Fee',
-    amount: 1200,
+    id: 'due_8',
+    student_id: 's8',
+    fee_head: 'October JEE Batch Fee',
+    amount: 3500,
+    due_date: '2026-10-10',
+    status: 'paid',
+    paid_at: '2026-10-04',
+    payment_method: 'bank',
+    reference_id: 'NEFT-AXIS-992',
+    month: 'October 2026'
+  },
+
+  // Class 9th Foundation
+  {
+    id: 'due_9',
+    student_id: 's9',
+    fee_head: 'October Foundation Fee',
+    amount: 2000,
+    due_date: '2026-10-10',
+    status: 'pending',
+    month: 'October 2026'
+  },
+  {
+    id: 'due_10_aug',
+    student_id: 's10',
+    fee_head: 'August Foundation Fee',
+    amount: 2000,
     due_date: '2026-08-10',
     status: 'overdue',
     month: 'August 2026'
   },
   {
-    id: 'due-209',
-    student_id: 'std-106',
-    fee_head: 'September Tuition Fee',
-    amount: 1200,
+    id: 'due_10_sep',
+    student_id: 's10',
+    fee_head: 'September Foundation Fee',
+    amount: 2000,
     due_date: '2026-09-10',
     status: 'overdue',
     month: 'September 2026'
   },
   {
-    id: 'due-210',
-    student_id: 'std-106',
-    fee_head: 'October Tuition Fee',
-    amount: 1200,
+    id: 'due_10_oct',
+    student_id: 's10',
+    fee_head: 'October Foundation Fee',
+    amount: 2000,
+    due_date: '2026-10-10',
+    status: 'overdue',
+    month: 'October 2026'
+  },
+  {
+    id: 'due_11',
+    student_id: 's11',
+    fee_head: 'October Foundation Fee',
+    amount: 2000,
+    due_date: '2026-10-10',
+    status: 'paid',
+    paid_at: '2026-10-09',
+    payment_method: 'cash',
+    reference_id: 'REC-2026-011',
+    month: 'October 2026'
+  },
+  {
+    id: 'due_12_sep',
+    student_id: 's12',
+    fee_head: 'September Foundation Fee',
+    amount: 2000,
+    due_date: '2026-09-10',
+    status: 'overdue',
+    month: 'September 2026'
+  },
+  {
+    id: 'due_12_oct',
+    student_id: 's12',
+    fee_head: 'October Foundation Fee',
+    amount: 2000,
     due_date: '2026-10-10',
     status: 'overdue',
     month: 'October 2026'
@@ -205,19 +347,22 @@ export const INITIAL_FEE_DUES = [
 
 export const INITIAL_ATTENDANCE = {
   // Key format: `${date}_${class_batch_id}`: { student_id: 'present' | 'absent' | 'late' }
-  '2026-10-07_cb-1': {
-    'std-101': 'present',
-    'std-102': 'present',
-    'std-103': 'absent'
+  '2026-10-07_batch_class_10': {
+    's1': 'present',
+    's2': 'present',
+    's3': 'absent',
+    's4': 'present'
   },
-  '2026-10-07_cb-2': {
-    'std-104': 'present',
-    'std-105': 'late'
+  '2026-10-07_batch_jee_12': {
+    's5': 'present',
+    's6': 'late',
+    's7': 'present',
+    's8': 'present'
   },
-  '2026-10-07_cb-3': {
-    'std-106': 'absent'
-  },
-  '2026-10-07_cb-4': {
-    'std-107': 'present'
+  '2026-10-07_batch_found_09': {
+    's9': 'present',
+    's10': 'absent',
+    's11': 'present',
+    's12': 'absent'
   }
 };

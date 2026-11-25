@@ -1,17 +1,21 @@
 const { Pool } = require('pg');
-const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 require('dotenv').config();
 
+const supabaseUrl = process.env.SUPABASE_URL || 'https://lpvvpqqivhvxchrrthew.supabase.co';
+const supabasePassword = process.env.SUPABASE_DB_PASSWORD || 'Amaniitk##2010';
+const supabaseHost = process.env.SUPABASE_DB_HOST || 'aws-0-ap-northeast-2.pooler.supabase.com';
+const supabaseProjectRef = process.env.SUPABASE_PROJECT_REF || 'lpvvpqqivhvxchrrthew';
+
 // Determine whether to use Supabase PostgreSQL or local SQLite
-const useSupabase = process.env.USE_SUPABASE === 'true' && Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_DB_PASSWORD);
+const useSupabase = process.env.USE_SUPABASE !== 'false';
 
 let run, get, all, initDb, dbInstance;
 
 if (useSupabase) {
-  const password = encodeURIComponent(process.env.SUPABASE_DB_PASSWORD || 'Amaniitk##2010');
-  const host = process.env.SUPABASE_DB_HOST || 'aws-0-ap-northeast-1.pooler.supabase.com';
-  const projectRef = process.env.SUPABASE_PROJECT_REF || 'ubzzxbllkhlzapiwicsm';
+  const password = encodeURIComponent(supabasePassword);
+  const host = supabaseHost;
+  const projectRef = supabaseProjectRef;
   const connectionString = `postgresql://postgres.${projectRef}:${password}@${host}:6543/postgres`;
 
   console.log(`[Database] Connecting to Cloud Supabase PostgreSQL at ${host}...`);
@@ -65,6 +69,7 @@ if (useSupabase) {
 
 } else {
   // Local SQLite fallback
+  const sqlite3 = require('sqlite3').verbose();
   const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'edumanage.db');
   console.log('[Database] Connecting to local SQLite database at:', DB_PATH);
 

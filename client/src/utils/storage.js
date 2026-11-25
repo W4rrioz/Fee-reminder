@@ -40,6 +40,24 @@ export const setStoredData = (key, data) => {
 };
 
 export const initializeStorage = () => {
+  const STORAGE_VERSION = 'v2_apex_academy_kanpur';
+  const currentVer = localStorage.getItem('edumanage_storage_version');
+
+  // Check if legacy Pratibha data or old version exists
+  const existingInst = getStoredData(KEYS.INSTITUTE, null);
+  const isLegacy = !currentVer || currentVer !== STORAGE_VERSION || (existingInst && (existingInst.id === 'inst-1' || existingInst.name?.includes('Pratibha')));
+
+  if (isLegacy) {
+    setStoredData(KEYS.INSTITUTE, INITIAL_INSTITUTE);
+    setStoredData(KEYS.CLASSES_BATCHES, INITIAL_CLASSES_BATCHES);
+    setStoredData(KEYS.STUDENTS, INITIAL_STUDENTS);
+    setStoredData(KEYS.FEE_DUES, INITIAL_FEE_DUES);
+    setStoredData(KEYS.ATTENDANCE, INITIAL_ATTENDANCE);
+    setStoredData(KEYS.SYNC_QUEUE, []);
+    localStorage.setItem('edumanage_storage_version', STORAGE_VERSION);
+    return;
+  }
+
   if (!localStorage.getItem(KEYS.INSTITUTE)) {
     setStoredData(KEYS.INSTITUTE, INITIAL_INSTITUTE);
   }
@@ -58,6 +76,7 @@ export const initializeStorage = () => {
   if (!localStorage.getItem(KEYS.SYNC_QUEUE)) {
     setStoredData(KEYS.SYNC_QUEUE, []);
   }
+  localStorage.setItem('edumanage_storage_version', STORAGE_VERSION);
 };
 
 export const enqueueOfflineAction = (action) => {

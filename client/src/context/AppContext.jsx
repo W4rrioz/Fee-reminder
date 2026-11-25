@@ -161,6 +161,63 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Live server data synchronization from Supabase backend
+  const refreshServerData = async (targetInstituteId) => {
+    if (!navigator.onLine) return;
+    const instId = targetInstituteId || institute?.id || 'inst_apex_01';
+    try {
+      const [stuRes, batchRes, duesRes] = await Promise.allSettled([
+        fetch(`/api/students?institute_id=${instId}`),
+        fetch(`/api/classes-batches?institute_id=${instId}`),
+        fetch(`/api/fee-dues?institute_id=${instId}`)
+      ]);
+
+      if (batchRes.status === 'fulfilled' && batchRes.value.ok) {
+        const batches = await batchRes.value.json();
+        if (Array.isArray(batches) && batches.length > 0) {
+          const formattedBatches = batches.map(b => ({
+            id: b.id,
+            name: b.name,
+            code: b.code || b.name.slice(0, 7),
+            fee_amount: b.fee_amount || 2500
+          }));
+          setClassesBatchesState(formattedBatches);
+          setStoredData(KEYS.CLASSES_BATCHES, formattedBatches);
+        }
+      }
+
+      if (stuRes.status === 'fulfilled' && stuRes.value.ok) {
+        const serverStudents = await stuRes.value.json();
+        if (Array.isArray(serverStudents) && serverStudents.length > 0) {
+          const formattedStudents = serverStudents.map(s => ({
+            id: s.id,
+            name: s.name,
+            roll_no: s.roll_number || s.roll_no || '',
+            class_batch_id: s.class_batch_id,
+            phone: s.phone || s.guardian_phone || '',
+            guardian_name: s.guardian_name || 'Guardian',
+            guardian_phone: s.guardian_phone || s.phone || '',
+            monthly_fee: s.monthly_fee || 2500,
+            attendance_rate: s.attendance_rate || 90,
+            status: s.status || 'active'
+          }));
+          setStudentsState(formattedStudents);
+          setStoredData(KEYS.STUDENTS, formattedStudents);
+        }
+      }
+
+      if (duesRes.status === 'fulfilled' && duesRes.value.ok) {
+        const serverDues = await duesRes.value.json();
+        if (Array.isArray(serverDues) && serverDues.length > 0) {
+          setFeeDuesState(serverDues);
+          setStoredData(KEYS.FEE_DUES, serverDues);
+        }
+      }
+    } catch (err) {
+      console.warn('Backend sync notice:', err.message);
+    }
+  };
+
   // Sync offline queue when back online
   const syncOfflineChanges = async () => {
     const queue = getSyncQueue();
@@ -192,6 +249,9 @@ export const AppProvider = ({ children }) => {
 
     // Sync with real-time server calendar & perform monthly rollover
     syncServerTimeAndRollover(loadedStudents, loadedFeeDues);
+
+    // Sync live data from Supabase backend if online
+    refreshServerData(loadedInst?.id);
 
     // Check user auth and onboarding state
     const storedAuth = getStoredData(KEYS.AUTH, null);
@@ -449,6 +509,9 @@ export const AppProvider = ({ children }) => {
     }
     setStoredData(KEYS.AUTH, authData);
     setStoredData(KEYS.FIRST_TIME, false);
+    if (authData.institute?.id) {
+      refreshServerData(authData.institute.id);
+    }
   };
 
   // Register method (sets up authenticated user, moves to onboarding)
@@ -458,6 +521,9 @@ export const AppProvider = ({ children }) => {
     setIsOnboarded(false);
     setStoredData(KEYS.AUTH, authData);
     setStoredData(KEYS.FIRST_TIME, false);
+    if (authData.institute?.id) {
+      refreshServerData(authData.institute.id);
+    }
     setAuthView('onboarding');
   };
 
@@ -494,22 +560,22 @@ export const AppProvider = ({ children }) => {
     const guestAuthData = {
       token: `token_guest_${Date.now()}`,
       user: {
-        id: 'usr_guest_demo',
-        name: 'Guest Administrator',
-        email: 'admin.guest@edumanage.demo',
+        id: 'user_aman_01',
+        name: 'Aman Mishra',
+        email: 'aman@apexcoaching.in',
         phone: '+91 9876543210',
-        role: 'ADMIN',
+        role: 'owner',
         isGuest: true,
         created_at: new Date().toISOString()
       },
       institute: {
-        id: 'inst-1',
-        name: 'Pratibha Coaching Institute',
+        id: 'inst_apex_01',
+        name: 'Apex Coaching Academy',
         type: 'coaching_center',
         city: 'Kanpur',
-        upi_id: 'pratibha.edu@okaxis',
-        upi_name: 'Pratibha Coaching Classes',
-        role: 'admin',
+        upi_id: 'apexacademy@upi',
+        upi_name: 'Apex Academy Kanpur',
+        role: 'owner',
         attendance_enabled: true
       }
     };
