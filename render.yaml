@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: edumanage-backend-api
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install
+    startCommand: node server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: USE_SUPABASE
+        value: "true"
+      - key: SUPABASE_URL
+        value: https://lpvvpqqivhvxchrrthew.supabase.co
+      - key: SUPABASE_DB_HOST
+        value: aws-0-ap-northeast-2.pooler.supabase.com
+      - key: SUPABASE_PROJECT_REF
+        value: lpvvpqqivhvxchrrthew
+      - key: SUPABASE_DB_PASSWORD
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
