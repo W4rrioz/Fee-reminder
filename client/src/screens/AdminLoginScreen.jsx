@@ -3,7 +3,7 @@ import {
   GraduationCap,
   Users,
   BookOpen,
-  Heart,
+  Calculator,
   Shield,
   Eye,
   EyeOff,
@@ -12,14 +12,17 @@ import {
   Loader2,
   Sparkles,
   Sun,
-  Moon
+  Moon,
+  Building2,
+  ArrowRight,
+  CheckCircle2
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export const AdminLoginScreen = () => {
   const { setAuthView, loginUser, isOnline } = useApp();
 
-  const [selectedRole, setSelectedRole] = useState('student'); // 'student' | 'parent' | 'teacher' | 'volunteer' | 'admin'
+  const [selectedRole, setSelectedRole] = useState('admin'); // 'admin' | 'teacher' | 'accountant' | 'student' | 'parent'
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -31,34 +34,42 @@ export const AdminLoginScreen = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   const roles = [
-    { id: 'student', label: 'Student', icon: GraduationCap },
-    { id: 'parent', label: 'Parent', icon: Users },
-    { id: 'teacher', label: 'Teacher', icon: BookOpen },
-    { id: 'volunteer', label: 'Volunteer', icon: Heart },
-    { id: 'admin', label: 'Admin', icon: Shield },
+    { id: 'admin', label: 'Admin', sub: 'Director / Owner', icon: Shield },
+    { id: 'teacher', label: 'Teacher', sub: 'Faculty & Batches', icon: BookOpen },
+    { id: 'accountant', label: 'Accountant', sub: 'Fee Counter', icon: Calculator },
+    { id: 'student', label: 'Student', sub: 'Attendance & Dues', icon: GraduationCap },
+    { id: 'parent', label: 'Parent', sub: 'UPI Payments', icon: Users },
   ];
 
   // Quick guest exploration for any role
   const handleGuestExplore = () => {
     const roleCapitalized = selectedRole.toUpperCase();
+    const roleNameMap = {
+      admin: 'Director Sharma',
+      teacher: 'Prof. Verma',
+      accountant: 'Mr. Gupta (Accounts)',
+      student: 'Rahul Sharma',
+      parent: 'Sunil Sharma (Parent)'
+    };
+
     const guestAuthData = {
       token: `token_guest_${Date.now()}`,
       user: {
-        id: `swyam_${selectedRole}_${Date.now()}`,
-        name: selectedRole === 'admin' ? 'Administrator' : `${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)} Explorer`,
-        email: `${selectedRole}@swyam.edu`,
+        id: `edumanage_${selectedRole}_${Date.now()}`,
+        name: roleNameMap[selectedRole] || 'EduManage Explorer',
+        email: `${selectedRole}@edumanage.in`,
         phone: '+91 9876543210',
         role: roleCapitalized,
         isGuest: true,
         created_at: new Date().toISOString()
       },
       institute: {
-        id: 'inst_swyam_01',
-        name: 'Apex Academy / Swyam Classroom',
+        id: 'inst_apex_01',
+        name: 'Apex Tutorials & Science Academy',
         type: 'coaching_center',
         city: 'Kanpur',
-        upi_id: 'apexacademy@upi',
-        upi_name: 'Apex Academy Kanpur',
+        upi_id: 'apextutorials@upi',
+        upi_name: 'Apex Tutorials Kanpur',
         enable_attendance: true,
         role: roleCapitalized
       }
@@ -105,7 +116,7 @@ export const AdminLoginScreen = () => {
         }
       }
 
-      // If offline or dev fallback, create session
+      // If offline or local dev fallback, create session
       if (!authResponse) {
         authResponse = {
           token: `token_${selectedRole}_${Date.now()}`,
@@ -116,10 +127,13 @@ export const AdminLoginScreen = () => {
             role: selectedRole.toUpperCase()
           },
           institute: {
-            id: 'inst_swyam_01',
-            name: 'Apex Academy / Swyam Classroom',
-            upi_id: 'apexacademy@upi',
-            upi_name: 'Apex Academy Kanpur'
+            id: 'inst_apex_01',
+            name: 'Apex Tutorials & Science Academy',
+            type: 'coaching_center',
+            city: 'Kanpur',
+            upi_id: 'apextutorials@upi',
+            upi_name: 'Apex Tutorials Kanpur',
+            enable_attendance: true
           }
         };
       }
@@ -133,15 +147,16 @@ export const AdminLoginScreen = () => {
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-stone-950 text-stone-100' : 'bg-[#FAF7F2] text-stone-800'} flex flex-col justify-between p-4 sm:p-8 font-body transition-colors duration-200`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-[#121212] text-stone-100' : 'bg-[#FAF7F2] text-[#1C1917]'} flex flex-col justify-between p-4 sm:p-8 font-body transition-colors duration-200 select-none`}>
+      
       {/* Top Header */}
       <div className="w-full max-w-4xl mx-auto flex items-center justify-between py-2">
         <button
           type="button"
           onClick={() => setAuthView('landing')}
-          className={`inline-flex items-center gap-2 text-xs font-medium ${darkMode ? 'text-stone-400 hover:text-white' : 'text-stone-600 hover:text-stone-900'} transition-colors cursor-pointer`}
+          className={`inline-flex items-center gap-2 text-xs font-semibold ${darkMode ? 'text-stone-400 hover:text-white' : 'text-stone-600 hover:text-stone-900'} transition-colors cursor-pointer`}
         >
-          <ArrowLeft size={15} />
+          <ArrowLeft size={16} />
           <span>Back to home</span>
         </button>
 
@@ -149,43 +164,52 @@ export const AdminLoginScreen = () => {
           <button
             type="button"
             onClick={() => setDarkMode(!darkMode)}
-            className={`p-2 rounded-lg border ${darkMode ? 'border-stone-800 text-stone-300 hover:bg-stone-900' : 'border-stone-200 text-stone-600 hover:bg-stone-100'} transition-colors cursor-pointer`}
+            className={`p-2 rounded-xl border ${darkMode ? 'border-stone-800 text-stone-300 hover:bg-stone-900' : 'border-[#E7E0D6] text-stone-600 hover:bg-stone-100'} transition-colors cursor-pointer`}
             title="Toggle theme"
           >
-            {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
-          <div className="flex items-center gap-0.5 select-none">
-            <span className="text-xl font-black text-[#A82D24] tracking-tight">स्व</span>
-            <span className={`text-xl font-black ${darkMode ? 'text-stone-100' : 'text-stone-900'} tracking-tight`}>YAM</span>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-[#8B261E] text-white flex items-center justify-center font-bold shadow-2xs">
+              <GraduationCap size={18} />
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="font-serif text-lg font-bold tracking-tight text-[#1C1917] dark:text-stone-100">
+                EduManage
+              </span>
+              <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded-full bg-[#8B261E] text-white">
+                Bharat
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Login Card */}
+      {/* Main Login Card - Editorial Style matching Screenshot 3 */}
       <div className="w-full max-w-md mx-auto my-auto py-6">
-        <div className={`${darkMode ? 'bg-stone-900 border-stone-800' : 'bg-white border-stone-200/90'} rounded-2xl border p-6 sm:p-8 shadow-sm transition-all`}>
+        <div className={`${darkMode ? 'bg-stone-900 border-stone-800' : 'bg-white border-[#E7E0D6]'} rounded-2xl border p-6 sm:p-8 shadow-sm transition-all text-left`}>
           
           {/* Header */}
-          <div className="text-left mb-6">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#A82D24]">
+          <div className="mb-6">
+            <span className="text-[11px] font-black uppercase tracking-wider text-[#8B261E] dark:text-rose-400">
               WELCOME BACK
             </span>
-            <h1 className={`text-2xl sm:text-3xl font-bold font-editorial mt-1 ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>
-              Log in to Swyam
+            <h1 className={`text-2xl sm:text-3xl font-serif font-bold mt-1 ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>
+              Log in to EduManage
             </h1>
             <p className={`text-xs mt-1.5 ${darkMode ? 'text-stone-400' : 'text-stone-500'}`}>
-              Learn chapters, ask Sarthi, earn SkillPoints.
+              Manage student fees, attendance registers, and automated reminders.
             </p>
           </div>
 
-          {/* Role Selection Tabs */}
+          {/* Role Selection Tabs matching Screenshot 3 */}
           <div className="mb-5">
-            <label className={`block text-[11px] font-semibold mb-2 ${darkMode ? 'text-stone-400' : 'text-stone-500'}`}>
+            <label className={`block text-[11px] font-bold uppercase tracking-wider mb-2.5 ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
               I am a
             </label>
-            <div className="grid grid-cols-4 gap-2 mb-2">
-              {roles.slice(0, 4).map((role) => {
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+              {roles.map((role) => {
                 const Icon = role.icon;
                 const isSelected = selectedRole === role.id;
                 return (
@@ -193,45 +217,18 @@ export const AdminLoginScreen = () => {
                     key={role.id}
                     type="button"
                     onClick={() => setSelectedRole(role.id)}
-                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] font-medium transition-all cursor-pointer ${
+                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] transition-all cursor-pointer ${
                       isSelected
                         ? darkMode
-                          ? 'border-[#A82D24] bg-[#A82D24]/20 text-red-300 ring-2 ring-[#A82D24]/30'
-                          : 'border-red-300 bg-red-50/70 text-[#A82D24] font-semibold ring-2 ring-red-200'
+                          ? 'border-[#8B261E] bg-[#8B261E]/20 text-rose-300 ring-2 ring-[#8B261E]/40 font-bold'
+                          : 'border-[#8B261E] bg-rose-50/80 text-[#8B261E] font-bold ring-2 ring-[#8B261E]/30'
                         : darkMode
-                          ? 'border-stone-800 bg-stone-900/60 text-stone-400 hover:border-stone-700 hover:text-stone-200'
-                          : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
+                          ? 'border-stone-800 bg-stone-950 text-stone-400 hover:border-stone-700 hover:text-stone-200'
+                          : 'border-[#E7E0D6] bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
                     }`}
                   >
-                    <Icon size={16} className={isSelected ? 'text-[#A82D24]' : 'text-stone-400'} />
-                    <span className="mt-1">{role.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Admin role */}
-            <div className="grid grid-cols-4 gap-2">
-              {roles.slice(4).map((role) => {
-                const Icon = role.icon;
-                const isSelected = selectedRole === role.id;
-                return (
-                  <button
-                    key={role.id}
-                    type="button"
-                    onClick={() => setSelectedRole(role.id)}
-                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] font-medium transition-all cursor-pointer ${
-                      isSelected
-                        ? darkMode
-                          ? 'border-[#A82D24] bg-[#A82D24]/20 text-red-300 ring-2 ring-[#A82D24]/30'
-                          : 'border-red-300 bg-red-50/70 text-[#A82D24] font-semibold ring-2 ring-red-200'
-                        : darkMode
-                          ? 'border-stone-800 bg-stone-900/60 text-stone-400 hover:border-stone-700 hover:text-stone-200'
-                          : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
-                    }`}
-                  >
-                    <Icon size={16} className={isSelected ? 'text-[#A82D24]' : 'text-stone-400'} />
-                    <span className="mt-1">{role.label}</span>
+                    <Icon size={16} className={isSelected ? 'text-[#8B261E] dark:text-rose-400' : 'text-stone-400'} />
+                    <span className="mt-1 font-semibold">{role.label}</span>
                   </button>
                 );
               })}
@@ -249,18 +246,18 @@ export const AdminLoginScreen = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className={`block text-xs font-semibold mb-1.5 ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
-                Email
+                Email or Mobile Number
               </label>
               <input
-                type="email"
+                type="text"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="you@example.com"
+                placeholder={selectedRole === 'admin' ? 'director@apexacademy.in' : `${selectedRole}@apexacademy.in`}
                 className={`w-full px-3.5 py-2.5 text-xs rounded-xl border ${
                   darkMode
-                    ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#A82D24]'
-                    : 'bg-white border-stone-200 text-stone-900 placeholder-stone-400 focus:border-[#A82D24]'
-                } focus:outline-none focus:ring-2 focus:ring-[#A82D24]/20 transition-all`}
+                    ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#8B261E]'
+                    : 'bg-white border-[#E7E0D6] text-stone-900 placeholder-stone-400 focus:border-[#8B261E]'
+                } focus:outline-none focus:ring-2 focus:ring-[#8B261E]/20 transition-all`}
                 required
               />
             </div>
@@ -277,9 +274,9 @@ export const AdminLoginScreen = () => {
                   placeholder="••••••••"
                   className={`w-full px-3.5 py-2.5 text-xs rounded-xl border ${
                     darkMode
-                      ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#A82D24]'
-                      : 'bg-white border-stone-200 text-stone-900 placeholder-stone-400 focus:border-[#A82D24]'
-                  } focus:outline-none focus:ring-2 focus:ring-[#A82D24]/20 transition-all pr-10`}
+                      ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#8B261E]'
+                      : 'bg-white border-[#E7E0D6] text-stone-900 placeholder-stone-400 focus:border-[#8B261E]'
+                  } focus:outline-none focus:ring-2 focus:ring-[#8B261E]/20 transition-all pr-10`}
                   required
                 />
                 <button
@@ -296,7 +293,7 @@ export const AdminLoginScreen = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 bg-[#A82D24] hover:bg-[#8B261E] active:scale-[0.99] text-white font-semibold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full mt-2 bg-[#8B261E] hover:bg-[#721C16] active:scale-[0.99] text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <>
@@ -304,7 +301,7 @@ export const AdminLoginScreen = () => {
                   <span>Logging in...</span>
                 </>
               ) : (
-                <span>Log in as {selectedRole}</span>
+                <span>Log in as {roles.find(r => r.id === selectedRole)?.label}</span>
               )}
             </button>
           </form>
@@ -314,22 +311,22 @@ export const AdminLoginScreen = () => {
             <button
               type="button"
               onClick={handleGuestExplore}
-              className={`w-full py-2.5 px-3 rounded-xl border text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 darkMode
                   ? 'border-stone-800 hover:bg-stone-800 text-stone-300'
-                  : 'border-stone-200 hover:bg-stone-50 text-stone-700'
+                  : 'border-[#E7E0D6] hover:bg-[#FAF7F2] text-stone-800'
               }`}
             >
               <Sparkles size={13} className="text-amber-500" />
-              <span>Instant Guest Preview ({selectedRole})</span>
+              <span>Instant 1-Tap Demo ({roles.find(r => r.id === selectedRole)?.label})</span>
             </button>
 
             <p className={`text-xs ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
-              New to Swyam?{' '}
+              New to EduManage Bharat?{' '}
               <button
                 type="button"
                 onClick={() => setAuthView('register')}
-                className="text-[#A82D24] font-semibold hover:underline cursor-pointer"
+                className="text-[#8B261E] dark:text-rose-400 font-bold hover:underline cursor-pointer"
               >
                 Create a free account
               </button>
@@ -339,12 +336,12 @@ export const AdminLoginScreen = () => {
 
         {/* Footer note matching screenshot 3 */}
         <p className={`text-[11px] text-center mt-5 ${darkMode ? 'text-stone-500' : 'text-stone-500'}`}>
-          Your account lives on this device. Swyam keeps learning free for every student.
+          Your account lives on this device. EduManage keeps fee collection 100% direct with 0% gateway commission.
         </p>
       </div>
 
       <div className="w-full text-center py-2 text-[10px] text-stone-400">
-        स्वYAM · India's Best Teachers. One Free Classroom.
+        EduManage Bharat · Smart Fee Engine & 2G Offline Attendance Register
       </div>
     </div>
   );

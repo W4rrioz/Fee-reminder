@@ -37,14 +37,14 @@ function FormattedMessageText({ text }) {
         }
         if (trimmed.startsWith('### ')) {
           return (
-            <h4 key={i} className="font-black text-xs sm:text-sm text-stone-900 pt-1.5 border-b border-stone-200/80 pb-0.5">
-              {trimmed.slice(4)}
+            <h4 key={i} className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100 pt-1.5 border-b border-stone-200/80 dark:border-stone-800 pb-0.5">
+              {trimmed.slice(4).replace(/\*+/g, '')}
             </h4>
           );
         }
         if (trimmed.startsWith('$$') && trimmed.endsWith('$$')) {
           return (
-            <div key={i} className="my-1.5 p-2 rounded-lg bg-stone-100 font-mono text-center text-xs text-stone-800 border border-stone-200">
+            <div key={i} className="my-1.5 p-2 rounded-lg bg-stone-100 dark:bg-stone-800 font-mono text-center text-xs text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700">
               {trimmed.slice(2, -2).trim()}
             </div>
           );
@@ -58,27 +58,27 @@ function FormattedMessageText({ text }) {
 
         while ((match = regex.exec(line)) !== null) {
           if (match.index > lastIndex) {
-            parts.push(line.substring(lastIndex, match.index));
+            parts.push(line.substring(lastIndex, match.index).replace(/(?<!\w)\*|\*(?!\w)/g, ''));
           }
           const m = match[0];
           if (m.startsWith('**') && m.endsWith('**')) {
-            parts.push(<strong key={keyIdx++} className="font-bold text-stone-900">{m.slice(2, -2)}</strong>);
+            parts.push(<strong key={keyIdx++} className="font-bold text-stone-900 dark:text-stone-100">{m.slice(2, -2)}</strong>);
           } else if (m.startsWith('`') && m.endsWith('`')) {
-            parts.push(<code key={keyIdx++} className="px-1 py-0.5 rounded bg-stone-100 text-[#A82D24] font-mono text-[11px]">{m.slice(1, -1)}</code>);
+            parts.push(<code key={keyIdx++} className="px-1 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-[#8B261E] dark:text-rose-400 font-mono text-[11px]">{m.slice(1, -1)}</code>);
           } else if (m.startsWith('*') && m.endsWith('*')) {
-            parts.push(<em key={keyIdx++} className="italic text-stone-700">{m.slice(1, -1)}</em>);
+            parts.push(<em key={keyIdx++} className="italic text-stone-700 dark:text-stone-300">{m.slice(1, -1)}</em>);
           } else if (m.startsWith('$') && m.endsWith('$')) {
-            parts.push(<span key={keyIdx++} className="font-mono text-xs text-emerald-700 font-semibold">{m.slice(1, -1)}</span>);
+            parts.push(<span key={keyIdx++} className="font-mono text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{m.slice(1, -1)}</span>);
           }
           lastIndex = regex.lastIndex;
         }
         if (lastIndex < line.length) {
-          parts.push(line.substring(lastIndex));
+          parts.push(line.substring(lastIndex).replace(/(?<!\w)\*|\*(?!\w)/g, ''));
         }
 
         return (
           <div key={i} className="min-h-[1.1rem]">
-            {parts.length > 0 ? parts : line}
+            {parts.length > 0 ? parts : line.replace(/(?<!\w)\*|\*(?!\w)/g, '')}
           </div>
         );
       })}
@@ -103,17 +103,17 @@ export const AiChatbot = ({ isOpen, onClose }) => {
     {
       id: 'welcome',
       sender: 'ai',
-      text: `Namaste! 🙏 I am **Sarthi AI & EduManage Copilot**.
+      text: `Namaste! 🙏 I am **EduManage AI Copilot**.
 
-I can explain any **Physics, Chemistry, Math, or Science chapter** in simple Hinglish/English with real-world examples, as well as analyze your **fees, defaulters, and attendance** data!
+I am your 24/7 intelligent institute assistant. I can analyze your **fees, defaulters, attendance trends, and cash flow**, as well as draft customized WhatsApp reminders and announcements in Hindi & English!
 
 Tap a suggestion below or type your question:`,
       suggestions: [
-        '💡 Velocity aur speed mein kya difference hai?',
-        '🔬 Explain Chemical Reactions & Equations',
         '📊 Total collection & pending fee summary',
         '⚠️ Who are the top overdue defaulters?',
-        '✍️ Draft a polite WhatsApp fee reminder in Hinglish'
+        '✍️ Draft a polite WhatsApp fee reminder in Hinglish',
+        '💡 How to recover overdue fees 3x faster with direct UPI?',
+        '📅 Show low attendance alerts and batch analysis'
       ],
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
@@ -562,14 +562,14 @@ You can ask me specific questions like:
             <div>
               <div className="flex items-center gap-1.5">
                 <h3 className="text-sm font-black text-white leading-tight">
-                  Sarthi AI & Copilot
+                  EduManage AI Copilot
                 </h3>
                 <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.2 rounded-full bg-amber-400 text-stone-950">
-                  Gemini AI
+                  Gemini Pro
                 </span>
               </div>
-              <p className="text-[11px] text-red-100 font-medium">
-                Physics, Math, Chemistry concepts & live institute analytics
+              <p className="text-[11px] text-rose-100 font-medium">
+                0% Fee Recovery, Attendance & Cash Flow Intelligence
               </p>
             </div>
           </div>
