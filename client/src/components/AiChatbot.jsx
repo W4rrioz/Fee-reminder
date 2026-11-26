@@ -23,6 +23,69 @@ import {
 import { useApp } from '../context/AppContext';
 import { generateWhatsAppReminder } from '../utils/upi';
 
+// Clean markdown parser for AI messages
+function FormattedMessageText({ text }) {
+  if (!text) return null;
+  const lines = text.split('\n');
+
+  return (
+    <div className="font-sans space-y-1.5 leading-relaxed text-xs">
+      {lines.map((line, i) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={i} className="h-1" />;
+        }
+        if (trimmed.startsWith('### ')) {
+          return (
+            <h4 key={i} className="font-black text-xs sm:text-sm text-stone-900 pt-1.5 border-b border-stone-200/80 pb-0.5">
+              {trimmed.slice(4)}
+            </h4>
+          );
+        }
+        if (trimmed.startsWith('$$') && trimmed.endsWith('$$')) {
+          return (
+            <div key={i} className="my-1.5 p-2 rounded-lg bg-stone-100 font-mono text-center text-xs text-stone-800 border border-stone-200">
+              {trimmed.slice(2, -2).trim()}
+            </div>
+          );
+        }
+
+        const parts = [];
+        const regex = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*|\$[^$]+\$)/g;
+        let lastIndex = 0;
+        let match;
+        let keyIdx = 0;
+
+        while ((match = regex.exec(line)) !== null) {
+          if (match.index > lastIndex) {
+            parts.push(line.substring(lastIndex, match.index));
+          }
+          const m = match[0];
+          if (m.startsWith('**') && m.endsWith('**')) {
+            parts.push(<strong key={keyIdx++} className="font-bold text-stone-900">{m.slice(2, -2)}</strong>);
+          } else if (m.startsWith('`') && m.endsWith('`')) {
+            parts.push(<code key={keyIdx++} className="px-1 py-0.5 rounded bg-stone-100 text-[#A82D24] font-mono text-[11px]">{m.slice(1, -1)}</code>);
+          } else if (m.startsWith('*') && m.endsWith('*')) {
+            parts.push(<em key={keyIdx++} className="italic text-stone-700">{m.slice(1, -1)}</em>);
+          } else if (m.startsWith('$') && m.endsWith('$')) {
+            parts.push(<span key={keyIdx++} className="font-mono text-xs text-emerald-700 font-semibold">{m.slice(1, -1)}</span>);
+          }
+          lastIndex = regex.lastIndex;
+        }
+        if (lastIndex < line.length) {
+          parts.push(line.substring(lastIndex));
+        }
+
+        return (
+          <div key={i} className="min-h-[1.1rem]">
+            {parts.length > 0 ? parts : line}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export const AiChatbot = ({ isOpen, onClose }) => {
   const {
     students,
@@ -554,8 +617,12 @@ You can ask me specific questions like:
                 }`}
               >
                 {/* Message text with basic markdown style rendering */}
-                <div className="whitespace-pre-line font-sans space-y-1.5">
-                  {msg.text}
+                <div className="font-sans">
+                  {msg.sender === 'user' ? (
+                    <div className="whitespace-pre-line">{msg.text}</div>
+                  ) : (
+                    <FormattedMessageText text={msg.text} />
+                  )}
                 </div>
 
                 {/* Direct Action Button if attached */}

@@ -42,6 +42,16 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
   const [activeVideoModal, setActiveVideoModal] = useState(null);
   const [showWorkspace, setShowWorkspace] = useState(false);
 
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => {
+      const next = !prev;
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.toggle('dark', next);
+      }
+      return next;
+    });
+  };
+
   // Quick 1-tap guest explorer
   const handleQuickDemo = (role = 'ADMIN') => {
     loginUser({
@@ -172,7 +182,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
   ];
 
   return (
-    <div className={`w-full min-h-screen ${darkMode ? 'bg-stone-950 text-stone-100' : 'bg-[#FAF7F2] text-stone-900'} font-body transition-colors duration-200 select-none`}>
+    <div className={`w-full min-h-screen ${darkMode ? 'dark bg-stone-950 text-stone-100' : 'bg-[#FAF7F2] text-stone-900'} font-body transition-colors duration-200 select-none`}>
       
       {/* =========================================================
           1. STICKY TOP NAVBAR (Matching Screenshot 1 & 2)
@@ -218,7 +228,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             {/* Theme Toggle */}
             <button
               type="button"
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleDarkMode}
               className={`p-2 rounded-xl border ${darkMode ? 'border-stone-800 text-stone-300 hover:bg-stone-900' : 'border-stone-200 text-stone-600 hover:bg-stone-100'} transition-colors cursor-pointer`}
               title="Toggle Dark/Light Mode"
             >
@@ -264,14 +274,14 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold font-editorial text-stone-900 dark:text-stone-100 leading-[1.08] tracking-tight">
+              <h1 className={`text-4xl sm:text-6xl lg:text-7xl font-bold font-editorial ${darkMode ? 'text-stone-100' : 'text-stone-900'} leading-[1.08] tracking-tight`}>
                 India’s best<br />
                 teachers.<br />
                 <span className="text-[#8B261E]">One free<br />classroom.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400 max-w-xl leading-relaxed">
+              <p className={`text-sm sm:text-base ${darkMode ? 'text-stone-300' : 'text-stone-600'} max-w-xl leading-relaxed`}>
                 Full courses for every chapter — the most-watched lectures, clear notes, likely exam questions and quizzes — with Sarthi, an AI tutor you can talk to.
               </p>
 
@@ -317,19 +327,19 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               {/* Stats Counters Row */}
               <div className="pt-6 grid grid-cols-4 gap-4 border-t border-stone-200/80 dark:border-stone-800/80 max-w-lg">
                 <div>
-                  <div className="text-2xl sm:text-3xl font-black font-editorial text-stone-900 dark:text-stone-100">244</div>
+                  <div className={`text-2xl sm:text-3xl font-black font-editorial ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>244</div>
                   <div className="text-[11px] font-medium text-stone-500">chapters</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-black font-editorial text-stone-900 dark:text-stone-100">5</div>
+                  <div className={`text-2xl sm:text-3xl font-black font-editorial ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>5</div>
                   <div className="text-[11px] font-medium text-stone-500">classes</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-black font-editorial text-stone-900 dark:text-stone-100">3</div>
+                  <div className={`text-2xl sm:text-3xl font-black font-editorial ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>3</div>
                   <div className="text-[11px] font-medium text-stone-500">languages</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-black font-editorial text-stone-900 dark:text-stone-100">₹0</div>
+                  <div className={`text-2xl sm:text-3xl font-black font-editorial ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>₹0</div>
                   <div className="text-[11px] font-medium text-stone-500">always</div>
                 </div>
               </div>
@@ -753,12 +763,17 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       ========================================================= */}
       <button
         type="button"
-        onClick={onOpenAi}
-        className="fixed bottom-6 right-6 z-40 bg-[#A82D24] hover:bg-[#8B261E] active:scale-95 text-white font-bold text-xs py-2.5 px-4 rounded-full shadow-2xl hover:shadow-red-900/30 flex items-center gap-2 border border-white/20 transition-all cursor-pointer ring-4 ring-red-500/20"
+        id="floating-ask-sarthi"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onOpenAi();
+        }}
+        className="fixed bottom-6 right-6 z-[90] bg-[#A82D24] hover:bg-[#8B261E] active:scale-95 text-white font-bold text-xs py-2.5 px-4 rounded-full shadow-2xl hover:shadow-red-900/40 flex items-center gap-2 border border-white/20 transition-all cursor-pointer ring-4 ring-red-500/20"
         title="Ask Sarthi AI about courses or data"
       >
-        <Sparkles size={15} className="text-amber-300" />
-        <span>Ask Sarthi</span>
+        <Sparkles size={15} className="text-amber-300 pointer-events-none" />
+        <span className="pointer-events-none">Ask Sarthi</span>
       </button>
 
     </div>
