@@ -429,8 +429,11 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
 
                   {/* Interactive Blackboard Formula Card in Top Right */}
                   <div
-                    onClick={() => setShowFormulaModal(true)}
-                    className="absolute top-4 right-4 z-10 bg-stone-950/90 border border-stone-700/80 rounded-lg p-2.5 shadow-lg backdrop-blur-xs font-mono text-[11px] text-emerald-300 leading-tight cursor-pointer hover:border-amber-400/80 transition-all hover:scale-105"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowFormulaModal(true);
+                    }}
+                    className="absolute top-4 right-4 z-20 bg-stone-950/90 border border-stone-700/80 rounded-lg p-2.5 shadow-lg backdrop-blur-xs font-mono text-[11px] text-emerald-300 leading-tight cursor-pointer hover:border-amber-400/80 transition-all hover:scale-105 pointer-events-auto"
                     title="Click to open interactive Kinetic Energy calculator"
                   >
                     <div className="text-stone-400 text-[9px] mb-0.5 flex items-center justify-between">
@@ -443,11 +446,11 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
                   </div>
 
                   {/* Center Play Button with Pulse Animation */}
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
+                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
                     <button
                       type="button"
                       onClick={() => setShowVideoPlayer(true)}
-                      className="w-16 h-16 rounded-full bg-white/95 text-stone-900 hover:bg-white flex items-center justify-center shadow-2xl shadow-black/80 hover:scale-110 active:scale-95 transition-all cursor-pointer ring-8 ring-white/20 animate-pulse-glow"
+                      className="pointer-events-auto w-16 h-16 rounded-full bg-white/95 text-stone-900 hover:bg-white flex items-center justify-center shadow-2xl shadow-black/80 hover:scale-110 active:scale-95 transition-all cursor-pointer ring-8 ring-white/20 animate-pulse-glow"
                       title="Play lecture preview"
                     >
                       <Play size={24} className="fill-stone-900 text-stone-900 translate-x-0.5" />
