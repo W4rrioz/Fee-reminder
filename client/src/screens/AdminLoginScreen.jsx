@@ -3,7 +3,7 @@ import {
   GraduationCap,
   Users,
   BookOpen,
-  Heart,
+  IndianRupee,
   Shield,
   Eye,
   EyeOff,
@@ -19,7 +19,7 @@ import { useApp } from '../context/AppContext';
 export const AdminLoginScreen = () => {
   const { setAuthView, loginUser, isOnline } = useApp();
 
-  const [selectedRole, setSelectedRole] = useState('student'); // 'student' | 'parent' | 'teacher' | 'volunteer' | 'admin'
+  const [selectedRole, setSelectedRole] = useState('admin'); // 'admin' | 'teacher' | 'accountant' | 'student' | 'parent'
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -31,30 +31,30 @@ export const AdminLoginScreen = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   const roles = [
+    { id: 'admin', label: 'Admin', icon: Shield },
+    { id: 'teacher', label: 'Teacher', icon: BookOpen },
+    { id: 'accountant', label: 'Accountant', icon: IndianRupee },
     { id: 'student', label: 'Student', icon: GraduationCap },
     { id: 'parent', label: 'Parent', icon: Users },
-    { id: 'teacher', label: 'Teacher', icon: BookOpen },
-    { id: 'volunteer', label: 'Volunteer', icon: Heart },
-    { id: 'admin', label: 'Admin', icon: Shield },
   ];
 
   // Quick guest exploration for any role
   const handleGuestExplore = () => {
     const roleCapitalized = selectedRole.toUpperCase();
     const guestAuthData = {
-      token: `token_swyam_${Date.now()}`,
+      token: `token_guest_${Date.now()}`,
       user: {
-        id: `swyam_${selectedRole}_${Math.floor(1000 + Math.random() * 9000)}`,
-        name: `${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)} Explorer`,
-        email: `${selectedRole}@swyam.edu`,
+        id: `guest_${selectedRole}_${Math.floor(1000 + Math.random() * 9000)}`,
+        name: selectedRole === 'admin' ? 'Dr. R. K. Sharma (Director)' : `${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)} Explorer`,
+        email: `${selectedRole}@edumanage.demo`,
         phone: '+91 9876543210',
         role: roleCapitalized,
         isGuest: true,
         created_at: new Date().toISOString()
       },
       institute: {
-        id: 'inst_swyam_01',
-        name: 'Apex Academy / Swyam Classroom',
+        id: 'inst_apex_01',
+        name: 'Apex Coaching Academy',
         type: 'coaching_center',
         city: 'Kanpur',
         upi_id: 'apexacademy@upi',
@@ -116,10 +116,10 @@ export const AdminLoginScreen = () => {
             role: selectedRole.toUpperCase()
           },
           institute: {
-            id: 'inst_swyam_01',
+            id: 'inst_apex_01',
             name: 'Apex Coaching Academy',
             upi_id: 'apexacademy@upi',
-            upi_name: 'Apex Academy'
+            upi_name: 'Apex Academy Kanpur'
           }
         };
       }
@@ -155,9 +155,16 @@ export const AdminLoginScreen = () => {
             {darkMode ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
-          <div className="flex items-center gap-0.5 select-none">
-            <span className="text-xl font-black text-[#A82D24] tracking-tight">स्व</span>
-            <span className={`text-xl font-black ${darkMode ? 'text-stone-100' : 'text-stone-900'} tracking-tight`}>YAM</span>
+          <div className="flex items-center gap-2 select-none">
+            <div className="w-7 h-7 rounded-lg bg-[#A82D24] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+              <GraduationCap size={15} />
+            </div>
+            <span className={`text-lg font-black ${darkMode ? 'text-stone-100' : 'text-stone-900'} tracking-tight`}>
+              EduManage
+            </span>
+            <span className="text-[10px] font-black uppercase px-1.5 py-0.2 rounded-md bg-[#A82D24] text-white">
+              Bharat
+            </span>
           </div>
         </div>
       </div>
@@ -172,20 +179,20 @@ export const AdminLoginScreen = () => {
               WELCOME BACK
             </span>
             <h1 className={`text-2xl sm:text-3xl font-bold font-editorial mt-1 ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>
-              Log in to Swyam
+              Sign In to EduManage
             </h1>
             <p className={`text-xs mt-1.5 ${darkMode ? 'text-stone-400' : 'text-stone-500'}`}>
-              Learn chapters, ask Sarthi, earn SkillPoints.
+              Access your institute dashboard, fee register, and attendance tracker.
             </p>
           </div>
 
           {/* Role Selection Tabs */}
           <div className="mb-5">
             <label className={`block text-[11px] font-semibold mb-2 ${darkMode ? 'text-stone-400' : 'text-stone-500'}`}>
-              I am a
+              Sign in as
             </label>
-            <div className="grid grid-cols-4 gap-2 mb-2">
-              {roles.slice(0, 4).map((role) => {
+            <div className="grid grid-cols-5 gap-1.5">
+              {roles.map((role) => {
                 const Icon = role.icon;
                 const isSelected = selectedRole === role.id;
                 return (
@@ -193,7 +200,7 @@ export const AdminLoginScreen = () => {
                     key={role.id}
                     type="button"
                     onClick={() => setSelectedRole(role.id)}
-                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] font-medium transition-all cursor-pointer ${
+                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl border text-[10px] font-medium transition-all cursor-pointer ${
                       isSelected
                         ? darkMode
                           ? 'border-[#A82D24] bg-[#A82D24]/20 text-red-300 ring-2 ring-[#A82D24]/30'
@@ -203,34 +210,7 @@ export const AdminLoginScreen = () => {
                           : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
                     }`}
                   >
-                    <Icon size={16} className={isSelected ? 'text-[#A82D24]' : 'text-stone-400'} />
-                    <span className="mt-1">{role.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Admin role */}
-            <div className="grid grid-cols-4 gap-2">
-              {roles.slice(4).map((role) => {
-                const Icon = role.icon;
-                const isSelected = selectedRole === role.id;
-                return (
-                  <button
-                    key={role.id}
-                    type="button"
-                    onClick={() => setSelectedRole(role.id)}
-                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] font-medium transition-all cursor-pointer ${
-                      isSelected
-                        ? darkMode
-                          ? 'border-[#A82D24] bg-[#A82D24]/20 text-red-300 ring-2 ring-[#A82D24]/30'
-                          : 'border-red-300 bg-red-50/70 text-[#A82D24] font-semibold ring-2 ring-red-200'
-                        : darkMode
-                          ? 'border-stone-800 bg-stone-900/60 text-stone-400 hover:border-stone-700 hover:text-stone-200'
-                          : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
-                    }`}
-                  >
-                    <Icon size={16} className={isSelected ? 'text-[#A82D24]' : 'text-stone-400'} />
+                    <Icon size={15} className={isSelected ? 'text-[#A82D24]' : 'text-stone-400'} />
                     <span className="mt-1">{role.label}</span>
                   </button>
                 );
@@ -249,13 +229,13 @@ export const AdminLoginScreen = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className={`block text-xs font-semibold mb-1.5 ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
-                Email
+                Email / Mobile
               </label>
               <input
-                type="email"
+                type="text"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="you@example.com"
+                placeholder="director@institute.in"
                 className={`w-full px-3.5 py-2.5 text-xs rounded-xl border ${
                   darkMode
                     ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#A82D24]'
@@ -301,15 +281,15 @@ export const AdminLoginScreen = () => {
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  <span>Logging in...</span>
+                  <span>Signing in...</span>
                 </>
               ) : (
-                <span>Log in as {selectedRole}</span>
+                <span>Sign in as {roles.find((r) => r.id === selectedRole)?.label || 'User'}</span>
               )}
             </button>
           </form>
 
-          {/* Quick guest bypass button & Register link */}
+          {/* Quick guest preview & Register link */}
           <div className="mt-5 space-y-2.5 text-center">
             <button
               type="button"
@@ -321,30 +301,30 @@ export const AdminLoginScreen = () => {
               }`}
             >
               <Sparkles size={13} className="text-amber-500" />
-              <span>Instant Guest Preview ({selectedRole})</span>
+              <span>Instant Guest Preview ({roles.find((r) => r.id === selectedRole)?.label})</span>
             </button>
 
             <p className={`text-xs ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
-              New to Swyam?{' '}
+              New institute?{' '}
               <button
                 type="button"
                 onClick={() => setAuthView('register')}
                 className="text-[#A82D24] font-semibold hover:underline cursor-pointer"
               >
-                Create a free account
+                Register your school or coaching
               </button>
             </p>
           </div>
         </div>
 
-        {/* Footer note matching screenshot 3 */}
+        {/* Footer note */}
         <p className={`text-[11px] text-center mt-5 ${darkMode ? 'text-stone-500' : 'text-stone-500'}`}>
-          Your account lives on this device. Swyam keeps learning free for every student.
+          Secure direct bank UPI settlements. Zero transaction gateway fees.
         </p>
       </div>
 
       <div className="w-full text-center py-2 text-[10px] text-stone-400">
-        EduManage & Swyam · Open Classroom Platform
+        EduManage Bharat · Direct UPI & Attendance Engine
       </div>
     </div>
   );

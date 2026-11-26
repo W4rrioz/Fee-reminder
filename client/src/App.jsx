@@ -100,23 +100,28 @@ export function MainApp() {
 
   // Main App for Authenticated & Onboarded user
   return (
-    <div className="min-h-screen bg-slate-100 flex justify-center">
-      {/* Mobile container - optimized for ₹8,000 Android phones (max width 480px) */}
-      <div className="w-full max-w-lg bg-slate-50 min-h-screen flex flex-col shadow-xl relative border-x border-slate-200">
+    <div className="min-h-screen bg-stone-100 dark:bg-stone-950 flex justify-center">
+      {/* Responsive container - adapts from mobile (₹8,000 Android phones) to desktop */}
+      <div className="w-full max-w-5xl bg-stone-50 dark:bg-stone-900 min-h-screen flex flex-col shadow-xl relative border-x border-stone-200 dark:border-stone-800">
         {/* Offline indicator banner */}
         <OfflineBanner />
 
         {/* Top App Bar */}
-        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+        <header className="sticky top-0 z-30 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-xs">
+            <div className="w-9 h-9 rounded-xl bg-[#A82D24] text-white flex items-center justify-center font-bold shadow-xs">
               <GraduationCap size={20} />
             </div>
             <div>
-              <h1 className="text-base font-black text-slate-900 leading-tight">
-                EduManage
-              </h1>
-              <p className="text-[11px] text-slate-500 font-semibold truncate max-w-[150px]">
+              <div className="flex items-center gap-1.5">
+                <h1 className="text-base font-black text-stone-900 dark:text-stone-100 leading-tight">
+                  EduManage
+                </h1>
+                <span className="text-[10px] font-black uppercase px-1.5 py-0.2 rounded-full bg-[#A82D24] text-white shadow-2xs">
+                  Bharat
+                </span>
+              </div>
+              <p className="text-[11px] text-stone-500 font-semibold truncate max-w-[200px]">
                 {institute?.name || 'Fee & Attendance Platform'}
               </p>
             </div>
