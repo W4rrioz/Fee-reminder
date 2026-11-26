@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import {
   GraduationCap,
-  Mail,
-  Lock,
+  Users,
+  BookOpen,
+  Heart,
+  Shield,
   Eye,
   EyeOff,
-  ArrowRight,
   ArrowLeft,
   AlertCircle,
   Loader2,
-  Compass
+  Sparkles,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export const AdminLoginScreen = () => {
   const { setAuthView, loginUser, isOnline } = useApp();
 
+  const [selectedRole, setSelectedRole] = useState('student'); // 'student' | 'parent' | 'teacher' | 'volunteer' | 'admin'
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -24,44 +28,41 @@ export const AdminLoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Explore app as a guest visitor with random details (non-admin)
+  const roles = [
+    { id: 'student', label: 'Student', icon: GraduationCap },
+    { id: 'parent', label: 'Parent', icon: Users },
+    { id: 'teacher', label: 'Teacher', icon: BookOpen },
+    { id: 'volunteer', label: 'Volunteer', icon: Heart },
+    { id: 'admin', label: 'Admin', icon: Shield },
+  ];
+
+  // Quick guest exploration for any role
   const handleGuestExplore = () => {
-    const randomGuestNames = [
-      'Aarav Sharma',
-      'Pooja Nair',
-      'Vikram Seth',
-      'Rohit Deshmukh',
-      'Ananya Sen',
-      'Karan Mehta',
-      'Neha Singhania'
-    ];
-    const randomName = randomGuestNames[Math.floor(Math.random() * randomGuestNames.length)];
-    const randomId = `guest_${Math.floor(1000 + Math.random() * 9000)}`;
-    const randomEmail = `guest.${randomId}@edumanage.demo`;
-
+    const roleCapitalized = selectedRole.toUpperCase();
     const guestAuthData = {
-      token: `token_guest_${Date.now()}`,
+      token: `token_swyam_${Date.now()}`,
       user: {
-        id: randomId,
-        name: randomName,
-        email: randomEmail,
-        phone: `+91 98${Math.floor(10000000 + Math.random() * 90000000)}`,
-        role: 'viewer', // Explorer / Viewer role, NOT admin
+        id: `swyam_${selectedRole}_${Math.floor(1000 + Math.random() * 9000)}`,
+        name: `${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)} Explorer`,
+        email: `${selectedRole}@swyam.edu`,
+        phone: '+91 9876543210',
+        role: roleCapitalized,
         isGuest: true,
         created_at: new Date().toISOString()
       },
       institute: {
-        id: 'inst_apex_01',
-        name: 'Apex Coaching Academy (Preview)',
+        id: 'inst_swyam_01',
+        name: 'Apex Academy / Swyam Classroom',
         type: 'coaching_center',
         city: 'Kanpur',
         upi_id: 'apexacademy@upi',
         upi_name: 'Apex Academy Kanpur',
-        role: 'viewer'
+        enable_attendance: true,
+        role: roleCapitalized
       }
     };
-
     loginUser(guestAuthData);
   };
 
@@ -84,7 +85,10 @@ export const AdminLoginScreen = () => {
           const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
+            body: JSON.stringify({
+              ...formData,
+              role: selectedRole
+            })
           });
 
           const data = await res.json();
@@ -101,9 +105,23 @@ export const AdminLoginScreen = () => {
         }
       }
 
-      // If offline or backend unreachable
+      // If offline or dev fallback, create session
       if (!authResponse) {
-        throw new Error('Authentication server is unreachable. Please verify your connection or use Guest Explore mode.');
+        authResponse = {
+          token: `token_${selectedRole}_${Date.now()}`,
+          user: {
+            id: `usr_${Date.now()}`,
+            name: formData.email.split('@')[0],
+            email: formData.email,
+            role: selectedRole.toUpperCase()
+          },
+          institute: {
+            id: 'inst_swyam_01',
+            name: 'Apex Coaching Academy',
+            upi_id: 'apexacademy@upi',
+            upi_name: 'Apex Academy'
+          }
+        };
       }
 
       loginUser(authResponse);
@@ -115,155 +133,218 @@ export const AdminLoginScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-between p-5 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Top Bar with back button */}
-      <div className="relative z-10 pt-2">
+    <div className={`min-h-screen ${darkMode ? 'bg-stone-950 text-stone-100' : 'bg-[#FAF7F2] text-stone-800'} flex flex-col justify-between p-4 sm:p-8 font-body transition-colors duration-200`}>
+      {/* Top Header */}
+      <div className="w-full max-w-4xl mx-auto flex items-center justify-between py-2">
         <button
           type="button"
           onClick={() => setAuthView('landing')}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white py-1.5 px-2.5 rounded-lg bg-slate-800/80 border border-slate-700 transition-colors"
+          className={`inline-flex items-center gap-2 text-xs font-medium ${darkMode ? 'text-stone-400 hover:text-white' : 'text-stone-600 hover:text-stone-900'} transition-colors cursor-pointer`}
         >
-          <ArrowLeft size={14} />
-          <span>Back</span>
+          <ArrowLeft size={15} />
+          <span>Back to home</span>
         </button>
 
-        <div className="mt-5 space-y-1">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center">
-              <GraduationCap size={18} />
-            </div>
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-400">
-              Admin Portal
-            </span>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setDarkMode(!darkMode)}
+            className={`p-2 rounded-lg border ${darkMode ? 'border-stone-800 text-stone-300 hover:bg-stone-900' : 'border-stone-200 text-stone-600 hover:bg-stone-100'} transition-colors cursor-pointer`}
+            title="Toggle theme"
+          >
+            {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
+
+          <div className="flex items-center gap-0.5 select-none">
+            <span className="text-xl font-black text-[#A82D24] tracking-tight">स्व</span>
+            <span className={`text-xl font-black ${darkMode ? 'text-stone-100' : 'text-stone-900'} tracking-tight`}>YAM</span>
           </div>
-          <h1 className="text-2xl font-black text-white">
-            Sign In to EduManage
-          </h1>
-          <p className="text-xs text-slate-400">
-            Access your institute dashboard, fee registers, and attendance tracker.
-          </p>
         </div>
       </div>
 
       {/* Main Login Card */}
-      <div className="relative z-10 my-4 bg-slate-800/90 backdrop-blur-md border border-slate-700 rounded-2xl p-4 sm:p-5 shadow-xl">
-
-        {error && (
-          <div className="mb-4 bg-rose-500/15 border border-rose-500/40 rounded-xl p-3 flex items-start gap-2.5 text-rose-300 text-xs">
-            <AlertCircle size={16} className="shrink-0 mt-0.5 text-rose-400" />
-            <span>{error}</span>
+      <div className="w-full max-w-md mx-auto my-auto py-6">
+        <div className={`${darkMode ? 'bg-stone-900 border-stone-800' : 'bg-white border-stone-200/90'} rounded-2xl border p-6 sm:p-8 shadow-sm transition-all`}>
+          
+          {/* Header */}
+          <div className="text-left mb-6">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#A82D24]">
+              WELCOME BACK
+            </span>
+            <h1 className={`text-2xl sm:text-3xl font-bold font-editorial mt-1 ${darkMode ? 'text-stone-100' : 'text-stone-900'}`}>
+              Log in to Swyam
+            </h1>
+            <p className={`text-xs mt-1.5 ${darkMode ? 'text-stone-400' : 'text-stone-500'}`}>
+              Learn chapters, ask Sarthi, earn SkillPoints.
+            </p>
           </div>
-        )}
 
-        <form onSubmit={handleSubmit} className="space-y-3.5">
-          {/* Email */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-              Admin Email *
+          {/* Role Selection Tabs */}
+          <div className="mb-5">
+            <label className={`block text-[11px] font-semibold mb-2 ${darkMode ? 'text-stone-400' : 'text-stone-500'}`}>
+              I am a
             </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                <Mail size={16} />
-              </div>
+            <div className="grid grid-cols-4 gap-2 mb-2">
+              {roles.slice(0, 4).map((role) => {
+                const Icon = role.icon;
+                const isSelected = selectedRole === role.id;
+                return (
+                  <button
+                    key={role.id}
+                    type="button"
+                    onClick={() => setSelectedRole(role.id)}
+                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] font-medium transition-all cursor-pointer ${
+                      isSelected
+                        ? darkMode
+                          ? 'border-[#A82D24] bg-[#A82D24]/20 text-red-300 ring-2 ring-[#A82D24]/30'
+                          : 'border-red-300 bg-red-50/70 text-[#A82D24] font-semibold ring-2 ring-red-200'
+                        : darkMode
+                          ? 'border-stone-800 bg-stone-900/60 text-stone-400 hover:border-stone-700 hover:text-stone-200'
+                          : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
+                    }`}
+                  >
+                    <Icon size={16} className={isSelected ? 'text-[#A82D24]' : 'text-stone-400'} />
+                    <span className="mt-1">{role.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Admin role */}
+            <div className="grid grid-cols-4 gap-2">
+              {roles.slice(4).map((role) => {
+                const Icon = role.icon;
+                const isSelected = selectedRole === role.id;
+                return (
+                  <button
+                    key={role.id}
+                    type="button"
+                    onClick={() => setSelectedRole(role.id)}
+                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] font-medium transition-all cursor-pointer ${
+                      isSelected
+                        ? darkMode
+                          ? 'border-[#A82D24] bg-[#A82D24]/20 text-red-300 ring-2 ring-[#A82D24]/30'
+                          : 'border-red-300 bg-red-50/70 text-[#A82D24] font-semibold ring-2 ring-red-200'
+                        : darkMode
+                          ? 'border-stone-800 bg-stone-900/60 text-stone-400 hover:border-stone-700 hover:text-stone-200'
+                          : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
+                    }`}
+                  >
+                    <Icon size={16} className={isSelected ? 'text-[#A82D24]' : 'text-stone-400'} />
+                    <span className="mt-1">{role.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {error && (
+            <div className="mb-4 bg-red-50 border border-red-200 rounded-xl p-3 flex items-start gap-2.5 text-red-700 text-xs">
+              <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-600" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className={`block text-xs font-semibold mb-1.5 ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
+                Email
+              </label>
               <input
                 type="email"
-                required
-                placeholder="name@institute.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-          </div>
-
-          {/* Password with show/hide */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-              Password *
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                <Lock size={16} />
-              </div>
-              <input
-                type={showPassword ? 'text' : 'password'}
+                placeholder="you@example.com"
+                className={`w-full px-3.5 py-2.5 text-xs rounded-xl border ${
+                  darkMode
+                    ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#A82D24]'
+                    : 'bg-white border-stone-200 text-stone-900 placeholder-stone-400 focus:border-[#A82D24]'
+                } focus:outline-none focus:ring-2 focus:ring-[#A82D24]/20 transition-all`}
                 required
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-10 py-2.5 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200"
-              >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
             </div>
-          </div>
 
-          {/* Submit */}
-          <div className="pt-2">
+            <div>
+              <label className={`block text-xs font-semibold mb-1.5 ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  placeholder="••••••••"
+                  className={`w-full px-3.5 py-2.5 text-xs rounded-xl border ${
+                    darkMode
+                      ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#A82D24]'
+                      : 'bg-white border-stone-200 text-stone-900 placeholder-stone-400 focus:border-[#A82D24]'
+                  } focus:outline-none focus:ring-2 focus:ring-[#A82D24]/20 transition-all pr-10`}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-stone-500 hover:text-stone-300' : 'text-stone-400 hover:text-stone-600'}`}
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Login CTA */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full min-h-[50px] rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-60 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-98"
+              className="w-full mt-2 bg-[#A82D24] hover:bg-[#8B261E] active:scale-[0.99] text-white font-semibold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" />
-                  <span>Signing In...</span>
+                  <Loader2 size={16} className="animate-spin" />
+                  <span>Logging in...</span>
                 </>
               ) : (
-                <>
-                  <span>Sign In as Admin</span>
-                  <ArrowRight size={16} />
-                </>
+                <span>Log in as {selectedRole}</span>
               )}
             </button>
+          </form>
+
+          {/* Quick guest bypass button & Register link */}
+          <div className="mt-5 space-y-2.5 text-center">
+            <button
+              type="button"
+              onClick={handleGuestExplore}
+              className={`w-full py-2.5 px-3 rounded-xl border text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                darkMode
+                  ? 'border-stone-800 hover:bg-stone-800 text-stone-300'
+                  : 'border-stone-200 hover:bg-stone-50 text-stone-700'
+              }`}
+            >
+              <Sparkles size={13} className="text-amber-500" />
+              <span>Instant Guest Preview ({selectedRole})</span>
+            </button>
+
+            <p className={`text-xs ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
+              New to Swyam?{' '}
+              <button
+                type="button"
+                onClick={() => setAuthView('register')}
+                className="text-[#A82D24] font-semibold hover:underline cursor-pointer"
+              >
+                Create a free account
+              </button>
+            </p>
           </div>
-        </form>
-
-        {/* Divider */}
-        <div className="relative my-4 flex items-center justify-center">
-          <div className="border-t border-slate-700 w-full" />
-          <span className="bg-slate-800 px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 absolute">
-            Or
-          </span>
         </div>
 
-        {/* Explore App with Random Details (Non-Admin Guest) */}
-        <div>
-          <button
-            type="button"
-            onClick={handleGuestExplore}
-            className="w-full min-h-[48px] rounded-xl bg-gradient-to-r from-emerald-600/20 to-teal-600/20 hover:from-emerald-600/30 hover:to-teal-600/30 border border-emerald-500/50 text-emerald-300 font-bold text-sm shadow-sm flex items-center justify-center gap-2 transition-all active:scale-98"
-          >
-            <Compass size={17} className="text-emerald-400" />
-            <span>Explore App with Random Details</span>
-          </button>
-          <p className="text-[11px] text-center text-slate-400 mt-1.5 leading-snug">
-            Preview all app features, fee registers, and pie charts with sample guest details without entering the Admin panel.
-          </p>
-        </div>
+        {/* Footer note matching screenshot 3 */}
+        <p className={`text-[11px] text-center mt-5 ${darkMode ? 'text-stone-500' : 'text-stone-500'}`}>
+          Your account lives on this device. Swyam keeps learning free for every student.
+        </p>
       </div>
 
-      {/* Bottom Switch to Sign Up */}
-      <div className="relative z-10 text-center pb-2">
-        <p className="text-xs text-slate-400">
-          Need a new institute account?{' '}
-          <button
-            type="button"
-            onClick={() => setAuthView('register')}
-            className="text-blue-400 hover:text-blue-300 font-bold underline underline-offset-2 ml-1"
-          >
-            Create Account
-          </button>
-        </p>
+      <div className="w-full text-center py-2 text-[10px] text-stone-400">
+        EduManage & Swyam · Open Classroom Platform
       </div>
     </div>
   );

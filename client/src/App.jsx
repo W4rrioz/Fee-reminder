@@ -68,19 +68,19 @@ export function MainApp() {
   if (!isAuthenticated || !isOnboarded) {
     if (!isAuthenticated && authView === 'landing') {
       return (
-        <div className="min-h-screen bg-slate-50 flex flex-col w-full relative">
+        <div className="min-h-screen bg-[#FAF7F2] flex flex-col w-full relative">
           <OfflineBanner />
-          <WelcomeLandingScreen />
-          {/* AI Copilot available on Landing Page as well! */}
-          <button
-            type="button"
-            onClick={() => setIsAiOpen(true)}
-            className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white font-black text-xs py-2.5 px-4 rounded-full shadow-2xl hover:shadow-blue-500/30 flex items-center gap-2 border border-white/20 active:scale-95 transition-all cursor-pointer ring-4 ring-blue-500/20 animate-bounce"
-          >
-            <Bot size={17} className="text-amber-300" />
-            <span>Ask AI About Data</span>
-          </button>
+          <WelcomeLandingScreen onOpenAi={() => setIsAiOpen(true)} />
           <AiChatbot isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
+        </div>
+      );
+    }
+
+    if (!isAuthenticated && authView === 'login') {
+      return (
+        <div className="min-h-screen w-full relative">
+          <OfflineBanner />
+          <AdminLoginScreen />
         </div>
       );
     }
@@ -92,7 +92,6 @@ export function MainApp() {
 
           {/* Render selected auth view */}
           {(!isAuthenticated && authView === 'register') && <SignUpScreen />}
-          {(!isAuthenticated && authView === 'login') && <AdminLoginScreen />}
           {(isAuthenticated && !isOnboarded) && <OnboardingWizard />}
         </div>
       </div>

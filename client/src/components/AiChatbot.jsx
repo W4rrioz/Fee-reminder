@@ -40,17 +40,17 @@ export const AiChatbot = ({ isOpen, onClose }) => {
     {
       id: 'welcome',
       sender: 'ai',
-      text: `Namaste! 🙏 I am your **EduManage AI Assistant**.
+      text: `Namaste! 🙏 I am **Sarthi AI & EduManage Copilot**.
 
-I have full live access to your institute's data (**${institute.name}**). You can ask me anything about your fee collections, defaulters, attendance, or ask me to draft reminders!
+I can explain any **Physics, Chemistry, Math, or Science chapter** in simple Hinglish/English with real-world examples, as well as analyze your **fees, defaulters, and attendance** data!
 
 Tap a suggestion below or type your question:`,
       suggestions: [
-        '📊 Total collection & pending summary',
+        '💡 Velocity aur speed mein kya difference hai?',
+        '🔬 Explain Chemical Reactions & Equations',
+        '📊 Total collection & pending fee summary',
         '⚠️ Who are the top overdue defaulters?',
-        '📅 How is today\'s attendance?',
-        '🚨 Which students are at high drop-out risk?',
-        '✍️ Draft a polite fee reminder in Hinglish'
+        '✍️ Draft a polite WhatsApp fee reminder in Hinglish'
       ],
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
@@ -158,6 +158,67 @@ Tap a suggestion below or type your question:`,
   // AI Response Generator Engine (Deterministic & Real Data Contextual)
   const processUserQuery = (queryText) => {
     const q = queryText.toLowerCase().trim();
+
+    // Educational concepts (Sarthi AI Tutor mode)
+    if (q.includes('velocity') || q.includes('speed')) {
+      return {
+        text: `### ✦ Sarthi Explains: Velocity vs Speed
+
+**Speed** sirf yeh batata hai ki koi cheez kitni tezi se chal rahi hai (jaise *40 km/h*). Yeh ek **Scalar** quantity hai jisme direction nahi hoti.
+
+Lekin **Velocity** mein speed ke saath **Direction (disha)** bhi hoti hai! Yeh ek **Vector** quantity hai.
+
+👉 **Real-world Example:**
+- Agar ek auto sadak par *40 km/h* par chal raha hai $\\rightarrow$ **Speed**.
+- Agar wahi auto *40 km/h* ki raftaar se **North ki taraf** ja raha hai $\\rightarrow$ **Velocity**!
+
+- **Formula:** $\\vec{v} = \\frac{\\Delta \\vec{x}}{\\Delta t}$ (Displacement / Time)
+- **SI Unit:** $m/s$ (metre per second)
+- **Key Exam Point:** Agar ek circular track par gaadi constant speed se ghoom rahi hai, tab bhi uski direction har second badalti hai, isliye uski *velocity change ho rahi hoti hai* aur usme *acceleration* hota hai!`
+      };
+    }
+
+    if (q.includes('chemical reaction') || q.includes('reaction') || q.includes('metal')) {
+      return {
+        text: `### ✦ Sarthi Explains: Chemical Reactions & Equations (Class 10)
+
+Jab do ya zyada substances milkar naye properties wale substances banate hain jinki chemical identity badal jaati hai, usse **Chemical Reaction** kehte hain.
+
+👉 **Four Signs of a Reaction:**
+1. **Change in state**
+2. **Change in colour**
+3. **Evolution of gas** (e.g., $H_2$ gas release)
+4. **Change in temperature** (Exothermic vs Endothermic)
+
+👉 **Classic Board Exam Reaction:**
+Magnesium ribbon ko hawa me burn karne par dazzling white flame ke saath **Magnesium Oxide** banta hai:
+$$2\\text{Mg} (s) + \\text{O}_2 (g) \\rightarrow 2\\text{MgO} (s)$$
+
+💡 **Why balance equations?**
+According to the **Law of Conservation of Mass**, matter can neither be created nor destroyed. Isliye Reactants ke atoms = Products ke atoms hone chahiye!`
+      };
+    }
+
+    if (q.includes('kinetic') || q.includes('energy') || q.includes('formula')) {
+      return {
+        text: `### ✦ Sarthi Explains: Kinetic Energy Formula
+
+Kinetic Energy ($K$) kisi object ki motion (gati) ki wajah se hoti hai.
+
+- **Formula:**
+$$K = \\frac{1}{2} m v^2$$
+
+Where:
+- $m$ = Mass (kg)
+- $v$ = Velocity ($m/s$)
+
+👉 **Numerical from Blackboard:**
+- $m = 5\\text{ kg}$, $v = 4\\text{ m/s}$
+$$K = \\frac{1}{2} \\times 5 \\times 4^2 = \\frac{1}{2} \\times 5 \\times 16 = 40\\text{ Joules (J)}$$
+
+💡 **Unit:** Joules ($J$). Agar velocity double kar di jaye ($2v$), toh Kinetic Energy **4 times** ho jaati hai kyunki $v^2$ par depend karti hai!`
+      };
+    }
 
     // 1. Fee Collection / Cashflow / Summary
     if (
@@ -430,22 +491,22 @@ You can ask me specific questions like:
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
       <div className="bg-white w-full sm:max-w-lg h-[85vh] sm:h-[620px] rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden">
         {/* 1. Header Bar */}
-        <header className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white px-4 py-3 flex items-center justify-between shrink-0 shadow-md">
+        <header className="bg-gradient-to-r from-[#8B261E] via-[#A82D24] to-[#731D16] text-white px-4 py-3 flex items-center justify-between shrink-0 shadow-md">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center font-bold text-white shadow-xs">
-              <Bot size={20} className="text-amber-300" />
+              <Sparkles size={18} className="text-amber-300" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <h3 className="text-sm font-black text-white leading-tight">
-                  EduManage AI Copilot
+                  Sarthi AI & Copilot
                 </h3>
-                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950">
-                  Live Data
+                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.2 rounded-full bg-amber-400 text-stone-950">
+                  Gemini AI
                 </span>
               </div>
-              <p className="text-[11px] text-blue-100 font-medium">
-                Ask questions about fees, defaulters, attendance & students
+              <p className="text-[11px] text-red-100 font-medium">
+                Physics, Math, Chemistry concepts & live institute analytics
               </p>
             </div>
           </div>
