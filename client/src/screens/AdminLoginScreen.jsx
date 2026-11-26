@@ -187,7 +187,7 @@ export const AdminLoginScreen = () => {
       </div>
 
       {/* Main Login Card - Editorial Style matching Screenshot 3 */}
-      <div className="w-full max-w-md mx-auto my-auto py-6">
+      <div className="w-full max-w-md mx-auto my-auto py-6 animate-fade-in">
         <div className={`${darkMode ? 'bg-stone-900 border-stone-800' : 'bg-white border-[#E7E0D6]'} rounded-2xl border p-6 sm:p-8 shadow-sm transition-all text-left`}>
           
           {/* Header */}

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import {
   GraduationCap,
   ArrowRight,
@@ -41,12 +43,41 @@ import { useApp } from '../context/AppContext';
 
 export const WelcomeLandingScreen = ({ onOpenAi }) => {
   const { setAuthView, loginUser } = useApp();
+  const heroRef = useRef(null);
   const [darkMode, setDarkMode] = useState(false);
   const [activeModuleModal, setActiveModuleModal] = useState(null);
   const [showProductTour, setShowProductTour] = useState(false);
   const [showRoiModal, setShowRoiModal] = useState(false);
   const [activeAudienceTab, setActiveAudienceTab] = useState('coaching'); // 'coaching' | 'tutors' | 'schools'
   const [reminderSentToast, setReminderSentToast] = useState(false);
+
+  // Smooth entrance animations with GSAP
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      // Stagger entrance for left hero elements
+      gsap.from('.hero-reveal', {
+        y: 28,
+        opacity: 0,
+        duration: 0.85,
+        stagger: 0.08,
+        ease: 'power3.out',
+        clearProps: 'all'
+      });
+
+      // Right showcase card entrance
+      gsap.from('.hero-showcase', {
+        y: 35,
+        opacity: 0,
+        scale: 0.96,
+        duration: 0.95,
+        delay: 0.2,
+        ease: 'power3.out',
+        clearProps: 'all'
+      });
+    });
+    return () => mm.revert();
+  }, { scope: heroRef });
 
   // Interactive ROI Calculator State
   const [calcStudents, setCalcStudents] = useState(150);
@@ -274,7 +305,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       
       {/* Toast Notification when simulating WhatsApp Reminder */}
       {reminderSentToast && (
-        <div className="fixed top-20 right-6 z-50 bg-[#8B261E] text-white text-xs font-bold py-3 px-5 rounded-xl shadow-2xl flex items-center gap-2.5 animate-fade-in border border-white/20">
+        <div className="fixed top-20 right-6 z-50 bg-[#8B261E] text-white text-xs font-bold py-3 px-5 rounded-xl shadow-2xl flex items-center gap-2.5 animate-toast border border-white/20">
           <CheckCircle2 size={18} className="text-emerald-300" />
           <span>WhatsApp reminder with dynamic UPI QR generated successfully!</span>
         </div>
@@ -361,7 +392,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       </header>
 
       {/* HERO SECTION - Inspired by Screenshot 1 (Editorial Layout & Color Palette) */}
-      <section className="relative pt-10 sm:pt-16 pb-16 sm:pb-24 overflow-hidden">
+      <section ref={heroRef} className="relative pt-10 sm:pt-16 pb-16 sm:pb-24 overflow-hidden">
         
         {/* Subtle decorative background gradient */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-100/50 dark:bg-rose-950/20 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -374,13 +405,13 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             <div className="lg:col-span-7 flex flex-col items-start text-left">
               
               {/* Category Pill Badge matching Swyam */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3ECE1] dark:bg-stone-800/90 border border-[#E5DACD] dark:border-stone-700 text-[#8B261E] dark:text-rose-400 text-xs font-semibold tracking-wide mb-6">
+              <div className="hero-reveal inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3ECE1] dark:bg-stone-800/90 border border-[#E5DACD] dark:border-stone-700 text-[#8B261E] dark:text-rose-400 text-xs font-semibold tracking-wide mb-6">
                 <span className="w-2 h-2 rounded-full bg-[#8B261E] dark:bg-rose-500 animate-pulse" />
                 <span>0% Commission · For Bharat's Coaching Centers, Tutors & Schools</span>
               </div>
 
               {/* Serif Display Headline matching Swyam typography */}
-              <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-serif font-bold text-[#1C1917] dark:text-stone-100 tracking-tight leading-[1.12] mb-6">
+              <h1 className="hero-reveal text-4xl sm:text-5xl lg:text-[56px] font-serif font-bold text-[#1C1917] dark:text-stone-100 tracking-tight leading-[1.12] mb-6">
                 Bharat’s simplest fee engine.{' '}
                 <span className="text-[#8B261E] dark:text-[#E05D52] italic block sm:inline">
                   Zero commission. Money straight to your bank.
@@ -388,12 +419,12 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               </h1>
 
               {/* Subtitle paragraph */}
-              <p className="text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed max-w-xl mb-8 font-normal">
+              <p className="hero-reveal text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed max-w-xl mb-8 font-normal">
                 Collect tuition and school fees directly via your own UPI ID with <strong>0% payment gateway deductions</strong>. Send 1-tap WhatsApp dues reminders with dynamic QR codes, track defaulters, and log 2G offline attendance with your AI Copilot.
               </p>
 
               {/* Dual CTA Buttons */}
-              <div className="flex flex-wrap items-center gap-3.5 mb-12">
+              <div className="hero-reveal flex flex-wrap items-center gap-3.5 mb-12">
                 <button
                   type="button"
                   onClick={() => handleQuickDemo('ADMIN')}
@@ -414,7 +445,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               </div>
 
               {/* Editorial Stat Counters matching Screenshot 1 (244 chapters, 5 classes, 3 languages, 0 always) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-[#E7E0D6] dark:border-stone-800 w-full">
+              <div className="hero-reveal grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-[#E7E0D6] dark:border-stone-800 w-full">
                 <div>
                   <div className="text-2xl sm:text-3xl font-serif font-bold text-[#1C1917] dark:text-stone-100">
                     0%
@@ -455,17 +486,17 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             </div>
 
             {/* Right Column: Hero Feature Showcase Card (Visual Composition inspired by Screenshot 1) */}
-            <div className="lg:col-span-5 flex flex-col gap-3.5 relative mt-6 lg:mt-0">
+            <div className="hero-showcase lg:col-span-5 flex flex-col gap-3.5 relative mt-6 lg:mt-0">
               
               {/* TOP: Floating Blackboard Math Card as an interactive hero header badge */}
               <div
                 onClick={() => setShowRoiModal(true)}
-                className="bg-[#16221A] text-amber-100 p-3.5 rounded-2xl border-2 border-amber-700/60 shadow-lg text-left cursor-pointer hover:scale-[1.02] transition-all flex items-center justify-between gap-4 animate-fade-in"
+                className="bg-[#16221A] text-amber-100 p-3.5 rounded-2xl border-2 border-amber-700/60 shadow-lg text-left cursor-pointer hover:scale-[1.02] hover:border-amber-400 hover:shadow-2xl transition-all flex items-center justify-between gap-4 animate-float-sway"
                 title="Click to calculate your custom savings"
               >
                 <div className="flex-1 min-w-0">
                   <div className="text-[10px] font-black uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
-                    <Sparkles size={12} />
+                    <Sparkles size={12} className="text-amber-300 animate-spin" />
                     <span>Direct Bank UPI ROI Math</span>
                   </div>
                   <div className="text-xs font-mono text-stone-200 mt-0.5 truncate">
@@ -484,7 +515,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               </div>
 
               {/* Outer Editorial Framed Card */}
-              <div className="rounded-2xl overflow-hidden border border-[#E7E0D6] dark:border-stone-700 bg-white dark:bg-stone-900 shadow-xl transition-all text-left">
+              <div className="rounded-2xl overflow-hidden border border-[#E7E0D6] dark:border-stone-700 bg-white dark:bg-stone-900 shadow-xl hover:shadow-2xl transition-all duration-300 text-left">
                 
                 {/* Header bar of preview */}
                 <div className="bg-[#FAF7F2] dark:bg-stone-800 px-4 py-2.5 border-b border-[#E7E0D6] dark:border-stone-700 flex items-center justify-between">
@@ -503,7 +534,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
                 <div className="p-4 sm:p-5 flex flex-col gap-3.5">
                   
                   {/* Student Fee Card Preview */}
-                  <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF7F2] dark:bg-stone-800/80 border border-[#E7E0D6] dark:border-stone-700">
+                  <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF7F2] dark:bg-stone-800/80 border border-[#E7E0D6] dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 transition-colors">
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="text-xs font-semibold text-stone-500 dark:text-stone-400">
@@ -518,10 +549,12 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
                       </span>
                     </div>
 
-                    {/* Direct UPI Section with QR and Bank Verification */}
+                    {/* Direct UPI Section with QR and Laser Scanning Animation */}
                     <div className="mt-3 pt-3 border-t border-[#E7E0D6] dark:border-stone-700 flex items-center gap-3">
-                      <div className="w-13 h-13 bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700 flex items-center justify-center p-1 shadow-2xs shrink-0">
+                      <div className="relative w-13 h-13 bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700 flex items-center justify-center p-1 shadow-2xs shrink-0 overflow-hidden">
                         <QrCode size={40} className="text-stone-900 dark:text-stone-100" />
+                        {/* Dynamic Animated Laser Scanning Beam */}
+                        <div className="absolute left-1 right-1 h-0.5 bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-400 shadow-[0_0_8px_#10B981] animate-scan-beam pointer-events-none rounded-full" />
                       </div>
                       <div className="flex-1 text-left min-w-0">
                         <div className="text-[11px] font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1 truncate">
@@ -590,15 +623,16 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
                     </div>
                   </div>
 
-                  {/* Center Tour Button */}
+                  {/* Center Tour Button with Radar Glow */}
                   <div className="pt-1 flex items-center justify-center">
                     <button
                       type="button"
                       onClick={() => setShowProductTour(true)}
-                      className="inline-flex items-center gap-2 text-xs font-bold text-[#8B261E] dark:text-rose-400 hover:underline cursor-pointer py-1"
+                      className="group/tour inline-flex items-center gap-2 text-xs font-bold text-[#8B261E] dark:text-rose-400 hover:underline cursor-pointer py-1"
                     >
-                      <div className="w-6 h-6 rounded-full bg-[#8B261E] text-white flex items-center justify-center animate-pulse-glow shadow-xs">
-                        <Play size={10} className="ml-0.5 fill-current" />
+                      <div className="relative w-6 h-6 rounded-full bg-[#8B261E] text-white flex items-center justify-center shadow-xs">
+                        <span className="absolute inset-0 rounded-full border border-[#8B261E] animate-radar pointer-events-none" />
+                        <Play size={10} className="ml-0.5 fill-current group-hover/tour:scale-110 transition-transform" />
                       </div>
                       <span>Watch 60s Product Tour</span>
                     </button>
@@ -613,31 +647,46 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
         </div>
       </section>
 
-      {/* TRUST & TICKER BAR */}
-      <section className="py-6 border-y border-[#E7E0D6] dark:border-stone-800 bg-[#F5EFE6]/60 dark:bg-stone-900/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <p className="text-xs font-black uppercase tracking-wider text-stone-500 dark:text-stone-400 text-center mb-4">
+      {/* TRUST & TICKER BAR - Infinite Smooth Marquee */}
+      <section className="py-5 border-y border-[#E7E0D6] dark:border-stone-800 bg-[#F5EFE6]/70 dark:bg-stone-900/50 overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-3 text-center">
+          <p className="text-[11px] font-black uppercase tracking-widest text-stone-500 dark:text-stone-400">
             Trusted by 2,500+ Tuitions, Coaching Institutes & Private Schools across Bharat
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-bold text-stone-700 dark:text-stone-300">
-            <span className="px-3 py-1.5 rounded-lg bg-white/80 dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700">
-              Kota Coaching Hub
-            </span>
-            <span className="px-3 py-1.5 rounded-lg bg-white/80 dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700">
-              Patna Science Centers
-            </span>
-            <span className="px-3 py-1.5 rounded-lg bg-white/80 dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700">
-              Delhi NCR Academies
-            </span>
-            <span className="px-3 py-1.5 rounded-lg bg-white/80 dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700">
-              Jaipur Commerce Classes
-            </span>
-            <span className="px-3 py-1.5 rounded-lg bg-white/80 dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700">
-              Lucknow Board Tutors
-            </span>
-            <span className="px-3 py-1.5 rounded-lg bg-white/80 dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700">
-              Hyderabad Foundation Batches
-            </span>
+        </div>
+        <div className="relative w-full overflow-hidden flex [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+          <div className="animate-marquee flex items-center gap-4 text-xs font-bold text-stone-700 dark:text-stone-300 whitespace-nowrap">
+            {[
+              'Kota Coaching Hub',
+              'Patna Science Centers',
+              'Delhi NCR Academies',
+              'Jaipur Commerce Classes',
+              'Lucknow Board Tutors',
+              'Hyderabad Foundation Batches',
+              'Pune Engineering Classes',
+              'Indore Medical Academy',
+              'Bhopal Tutorial Network',
+              'Kanpur JEE Prep Hub'
+            ].concat([
+              'Kota Coaching Hub',
+              'Patna Science Centers',
+              'Delhi NCR Academies',
+              'Jaipur Commerce Classes',
+              'Lucknow Board Tutors',
+              'Hyderabad Foundation Batches',
+              'Pune Engineering Classes',
+              'Indore Medical Academy',
+              'Bhopal Tutorial Network',
+              'Kanpur JEE Prep Hub'
+            ]).map((hub, i) => (
+              <span
+                key={i}
+                className="px-4 py-2 rounded-xl bg-white dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700 shadow-2xs hover:border-[#8B261E] hover:text-[#8B261E] transition-colors cursor-default shrink-0 inline-flex items-center gap-1.5"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>{hub}</span>
+              </span>
+            ))}
           </div>
         </div>
       </section>
@@ -671,14 +720,14 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             <div
               key={mod.id}
               onClick={() => setActiveModuleModal(mod)}
-              className="group rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border border-[#E7E0D6] dark:border-stone-700 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer flex flex-col text-left"
+              className="group rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border border-[#E7E0D6] dark:border-stone-700 shadow-sm hover:shadow-2xl hover:border-[#8B261E]/40 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col text-left"
             >
               {/* Card Image Banner */}
               <div className="relative h-44 overflow-hidden bg-stone-200 dark:bg-stone-800">
                 <img
                   src={mod.thumbnail}
                   alt={mod.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 
@@ -725,7 +774,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
                       {mod.metricSub}
                     </div>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-[#FAF7F2] dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700 flex items-center justify-center text-stone-700 dark:text-stone-300 group-hover:bg-[#8B261E] group-hover:text-white transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-[#FAF7F2] dark:bg-stone-800 border border-[#E7E0D6] dark:border-stone-700 flex items-center justify-center text-stone-700 dark:text-stone-300 group-hover:bg-[#8B261E] group-hover:text-white group-hover:scale-110 group-hover:rotate-[-45deg] transition-all duration-300">
                     <ArrowRight size={14} />
                   </div>
                 </div>
@@ -898,7 +947,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
         </div>
 
         {/* Selected Audience Card */}
-        <div className="bg-white dark:bg-stone-900 rounded-2xl p-6 sm:p-8 border border-[#E7E0D6] dark:border-stone-700 shadow-sm text-left">
+        <div key={activeAudienceTab} className="bg-white dark:bg-stone-900 rounded-2xl p-6 sm:p-8 border border-[#E7E0D6] dark:border-stone-700 shadow-sm text-left animate-fade-in">
           <div className="max-w-2xl">
             <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 dark:text-stone-100">
               {audienceData[activeAudienceTab].title}
@@ -1000,7 +1049,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       <button
         type="button"
         onClick={onOpenAi}
-        className="fixed bottom-6 right-6 z-40 bg-[#8B261E] hover:bg-[#721C16] text-white font-bold text-xs py-3 px-5 rounded-full shadow-2xl flex items-center gap-2 border border-white/20 active:scale-95 transition-all cursor-pointer ring-4 ring-[#8B261E]/20"
+        className="fixed bottom-6 right-6 z-40 bg-[#8B261E] hover:bg-[#721C16] text-white font-bold text-xs py-3 px-5 rounded-full shadow-2xl flex items-center gap-2 border border-white/20 active:scale-95 hover:scale-105 animate-glow-crimson transition-all cursor-pointer ring-4 ring-[#8B261E]/20"
         title="Open Gemini AI Copilot"
       >
         <Sparkles size={16} className="text-amber-300 animate-spin" />
@@ -1010,7 +1059,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       {/* MODULE DETAIL INTERACTIVE MODAL */}
       {activeModuleModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full overflow-hidden border border-[#E7E0D6] dark:border-stone-700 shadow-2xl text-left">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full overflow-hidden border border-[#E7E0D6] dark:border-stone-700 shadow-2xl text-left animate-modal-spring">
             <div className="relative h-40 overflow-hidden bg-stone-200 dark:bg-stone-800">
               <img
                 src={activeModuleModal.thumbnail}
@@ -1080,7 +1129,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       {/* PRODUCT TOUR MODAL */}
       {showProductTour && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-xl w-full p-6 border border-[#E7E0D6] dark:border-stone-700 shadow-2xl text-left">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-xl w-full p-6 border border-[#E7E0D6] dark:border-stone-700 shadow-2xl text-left animate-modal-spring">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D6] dark:border-stone-800 mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-[#8B261E] text-white flex items-center justify-center font-bold">
@@ -1166,7 +1215,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       {/* ROI SAVINGS DETAIL MODAL */}
       {showRoiModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full p-6 border border-[#E7E0D6] dark:border-stone-700 shadow-2xl text-left">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full p-6 border border-[#E7E0D6] dark:border-stone-700 shadow-2xl text-left animate-modal-spring">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D6] dark:border-stone-800 mb-4">
               <div className="flex items-center gap-2">
                 <Calculator size={18} className="text-[#8B261E]" />

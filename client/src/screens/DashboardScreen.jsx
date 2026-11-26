@@ -265,7 +265,7 @@ export const DashboardScreen = () => {
   }, [studentsUnpaidRecords, unpaidMonthFilter]);
 
   return (
-    <div className="space-y-4 pb-16">
+    <div className="space-y-4 pb-16 animate-fade-in">
       {/* Institute Badge & Offline toggle */}
       <div className="flex items-center justify-between pt-1">
         <div>

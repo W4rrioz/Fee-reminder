@@ -41,7 +41,7 @@ button, input, select, a {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -51,12 +51,12 @@ button, input, select, a {
 
 @keyframes pulseGlow {
   0%, 100% {
-    opacity: 0.6;
+    opacity: 0.7;
     transform: scale(1);
   }
   50% {
     opacity: 1;
-    transform: scale(1.04);
+    transform: scale(1.06);
   }
 }
 
@@ -65,12 +65,97 @@ button, input, select, a {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-3px);
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes floatSway {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(0.5deg);
+  }
+}
+
+@keyframes scanBeam {
+  0%, 100% {
+    top: 6%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  50% {
+    top: 86%;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes modalSpring {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes radarRipple {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(139, 38, 30, 0.35), 0 0 28px rgba(139, 38, 30, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(139, 38, 30, 0.6), 0 0 45px rgba(139, 38, 30, 0.3);
+  }
+}
+
+@keyframes slideDownToast {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-pulse-glow {
@@ -78,11 +163,53 @@ button, input, select, a {
 }
 
 .animate-float {
-  animation: floatBadge 3s ease-in-out infinite;
+  animation: floatBadge 3.2s ease-in-out infinite;
 }
 
-/* Stagger animations for list cards */
-.stagger-1 { animation-delay: 50ms; }
-.stagger-2 { animation-delay: 100ms; }
-.stagger-3 { animation-delay: 150ms; }
-.stagger-4 { animation-delay: 200ms; }
+.animate-float-sway {
+  animation: floatSway 4.5s ease-in-out infinite;
+}
+
+.animate-scan-beam {
+  animation: scanBeam 2.4s ease-in-out infinite;
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 24s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.8s infinite;
+}
+
+.animate-modal-spring {
+  animation: modalSpring 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-radar {
+  animation: radarRipple 2.2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.animate-glow-crimson {
+  animation: glowPulse 2.8s ease-in-out infinite;
+}
+
+.animate-toast {
+  animation: slideDownToast 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger animation helper delays */
+.stagger-1 { animation-delay: 60ms; }
+.stagger-2 { animation-delay: 120ms; }
+.stagger-3 { animation-delay: 180ms; }
+.stagger-4 { animation-delay: 240ms; }
+.stagger-5 { animation-delay: 300ms; }
+.stagger-6 { animation-delay: 360ms; }
