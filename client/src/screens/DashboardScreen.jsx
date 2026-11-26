@@ -281,23 +281,22 @@ export const DashboardScreen = () => {
           </h2>
         </div>
 
-        {/* Quick Offline toggle */}
-        <button
-          onClick={() => setIsOnline(!isOnline)}
-          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border transition-all ${
+        {/* Network & Cloud Status Indicator */}
+        <div
+          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border select-none ${
             isOnline
               ? 'bg-white border-stone-200 text-stone-700'
-              : 'bg-amber-100 border-amber-300 text-amber-900'
+              : 'bg-amber-50 border-amber-200 text-amber-900'
           }`}
-          title="Toggle online/offline to test spotty 2G network"
+          title={isOnline ? 'Cloud Synced · Direct Bank UPI Live' : 'Offline Mode · Local Storage Queue Active'}
         >
           {isOnline ? (
-            <span className="inline-block w-2 h-2 rounded-full bg-[#15803D]"></span>
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-600"></span>
           ) : (
             <WifiOff size={13} className="text-amber-700" />
           )}
-          <span>{isOnline ? 'Online' : 'Offline'}</span>
-        </button>
+          <span>{isOnline ? 'Cloud Synced' : 'Offline Mode'}</span>
+        </div>
       </div>
 
       {/* 3 BIG NUMBERS - Ledger Calm */}

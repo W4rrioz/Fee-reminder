@@ -26,4 +26,19 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor-icons';
+          }
+          if (id.includes('node_modules/gsap') || id.includes('@gsap/react')) {
+            return 'vendor-anim';
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
 })

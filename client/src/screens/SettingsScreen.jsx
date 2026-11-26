@@ -304,25 +304,25 @@ export const SettingsScreen = () => {
 
         <div className="text-xs text-indigo-100 space-y-1.5">
           <div className="flex justify-between">
-            <span className="text-slate-400">Model Engine:</span>
-            <span className="font-semibold text-white">Gemini 3.5 Flash-Lite</span>
+            <span className="text-slate-400">AI Intelligence:</span>
+            <span className="font-semibold text-white">Gemini Pro Copilot</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Security Architecture:</span>
-            <span className="font-semibold text-emerald-300">Protected Server-Side (`process.env.GEMINI_API_KEY`)</span>
+            <span className="text-slate-400">Data Security:</span>
+            <span className="font-semibold text-emerald-300">Bank-Grade 256-bit SSL</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">API Key Mask:</span>
-            <span className="font-mono text-slate-300">AQ.Ab8RN6...PUA</span>
+            <span className="text-slate-400">Fee Deductions:</span>
+            <span className="font-semibold text-emerald-300">0% (Direct Bank UPI)</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Offline Resilience:</span>
-            <span className="font-semibold text-blue-300">Auto-Fallback NLU Engine</span>
+            <span className="font-semibold text-blue-300">Active (2G Storage Queue)</span>
           </div>
         </div>
 
         <p className="text-[10px] text-slate-400 italic pt-1 border-t border-indigo-900/40">
-          * Your Gemini API key is securely isolated on the serverless backend and never exposed in client-side bundles.
+          * Powered by Google Gemini AI with secure server-side isolated data processing.
         </p>
       </div>
 

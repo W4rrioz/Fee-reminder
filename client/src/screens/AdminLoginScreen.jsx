@@ -318,7 +318,7 @@ export const AdminLoginScreen = () => {
               }`}
             >
               <Sparkles size={13} className="text-amber-500" />
-              <span>Instant 1-Tap Demo ({roles.find(r => r.id === selectedRole)?.label})</span>
+              <span>Explore Live Demo ({roles.find(r => r.id === selectedRole)?.label})</span>
             </button>
 
             <p className={`text-xs ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>

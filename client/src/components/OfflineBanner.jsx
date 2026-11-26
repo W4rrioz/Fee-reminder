@@ -16,10 +16,15 @@ export const OfflineBanner = () => {
             </span>
           </div>
           <button
-            onClick={() => setIsOnline(true)}
-            className="text-[11px] underline bg-amber-600 px-2 py-1 rounded hover:bg-amber-700"
+            onClick={() => {
+              if (navigator.onLine) {
+                setIsOnline(true);
+                syncOfflineChanges();
+              }
+            }}
+            className="text-[11px] font-semibold bg-amber-600 hover:bg-amber-700 px-2.5 py-1 rounded cursor-pointer transition-colors"
           >
-            Simulate Online
+            Check Connection
           </button>
         </div>
       ) : syncQueue.length > 0 ? (

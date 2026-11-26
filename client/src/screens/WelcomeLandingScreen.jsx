@@ -38,7 +38,6 @@ import {
   Smartphone
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { VersionBadge } from '../components/VersionBadge';
 
 export const WelcomeLandingScreen = ({ onOpenAi }) => {
   const { setAuthView, loginUser } = useApp();

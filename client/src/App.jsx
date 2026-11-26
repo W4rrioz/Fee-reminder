@@ -12,10 +12,8 @@ import { WelcomeLandingScreen } from './screens/WelcomeLandingScreen';
 import { SignUpScreen } from './screens/SignUpScreen';
 import { OnboardingWizard } from './screens/OnboardingWizard';
 import { AdminLoginScreen } from './screens/AdminLoginScreen';
-import { MvpDemoScreen } from './screens/MvpDemoScreen';
 import { AiChatbot } from './components/AiChatbot';
 import { AppLoader } from './components/AppLoader';
-import { VersionBadge } from './components/VersionBadge';
 import { GraduationCap, Shield, Bot, Sparkles, MessageSquare } from 'lucide-react';
 
 export function MainApp() {
@@ -43,25 +41,6 @@ export function MainApp() {
 
   if (!hasLoaded) {
     return <AppLoader onComplete={() => setHasLoaded(true)} />;
-  }
-
-  // If user explicitly chose MVP Demo view mode
-  if (authView === 'demo') {
-    return (
-      <div className="relative">
-        <MvpDemoScreen />
-        {/* Floating AI Trigger also on MVP screen */}
-        <button
-          type="button"
-          onClick={() => setIsAiOpen(true)}
-          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white font-black text-xs py-2.5 px-4 rounded-full shadow-2xl hover:shadow-blue-500/30 flex items-center gap-2 border border-white/20 active:scale-95 transition-all cursor-pointer ring-4 ring-blue-500/20"
-        >
-          <Sparkles size={16} className="text-amber-300 animate-spin" />
-          <span>Ask AI Copilot</span>
-        </button>
-        <AiChatbot isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
-      </div>
-    );
   }
 
   // If not authenticated or currently onboarding, show landing/auth flows
@@ -132,19 +111,16 @@ export function MainApp() {
             <button
               type="button"
               onClick={() => setIsAiOpen(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-black px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xs transition-all active:scale-95 cursor-pointer ring-1 ring-blue-500/40"
+              className="inline-flex items-center gap-1.5 text-xs font-black px-2.5 py-1.5 rounded-xl bg-[#8B261E] hover:bg-[#721C16] text-white shadow-xs transition-all active:scale-95 cursor-pointer ring-1 ring-[#8B261E]/40"
               title="Ask AI about student dues, defaulters and attendance"
             >
               <Bot size={14} className="text-amber-300" />
               <span>Ask AI</span>
             </button>
 
-            {/* Version Badge UI with animated changelog modal */}
-            <VersionBadge />
-
             {/* User Role Badge in Header */}
-            <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs">
-              <Shield size={10} className="text-blue-600" />
+            <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950 text-[#8B261E] dark:text-rose-300 border border-rose-200 dark:border-rose-800 shadow-2xs">
+              <Shield size={10} className="text-[#8B261E] dark:text-rose-400" />
               {user?.role ? user.role : 'ADMIN'}
             </span>
           </div>
@@ -164,10 +140,10 @@ export function MainApp() {
         <button
           type="button"
           onClick={() => setIsAiOpen(true)}
-          className="fixed bottom-18 right-4 z-40 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white font-extrabold text-xs py-2 px-3.5 rounded-full shadow-2xl hover:shadow-blue-500/40 flex items-center gap-2 border border-white/20 active:scale-95 transition-all cursor-pointer ring-4 ring-blue-500/20"
+          className="fixed bottom-18 right-4 z-40 bg-[#8B261E] hover:bg-[#721C16] text-white font-bold text-xs py-2.5 px-4 rounded-full shadow-2xl flex items-center gap-2 border border-white/20 active:scale-95 transition-all cursor-pointer ring-4 ring-[#8B261E]/20"
         >
           <Sparkles size={14} className="text-amber-300 animate-spin" />
-          <span>AI Copilot</span>
+          <span>✦ Ask AI Copilot</span>
         </button>
 
         {/* Fixed Mobile Bottom Navigation */}

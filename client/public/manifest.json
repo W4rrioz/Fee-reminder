@@ -1,16 +1,18 @@
 {
   "short_name": "EduManage",
-  "name": "EduManage - Fee & Attendance",
+  "name": "EduManage Bharat - Direct Bank UPI & 2G Offline Attendance",
+  "description": "0% Gateway Fee Direct Bank UPI Fee Collection, 1-Tap WhatsApp Dues Reminders, and Offline Attendance for Schools, Coachings & Tutors across Bharat.",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
-  "background_color": "#ffffff",
-  "theme_color": "#1e40af",
+  "background_color": "#FAF7F2",
+  "theme_color": "#8B261E",
   "display": "standalone",
   "orientation": "portrait"
 }
