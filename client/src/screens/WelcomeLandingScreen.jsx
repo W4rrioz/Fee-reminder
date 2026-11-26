@@ -205,22 +205,22 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-7 text-xs font-semibold text-stone-600 dark:text-stone-400">
-            <a href="#popular-courses" className="hover:text-[#A82D24] transition-colors">Courses</a>
-            <a href="#learn" className="hover:text-[#A82D24] transition-colors">Learn</a>
+          <nav className={`hidden md:flex items-center gap-7 text-xs font-semibold ${darkMode ? 'text-stone-300' : 'text-stone-600'}`}>
+            <a href="#popular-courses" className="hover:text-[#A82D24] dark:hover:text-[#ff6b5e] transition-colors">Courses</a>
+            <a href="#popular-courses" className="hover:text-[#A82D24] dark:hover:text-[#ff6b5e] transition-colors">Learn</a>
             <button
               type="button"
               onClick={onOpenAi}
-              className="flex items-center gap-1.5 text-[#A82D24] hover:text-[#8B261E] font-bold cursor-pointer transition-colors"
+              className="flex items-center gap-1.5 text-[#A82D24] dark:text-[#ff6b5e] hover:text-[#8B261E] font-bold cursor-pointer transition-colors"
             >
-              <Sparkles size={13} className="text-[#A82D24]" />
+              <Sparkles size={13} className="text-[#A82D24] dark:text-[#ff6b5e]" />
               <span>Sarthi AI</span>
             </button>
-            <a href="#glass-workspace" className="hover:text-[#A82D24] transition-colors flex items-center gap-1">
+            <a href="#glass-workspace" className="hover:text-[#A82D24] dark:hover:text-[#ff6b5e] transition-colors flex items-center gap-1">
               <Layers size={13} />
               <span>Glass Workspace</span>
             </a>
-            <a href="#fee-platform" className="hover:text-[#A82D24] transition-colors">Fees & Attendance</a>
+            <a href="#fee-platform" className="hover:text-[#A82D24] dark:hover:text-[#ff6b5e] transition-colors">Fees & Attendance</a>
           </nav>
 
           {/* Right Action Buttons */}
