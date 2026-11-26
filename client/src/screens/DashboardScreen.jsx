@@ -321,7 +321,7 @@ export const DashboardScreen = () => {
             className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50/70 dark:bg-red-950/40 text-[#8B261E] dark:text-red-300 hover:bg-red-100 transition-colors cursor-pointer"
           >
             <AlertCircle size={13} />
-            <span>Defaulters ({defaulterCount})</span>
+            <span>Defaulters ({overdueDues.length || defaulterCount})</span>
           </button>
 
           {/* Mark Attendance Shortcut */}
@@ -437,7 +437,7 @@ export const DashboardScreen = () => {
           balanceChange={{ percent: 14.6, label: 'vs previous fee cycle' }}
           account={{
             name: institute?.upi_name || 'Direct UPI Account',
-            lastFour: institute?.upi_id ? institute.upi_id.split('@')[0].slice(-4) : '4829',
+            lastFour: '4829',
           }}
           periodLabel="Current Fee Cycle (October 2026)"
           cashFlowPeriods={workspaceCashFlow}

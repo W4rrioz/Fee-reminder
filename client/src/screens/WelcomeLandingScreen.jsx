@@ -87,7 +87,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
       title: 'Direct Bank UPI Collection',
       description: 'Tuition fees land straight in your institute bank account via PhonePe, GPay, Paytm, BHIM & Cred. Zero 2.5% gateway deductions.',
       metric: '₹0 Commission Deducted',
-      thumbnail: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=800&q=80',
+      thumbnail: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
       tag: 'Direct UPI'
     },
     {
@@ -821,6 +821,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               <video
                 key={launchVideos[selectedVideo].src}
                 controls
+                preload="metadata"
                 playsInline
                 poster={launchVideos[selectedVideo].poster}
                 className="w-full h-full object-contain"
