@@ -118,10 +118,10 @@ export function MainApp() {
               <span>Ask AI</span>
             </button>
 
-            {/* User Role Badge in Header */}
-            <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950 text-[#8B261E] dark:text-rose-300 border border-rose-200 dark:border-rose-800 shadow-2xs">
-              <Shield size={10} className="text-[#8B261E] dark:text-rose-400" />
-              {user?.role ? user.role : 'ADMIN'}
+            {/* User Profile in Header */}
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>{user?.name || 'Account'}</span>
             </span>
           </div>
         </header>
@@ -159,3 +159,5 @@ export function MainApp() {
 export default function App() {
   return <MainApp />;
 }
+
+// EduManage Bharat · AI Genesis Challenge

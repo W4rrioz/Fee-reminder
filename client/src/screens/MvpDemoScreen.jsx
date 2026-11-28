@@ -1359,3 +1359,5 @@ export const MvpDemoScreen = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

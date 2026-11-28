@@ -17,3 +17,5 @@ ENV NODE_ENV=production
 ENV USE_SUPABASE=true
 
 CMD ["node", "server/index.js"]
+
+# EduManage Bharat · AI Genesis Challenge

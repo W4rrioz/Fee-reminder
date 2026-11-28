@@ -194,3 +194,5 @@ export const AttendanceDemo: React.FC<AttendanceDemoProps> = ({ delay = 0 }) => 
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

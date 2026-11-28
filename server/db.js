@@ -134,3 +134,5 @@ module.exports = {
   initDb,
   db: dbInstance
 };
+
+// EduManage Bharat · AI Genesis Challenge

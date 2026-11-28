@@ -72,3 +72,5 @@
 - Small/low-contrast text for anything status-related
 - Decorative gradients, glassmorphism, or heavy shadows
 - Jargon or technical error messages exposed to the admin (translate any backend error into plain language)
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

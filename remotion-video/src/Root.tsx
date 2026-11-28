@@ -39,3 +39,5 @@ export const Root: React.FC = () => {
     </>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

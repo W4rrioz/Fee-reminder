@@ -574,3 +574,5 @@ export const StudentsScreen = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

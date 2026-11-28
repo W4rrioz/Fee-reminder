@@ -35,3 +35,5 @@ Important constraints:
 - Privacy or security requirements: App will store student names, parent phone numbers, and fee amounts — treat as sensitive personal data. Requires per-tenant data isolation, no cross-institute data leakage, and shielded AI API credentials
 
 References or existing products: None specified — differentiator is deliberately narrow scope vs. full ERPs (Fedena, Entab, etc.)
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

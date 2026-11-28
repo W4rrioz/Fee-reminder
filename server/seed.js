@@ -363,3 +363,5 @@ seed().catch((err) => {
   console.error('Seeding failed:', err);
   process.exit(1);
 });
+
+// EduManage Bharat · AI Genesis Challenge

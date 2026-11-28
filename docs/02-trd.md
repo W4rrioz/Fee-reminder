@@ -63,3 +63,5 @@
 - Risk: wa.me links are user-initiated via click-to-chat (admin taps "send" in WhatsApp) — highly effective because it avoids costly WhatsApp Business API fees and builds trust through direct teacher-parent communication.
 - Risk: Without a payment gateway confirming payment, "Mark as Paid" relies on admin verification of incoming bank/UPI notifications — zero gateway commission is achieved at the expense of manual 1-tap confirmation.
 - Open question: Row-level security vs application-layer tenant checks — multi-tenant isolation enforced both in application logic and database schemas.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

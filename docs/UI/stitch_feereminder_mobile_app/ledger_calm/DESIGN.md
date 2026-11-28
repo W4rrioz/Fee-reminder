@@ -197,3 +197,5 @@ The shape system employs disciplined, soft rounding. It conveys order, precision
 ### Student Ledger Lists
 - Edge-to-edge listing with `12px` inter-card spacing.
 - Includes quick-filter tabs at the top (All, Overdue, Due This Week, Collected) rendered as segmented chips: active chip has solid `#3730A3` background with white text; inactive chips have `#FFFFFF` background with `#4B5563` text and `#E5E7EB` border.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

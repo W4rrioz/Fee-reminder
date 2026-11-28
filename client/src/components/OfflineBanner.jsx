@@ -49,3 +49,5 @@ export const OfflineBanner = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

@@ -153,3 +153,5 @@ async function runCalendarAndSyncTests() {
 }
 
 runCalendarAndSyncTests();
+
+// EduManage Bharat · AI Genesis Challenge

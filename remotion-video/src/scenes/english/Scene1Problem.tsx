@@ -161,3 +161,5 @@ export const Scene1Problem: React.FC<Scene1ProblemProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

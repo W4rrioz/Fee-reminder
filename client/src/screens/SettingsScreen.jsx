@@ -333,16 +333,16 @@ export const SettingsScreen = () => {
             <User size={16} className="text-slate-600" />
             <h3 className="font-bold text-slate-900 text-sm">Active Account</h3>
           </div>
-          <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-            <Shield size={11} />
-            {user?.role ? user.role.toUpperCase() : 'ADMIN'}
+          <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
+            <User size={11} />
+            {user?.role ? user.role.toUpperCase() : 'DIRECTOR'}
           </span>
         </div>
 
         <div className="text-xs text-slate-600 space-y-1">
           <div className="flex justify-between">
             <span className="text-slate-400">User:</span>
-            <span className="font-semibold text-slate-800">{user?.name || 'Admin User'}</span>
+            <span className="font-semibold text-slate-800">{user?.name || 'Director'}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Email:</span>
@@ -368,3 +368,5 @@ export const SettingsScreen = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

@@ -208,3 +208,5 @@ export const Scene2Intro: React.FC = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

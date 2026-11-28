@@ -238,3 +238,5 @@ export const UpiCard: React.FC<UpiCardProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

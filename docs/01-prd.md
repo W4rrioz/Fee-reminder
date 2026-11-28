@@ -120,3 +120,5 @@ An administrator can see which students have pending fees and, with one action, 
 - Assumes manual payment marking is acceptable for the pilot (no payment gateway) — revisit for v2 based on pilot feedback.
 - Assumes a single admin per institute in v1 (no multi-staff permissions yet).
 - Open question: recurring/installment fee structures (e.g. monthly tuition) — v1 assumed to support this at a basic level (multiple due dates per student), full recurring automation deferred.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

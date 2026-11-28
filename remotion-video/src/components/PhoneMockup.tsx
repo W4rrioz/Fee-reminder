@@ -167,3 +167,5 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

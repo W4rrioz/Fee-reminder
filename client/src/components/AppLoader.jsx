@@ -51,3 +51,5 @@ export const AppLoader = ({ onComplete }) => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

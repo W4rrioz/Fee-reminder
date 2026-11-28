@@ -206,3 +206,5 @@ Feedback from these 5 field interviews directly shaped the engineering and UI de
 ---
 
 *Submitted as part of the official field research documentation for the AI Genesis Challenge at Alta School of Technology.*
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

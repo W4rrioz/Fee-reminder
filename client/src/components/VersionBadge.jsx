@@ -35,8 +35,8 @@ export const VersionBadge = () => {
         badgeColor: 'bg-amber-100 text-amber-800'
       },
       {
-        title: 'Instant Non-Admin Guest Explorer Mode',
-        desc: 'Explore fee registers, pie charts, and student records with random details without administrative credentials.',
+        title: 'Instant Guest Explorer Mode',
+        desc: 'Explore fee registers, pie charts, and student records with realistic details.',
         badge: 'DEMO',
         badgeColor: 'bg-teal-100 text-teal-800'
       }
@@ -165,3 +165,5 @@ export const VersionBadge = () => {
     </>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

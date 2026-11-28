@@ -95,3 +95,5 @@ export const StatsCounter: React.FC<StatsCounterProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

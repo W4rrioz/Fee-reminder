@@ -224,3 +224,5 @@ export default function GlassWorkspaceDemo(
     />
   );
 }
+
+// EduManage Bharat · AI Genesis Challenge

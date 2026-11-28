@@ -77,3 +77,5 @@ export const KineticText: React.FC<KineticTextProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

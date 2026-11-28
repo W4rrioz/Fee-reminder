@@ -715,3 +715,5 @@ You can ask me specific questions like:
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

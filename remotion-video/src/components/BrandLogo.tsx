@@ -99,3 +99,5 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

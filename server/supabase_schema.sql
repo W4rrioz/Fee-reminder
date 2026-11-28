@@ -109,3 +109,5 @@ CREATE TABLE IF NOT EXISTS attendance_records (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(student_id, date)
 );
+
+-- EduManage Bharat · AI Genesis Challenge

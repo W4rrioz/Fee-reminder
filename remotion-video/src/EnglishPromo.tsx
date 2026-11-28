@@ -303,3 +303,5 @@ export const EnglishPromo: React.FC = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

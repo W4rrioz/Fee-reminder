@@ -42,3 +42,5 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
   },
 })
+
+// EduManage Bharat · AI Genesis Challenge

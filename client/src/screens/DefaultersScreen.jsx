@@ -529,3 +529,5 @@ export const DefaultersScreen = () => {
 };
 
 export default DefaultersScreen;
+
+// EduManage Bharat · AI Genesis Challenge

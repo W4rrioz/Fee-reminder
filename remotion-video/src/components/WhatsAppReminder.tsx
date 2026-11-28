@@ -219,3 +219,5 @@ export const WhatsAppReminder: React.FC<WhatsAppReminderProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

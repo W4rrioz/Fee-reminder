@@ -156,3 +156,5 @@ export const PaymentModal = ({ due, student, institute, onClose, onRecordPayment
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

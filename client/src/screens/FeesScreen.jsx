@@ -402,3 +402,5 @@ export const FeesScreen = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

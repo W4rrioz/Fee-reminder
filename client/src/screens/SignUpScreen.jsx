@@ -126,7 +126,7 @@ export const SignUpScreen = () => {
             Create Your Institute Account
           </h1>
           <p className="text-xs text-slate-400">
-            Set up your administrator profile to begin tracking fees and attendance.
+            Set up your director profile to begin tracking fees and attendance.
           </p>
         </div>
       </div>
@@ -266,3 +266,5 @@ export const SignUpScreen = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

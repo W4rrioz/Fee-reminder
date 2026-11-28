@@ -366,3 +366,5 @@ export const INITIAL_ATTENDANCE = {
     's12': 'absent'
   }
 };
+
+// EduManage Bharat · AI Genesis Challenge

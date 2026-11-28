@@ -63,3 +63,5 @@ export const BottomNavigation = () => {
     </nav>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

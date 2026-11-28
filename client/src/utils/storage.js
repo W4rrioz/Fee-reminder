@@ -100,3 +100,5 @@ export const clearSyncQueue = () => {
 };
 
 export { KEYS };
+
+// EduManage Bharat · AI Genesis Challenge

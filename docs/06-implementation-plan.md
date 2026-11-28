@@ -140,3 +140,5 @@ Project foundation (0) → Auth/tenant (1) → Core data model: students/fees (2
 
 ## Recommended First Phase
 **Phase 0: Project Foundation.** With the payment gateway deferred to v2, there's no external account bottleneck to kick off first — you can start building locally right away. Wait for your review of this plan before starting implementation.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

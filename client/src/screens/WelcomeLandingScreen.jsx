@@ -97,31 +97,6 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
     });
   };
 
-  // Quick 1-tap guest explorer for instant demo
-  const handleQuickDemo = (role = 'ADMIN') => {
-    loginUser({
-      token: `token_guest_${Date.now()}`,
-      user: {
-        id: `edumanage_${role.toLowerCase()}_${Date.now()}`,
-        name: role === 'ADMIN' ? 'Director Sharma' : 'Faculty Member',
-        email: `${role.toLowerCase()}@edumanage.in`,
-        phone: '+91 9876543210',
-        role,
-        isGuest: true,
-        created_at: new Date().toISOString()
-      },
-      institute: {
-        id: 'inst_apex_01',
-        name: 'Apex Tutorials & Science Academy',
-        type: 'coaching_center',
-        city: 'Kanpur',
-        upi_id: 'apextutorials@upi',
-        upi_name: 'Apex Tutorials Kanpur',
-        enable_attendance: true
-      }
-    });
-  };
-
   const handleSimulateReminder = () => {
     setReminderSentToast(true);
     setTimeout(() => setReminderSentToast(false), 3500);
@@ -373,7 +348,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             <button
               type="button"
               onClick={() => setAuthView('login')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold border border-[#E7E0D6] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold border border-[#E7E0D6] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors cursor-pointer"
             >
               <LogIn size={14} />
               <span>Log in</span>
@@ -381,10 +356,10 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
 
             <button
               type="button"
-              onClick={() => handleQuickDemo('ADMIN')}
+              onClick={() => setAuthView('login')}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#8B261E] hover:bg-[#721C16] text-white shadow-sm transition-all active:scale-95 cursor-pointer"
             >
-              <span>Instant Demo</span>
+              <span>Get Started</span>
               <ArrowRight size={14} />
             </button>
           </div>
@@ -420,17 +395,17 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
 
               {/* Subtitle paragraph */}
               <p className="hero-reveal text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed max-w-xl mb-8 font-normal">
-                Collect tuition and school fees directly via your own UPI ID with <strong>0% payment gateway deductions</strong>. Send 1-tap WhatsApp dues reminders with dynamic QR codes, track defaulters, and log 2G offline attendance with your AI Copilot.
+                Collect tuition and school fees directly via your own UPI ID with <strong>0% payment gateway deductions</strong>. Send 1-tap WhatsApp dues reminders with dynamic QR codes, track overdue balances, and mark offline attendance in seconds.
               </p>
 
               {/* Dual CTA Buttons */}
               <div className="hero-reveal flex flex-wrap items-center gap-3.5 mb-12">
                 <button
                   type="button"
-                  onClick={() => handleQuickDemo('ADMIN')}
+                  onClick={() => setAuthView('login')}
                   className="px-6 py-3.5 rounded-xl bg-[#8B261E] hover:bg-[#721C16] text-white text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
                 >
-                  <span>Start Managing Free</span>
+                  <span>Get Started Free</span>
                   <ArrowRight size={16} />
                 </button>
 
@@ -706,10 +681,10 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
           </div>
           <button
             type="button"
-            onClick={() => handleQuickDemo('ADMIN')}
+            onClick={() => setAuthView('login')}
             className="mt-4 sm:mt-0 text-sm font-bold text-[#8B261E] dark:text-rose-400 hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>Explore all modules in Live Demo</span>
+            <span>Explore all modules</span>
             <ArrowRight size={15} />
           </button>
         </div>
@@ -720,8 +695,11 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             <div
               key={mod.id}
               onClick={() => setActiveModuleModal(mod)}
-              className="group rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border border-[#E7E0D6] dark:border-stone-700 shadow-sm hover:shadow-2xl hover:border-[#8B261E]/40 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col text-left"
+              className="group relative rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border border-[#E7E0D6] dark:border-stone-700 shadow-sm hover:shadow-[0_22px_45px_-12px_rgba(139,38,30,0.18)] hover:border-[#8B261E]/50 transition-all duration-300 hover:-translate-y-2.5 active:scale-[0.99] cursor-pointer flex flex-col text-left"
             >
+              {/* 21st.dev Style Top Gradient Shimmer Line */}
+              <div className="absolute inset-x-0 top-0 h-[2.5px] bg-gradient-to-r from-transparent via-[#8B261E] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 pointer-events-none" />
+
               {/* Card Image Banner */}
               <div className="relative h-44 overflow-hidden bg-stone-200 dark:bg-stone-800">
                 <img
@@ -729,7 +707,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
                   alt={mod.title}
                   loading="lazy"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 
@@ -885,10 +863,10 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
 
                 <button
                   type="button"
-                  onClick={() => handleQuickDemo('ADMIN')}
+                  onClick={() => setAuthView('login')}
                   className="w-full py-3 rounded-xl bg-[#8B261E] hover:bg-[#721C16] text-white text-xs font-bold shadow-sm transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>Claim Your Free Account</span>
+                  <span>Start Saving Today</span>
                   <ArrowRight size={14} />
                 </button>
               </div>
@@ -974,10 +952,10 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             <div className="mt-8 pt-6 border-t border-[#E7E0D6] dark:border-stone-800">
               <button
                 type="button"
-                onClick={() => handleQuickDemo('ADMIN')}
+                onClick={() => setAuthView('login')}
                 className="px-5 py-2.5 rounded-xl bg-[#8B261E] hover:bg-[#721C16] text-white text-xs font-bold inline-flex items-center gap-2 shadow-xs transition-all cursor-pointer"
               >
-                <span>Try Demo for {audienceData[activeAudienceTab].title.replace('For ', '')}</span>
+                <span>Get Started for {audienceData[activeAudienceTab].title.replace('For ', '')}</span>
                 <ArrowRight size={14} />
               </button>
             </div>
@@ -1110,11 +1088,11 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
                   type="button"
                   onClick={() => {
                     setActiveModuleModal(null);
-                    handleQuickDemo('ADMIN');
+                    setAuthView('login');
                   }}
                   className="flex-1 py-2.5 rounded-xl bg-[#8B261E] hover:bg-[#721C16] text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>Try in Live Admin Demo</span>
+                  <span>Get Started Free</span>
                   <ArrowRight size={14} />
                 </button>
                 <button
@@ -1205,11 +1183,11 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               type="button"
               onClick={() => {
                 setShowProductTour(false);
-                handleQuickDemo('ADMIN');
+                setAuthView('login');
               }}
               className="w-full py-3 rounded-xl bg-[#8B261E] hover:bg-[#721C16] text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
             >
-              <span>Explore Everything in Live Admin Demo</span>
+              <span>Get Started Free</span>
               <ArrowRight size={14} />
             </button>
           </div>
@@ -1273,7 +1251,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
               type="button"
               onClick={() => {
                 setShowRoiModal(false);
-                handleQuickDemo('ADMIN');
+                setAuthView('login');
               }}
               className="mt-6 w-full py-2.5 rounded-xl bg-[#8B261E] hover:bg-[#721C16] text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
             >
@@ -1287,3 +1265,5 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

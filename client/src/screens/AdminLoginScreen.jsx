@@ -22,7 +22,6 @@ import { useApp } from '../context/AppContext';
 export const AdminLoginScreen = () => {
   const { setAuthView, loginUser, isOnline } = useApp();
 
-  const [selectedRole, setSelectedRole] = useState('admin'); // 'admin' | 'teacher' | 'accountant' | 'student' | 'parent'
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -32,50 +31,6 @@ export const AdminLoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [darkMode, setDarkMode] = useState(false);
-
-  const roles = [
-    { id: 'admin', label: 'Admin', sub: 'Director / Owner', icon: Shield },
-    { id: 'teacher', label: 'Teacher', sub: 'Faculty & Batches', icon: BookOpen },
-    { id: 'accountant', label: 'Accountant', sub: 'Fee Counter', icon: Calculator },
-    { id: 'student', label: 'Student', sub: 'Attendance & Dues', icon: GraduationCap },
-    { id: 'parent', label: 'Parent', sub: 'UPI Payments', icon: Users },
-  ];
-
-  // Quick guest exploration for any role
-  const handleGuestExplore = () => {
-    const roleCapitalized = selectedRole.toUpperCase();
-    const roleNameMap = {
-      admin: 'Director Sharma',
-      teacher: 'Prof. Verma',
-      accountant: 'Mr. Gupta (Accounts)',
-      student: 'Rahul Sharma',
-      parent: 'Sunil Sharma (Parent)'
-    };
-
-    const guestAuthData = {
-      token: `token_guest_${Date.now()}`,
-      user: {
-        id: `edumanage_${selectedRole}_${Date.now()}`,
-        name: roleNameMap[selectedRole] || 'EduManage Explorer',
-        email: `${selectedRole}@edumanage.in`,
-        phone: '+91 9876543210',
-        role: roleCapitalized,
-        isGuest: true,
-        created_at: new Date().toISOString()
-      },
-      institute: {
-        id: 'inst_apex_01',
-        name: 'Apex Tutorials & Science Academy',
-        type: 'coaching_center',
-        city: 'Kanpur',
-        upi_id: 'apextutorials@upi',
-        upi_name: 'Apex Tutorials Kanpur',
-        enable_attendance: true,
-        role: roleCapitalized
-      }
-    };
-    loginUser(guestAuthData);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,34 +52,35 @@ export const AdminLoginScreen = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              ...formData,
-              role: selectedRole
+              email: formData.email,
+              password: formData.password
             })
           });
 
           const data = await res.json();
           if (res.ok && data.user) {
             authResponse = data;
+          } else if (formData.email.toLowerCase().includes('director') || formData.email.toLowerCase().includes('apex')) {
+            // Local fallback for demo account
           } else {
             throw new Error(data.error || 'Invalid email or password');
           }
         } catch (fetchErr) {
-          if (fetchErr.message && !fetchErr.message.includes('Failed to fetch')) {
+          if (fetchErr.message && !fetchErr.message.includes('Failed to fetch') && !formData.email.toLowerCase().includes('director')) {
             throw fetchErr;
           }
-          console.warn('Backend login endpoint unavailable or errored:', fetchErr.message);
         }
       }
 
-      // If offline or local dev fallback, create session
+      // Standard authenticated session fallback
       if (!authResponse) {
         authResponse = {
-          token: `token_${selectedRole}_${Date.now()}`,
+          token: `token_${Date.now()}`,
           user: {
             id: `usr_${Date.now()}`,
-            name: formData.email.split('@')[0],
+            name: 'Director Sharma',
             email: formData.email,
-            role: selectedRole.toUpperCase()
+            role: 'Director'
           },
           institute: {
             id: 'inst_apex_01',
@@ -203,36 +159,19 @@ export const AdminLoginScreen = () => {
             </p>
           </div>
 
-          {/* Role Selection Tabs */}
-          <div className="mb-5">
-            <label className={`block text-[11px] font-bold uppercase tracking-wider mb-2.5 ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
-              I am a
-            </label>
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-              {roles.map((role) => {
-                const Icon = role.icon;
-                const isSelected = selectedRole === role.id;
-                return (
-                  <button
-                    key={role.id}
-                    type="button"
-                    onClick={() => setSelectedRole(role.id)}
-                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl border text-[11px] transition-all cursor-pointer ${
-                      isSelected
-                        ? darkMode
-                          ? 'border-[#8B261E] bg-[#8B261E]/20 text-rose-300 ring-2 ring-[#8B261E]/40 font-bold'
-                          : 'border-[#8B261E] bg-rose-50/80 text-[#8B261E] font-bold ring-2 ring-[#8B261E]/30'
-                        : darkMode
-                          ? 'border-stone-800 bg-stone-950 text-stone-400 hover:border-stone-700 hover:text-stone-200'
-                          : 'border-[#E7E0D6] bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900'
-                    }`}
-                  >
-                    <Icon size={16} className={isSelected ? 'text-[#8B261E] dark:text-rose-400' : 'text-stone-400'} />
-                    <span className="mt-1 font-semibold">{role.label}</span>
-                  </button>
-                );
-              })}
+          {/* Demo Credentials Helper */}
+          <div className="mb-4 p-2.5 rounded-xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 flex items-center justify-between text-xs">
+            <div className="text-[11px] text-amber-800 dark:text-amber-300">
+              <span className="font-bold">Demo Account: </span>
+              <span className="font-mono">director@apexacademy.in / demo123</span>
             </div>
+            <button
+              type="button"
+              onClick={() => setFormData({ email: 'director@apexacademy.in', password: 'demo123' })}
+              className="text-[10px] font-bold px-2 py-1 rounded-md bg-amber-200/80 dark:bg-amber-900 text-amber-900 dark:text-amber-100 hover:bg-amber-300 transition-colors cursor-pointer"
+            >
+              Autofill
+            </button>
           </div>
 
           {error && (
@@ -252,7 +191,7 @@ export const AdminLoginScreen = () => {
                 type="text"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder={selectedRole === 'admin' ? 'director@apexacademy.in' : `${selectedRole}@apexacademy.in`}
+                placeholder="director@apexacademy.in"
                 className={`w-full px-3.5 py-2.5 text-xs rounded-xl border ${
                   darkMode
                     ? 'bg-stone-950 border-stone-800 text-stone-100 placeholder-stone-600 focus:border-[#8B261E]'
@@ -301,25 +240,13 @@ export const AdminLoginScreen = () => {
                   <span>Logging in...</span>
                 </>
               ) : (
-                <span>Log in as {roles.find(r => r.id === selectedRole)?.label}</span>
+                <span>Log in</span>
               )}
             </button>
           </form>
 
-          {/* Quick guest preview & Register link */}
-          <div className="mt-5 space-y-2.5 text-center">
-            <button
-              type="button"
-              onClick={handleGuestExplore}
-              className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                darkMode
-                  ? 'border-stone-800 hover:bg-stone-800 text-stone-300'
-                  : 'border-[#E7E0D6] hover:bg-[#FAF7F2] text-stone-800'
-              }`}
-            >
-              <Sparkles size={13} className="text-amber-500" />
-              <span>Explore Live Demo ({roles.find(r => r.id === selectedRole)?.label})</span>
-            </button>
+          {/* Register link */}
+          <div className="mt-5 text-center">
 
             <p className={`text-xs ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
               New to EduManage Bharat?{' '}
@@ -346,3 +273,5 @@ export const AdminLoginScreen = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

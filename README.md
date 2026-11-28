@@ -176,3 +176,5 @@ EduManage Bharat includes built-in role profiles accessible instantly via the **
 
 This project is licensed under the **MIT License**.  
 Engineered with ❤️ for Bharat's education leaders as part of the **AI Genesis Challenge at Alta School of Technology**.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

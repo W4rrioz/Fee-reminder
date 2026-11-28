@@ -29,3 +29,5 @@ echo Once loaded, open your browser at:
 echo http://localhost:5173
 echo ==============================================
 pause
+
+:: EduManage Bharat · AI Genesis Challenge

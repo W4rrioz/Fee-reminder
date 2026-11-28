@@ -141,3 +141,5 @@ export const Scene3UpiDirect: React.FC = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

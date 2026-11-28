@@ -373,6 +373,55 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const trimmedEmail = email.trim().toLowerCase();
+
+    // Instant demo credentials handler for EduManage Bharat
+    if (trimmedEmail === 'director@apexacademy.in' || trimmedEmail === 'demo@apexacademy.in') {
+      const demoInst = (await get('SELECT * FROM institutes LIMIT 1')) || {
+        id: 'inst_apex_01',
+        name: 'Apex Tutorials & Science Academy',
+        type: 'coaching_center',
+        city: 'Kanpur',
+        upi_id: 'apextutorials@upi',
+        upi_name: 'Apex Tutorials Kanpur',
+        enable_attendance: 1
+      };
+      return res.json({
+        message: 'Login successful',
+        token: `token_demo_${Date.now()}`,
+        user: {
+          id: 'user_director_demo',
+          name: 'Director Sharma',
+          email: trimmedEmail,
+          phone: '+91 9876543210',
+          role: 'Director',
+          created_at: new Date().toISOString()
+        },
+        institute: {
+          id: demoInst.id,
+          name: demoInst.name,
+          type: demoInst.type,
+          city: demoInst.city,
+          upi_id: demoInst.upi_id,
+          upi_name: demoInst.upi_name,
+          role: 'Director',
+          attendance_enabled: true
+        },
+        memberships: [
+          {
+            membership_id: 'mem_demo_01',
+            role: 'Director',
+            status: 'active',
+            institute_id: demoInst.id,
+            institute_name: demoInst.name,
+            institute_type: demoInst.type,
+            city: demoInst.city,
+            upi_id: demoInst.upi_id,
+            upi_name: demoInst.upi_name
+          }
+        ]
+      });
+    }
+
     const user = await get(
       'SELECT id, name, phone, email, password_hash, created_at FROM users WHERE LOWER(email) = ?',
       [trimmedEmail]
@@ -1577,3 +1626,5 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
+// EduManage Bharat · AI Genesis Challenge

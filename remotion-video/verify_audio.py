@@ -22,3 +22,5 @@ bgm_path = 'E:/Aman/Fee reminder/remotion-video/public/audio/bg_music_tech.mp3'
 bgm = mutagen.mp3.MP3(bgm_path)
 print(f"=== Background Music Track: bg_music_tech.mp3 ===")
 print(f"Length: {bgm.info.length:.2f}s | Bitrate: {bgm.info.bitrate//1000}kbps | Sample Rate: {bgm.info.sample_rate}Hz | Channels: {bgm.info.channels}")
+
+# EduManage Bharat · AI Genesis Challenge

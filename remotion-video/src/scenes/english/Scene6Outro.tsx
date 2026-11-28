@@ -136,3 +136,5 @@ export const Scene6Outro: React.FC<Scene6OutroProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

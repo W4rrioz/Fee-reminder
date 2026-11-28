@@ -151,3 +151,5 @@ seedSupabase().catch(err => {
   console.error('Seeding error:', err);
   process.exit(1);
 });
+
+// EduManage Bharat · AI Genesis Challenge

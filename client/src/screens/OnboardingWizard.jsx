@@ -503,3 +503,5 @@ export const OnboardingWizard = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

@@ -139,3 +139,5 @@ export const Scene4WhatsApp: React.FC = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

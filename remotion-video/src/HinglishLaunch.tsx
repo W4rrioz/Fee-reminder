@@ -55,3 +55,5 @@ export const HinglishLaunch: React.FC = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

@@ -122,3 +122,5 @@ export const BackgroundGradient: React.FC<BackgroundGradientProps> = ({
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

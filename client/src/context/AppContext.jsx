@@ -254,10 +254,12 @@ export const AppProvider = ({ children }) => {
     refreshServerData(loadedInst?.id);
 
     // Check user auth and onboarding state
+    // Always start on the launching page when opening fresh unless session is active
     const storedAuth = getStoredData(KEYS.AUTH, null);
     const storedOnboarded = getStoredData(KEYS.ONBOARDED, null);
+    const hasActiveSession = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('edumanage_session_active') === 'true';
 
-    if (storedAuth && storedAuth.user) {
+    if (storedAuth && storedAuth.user && hasActiveSession) {
       setUser(storedAuth.user);
       setIsAuthenticated(true);
       if (storedOnboarded || storedAuth.institute) {
@@ -273,7 +275,7 @@ export const AppProvider = ({ children }) => {
         setAuthView('onboarding');
       }
     } else {
-      // First-time or not logged in
+      // First-time or opening website fresh -> ALWAYS show launching page!
       setIsAuthenticated(false);
       setIsOnboarded(false);
       setAuthView('landing');
@@ -498,6 +500,9 @@ export const AppProvider = ({ children }) => {
   const loginUser = (authData) => {
     setUser(authData.user);
     setIsAuthenticated(true);
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('edumanage_session_active', 'true');
+    }
     if (authData.institute) {
       setInstituteState(authData.institute);
       setStoredData(KEYS.INSTITUTE, authData.institute);
@@ -589,6 +594,9 @@ export const AppProvider = ({ children }) => {
     setIsOnboarded(false);
     localStorage.removeItem(KEYS.AUTH);
     localStorage.removeItem(KEYS.ONBOARDED);
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.removeItem('edumanage_session_active');
+    }
     setAuthView('landing');
   };
 
@@ -638,3 +646,5 @@ export const AppProvider = ({ children }) => {
 };
 
 export const useApp = () => useContext(AppContext);
+
+// EduManage Bharat · AI Genesis Challenge

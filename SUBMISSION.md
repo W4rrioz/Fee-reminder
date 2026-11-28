@@ -92,3 +92,5 @@ From our 5 primary user discovery field interviews documented in [docs/USER_INTE
 ---
 
 *Submitted for the AI Genesis Challenge by Aman (Alta School of Technology).*
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

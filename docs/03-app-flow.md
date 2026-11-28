@@ -160,3 +160,5 @@ An institute admin signs up, sets their institute's payment info (UPI ID or bank
 - Back behaviour: Standard browser/mobile back returns to the previous screen (e.g. Student Detail → Dashboard).
 - Protected routes: All routes except Sign Up/Sign In require an authenticated session; unauthenticated access redirects to Sign In.
 - Deep links: Not required in v1 (no parent-facing routes, no shareable internal links).
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

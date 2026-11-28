@@ -111,3 +111,5 @@ All access rules are enforced server-side using the authenticated admin's `tenan
 ## 10. Risks and Open Questions
 - Deferred (v2): A `payments` table tied to a payment gateway (fields like `gateway_reference`, webhook-driven `status`) is intentionally not part of this schema yet. When added later, it will reference `fees.id` the same way `reminders` does now, and `fees.status` will start being set automatically instead of manually.
 - Open question: Whether recurring/installment fees need a separate `fee_schedule` concept beyond one row per due date — v1 assumption is one `fees` row per due date, revisit once actual coaching-center fee structures are tested with the pilot.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

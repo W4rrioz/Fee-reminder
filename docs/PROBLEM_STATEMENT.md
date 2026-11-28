@@ -176,3 +176,5 @@ flowchart TD
 ---
 
 *Submitted with pride by the EduManage Bharat Team for the AI Genesis Challenge at Alta School of Technology.*
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

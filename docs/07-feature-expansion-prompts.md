@@ -321,3 +321,5 @@ Built and fully operational for the AI Genesis Challenge:
 - **Analytics & Defaulters:** Real-time multi-month overdue calculator, defaulter breakdown, and SVG donut charts.
 - **AI Copilot (Gemini Pro):** Natural-language fee analysis, defaulter identification, cash flow forecasting, and multilingual message drafting via secure serverless proxy.
 - **Modern UI & Motion:** Editorial aesthetic inspired by Indian educational heritage with GSAP entrance reveals, laser scan beam, infinite marquee ticker, floating blackboard ROI tilt, and modal spring animations.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

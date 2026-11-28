@@ -163,3 +163,5 @@ The project evolved through rapid, iterative engineering cycles—spanning cloud
 ---
 
 *Documented as part of the official submission for the AI Genesis Challenge from Alta School of Technology.*
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

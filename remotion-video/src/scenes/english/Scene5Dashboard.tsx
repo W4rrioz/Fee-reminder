@@ -110,3 +110,5 @@ export const Scene5Dashboard: React.FC = () => {
     </div>
   );
 };
+
+// EduManage Bharat · AI Genesis Challenge

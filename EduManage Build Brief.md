@@ -153,3 +153,5 @@ Every table below includes `institute_id` for multi-tenancy except `institutes` 
 - **Phase 2:** WhatsApp Business API automation, staff accounts, role permissions, announcements.
 - **Phase 3:** Academics (exams, results, report cards), Hindi localization, full reporting.
 - **Phase 4:** Read-only tokenized parent portal, auto-reconciliation payment gateway.
+
+<!-- EduManage Bharat · AI Genesis Challenge -->

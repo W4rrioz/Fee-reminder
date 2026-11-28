@@ -30,3 +30,5 @@ export const THEME = {
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
 };
+
+// EduManage Bharat · AI Genesis Challenge
