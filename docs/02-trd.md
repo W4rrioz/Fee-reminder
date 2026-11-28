@@ -8,12 +8,12 @@
 ## 2. Technology Stack
 - Frontend: React (mobile-first responsive layout) — reason: large ecosystem, works well with AI code-generation tools, easy to keep lightweight. Rejected alternative: heavier frameworks (Next.js full SSR) — unnecessary complexity for a v1 with modest traffic.
 - Backend: Node.js with Express (or a lightweight framework) — reason: same language as frontend (JS/TS throughout), simplest for a solo developer. Rejected alternative: Python/Django — no strong reason to introduce a second language for this scope.
-- Database: SQLite (local file-based database) for development and the YIIC build — reason: zero setup, no account/signup needed, no internet dependency, fully sufficient for a single-institute pilot demo. Rejected alternative: Supabase/Postgres — a fine choice for a real hosted deployment later, but adds account setup and network dependency that aren't needed to build and demo v1. Migration path: the schema (see Backend Schema) is designed to be portable to Postgres later with minimal changes, since SQLite and Postgres both speak standard SQL.
-- Authentication: Simple email/password auth implemented directly against the SQLite database (e.g. using a lightweight library like `better-sqlite3` + `bcrypt` for password hashing, or a minimal auth package) — reason: no external auth provider account needed. Rejected alternative: Supabase Auth — good option later if migrating to a hosted Postgres setup, not needed for a local-only build.
-- File storage: Not required in v1 (an optional QR-code image for UPI ID is the only possible exception, deferrable).
-- Hosting: Frontend on Vercel/Netlify free tier; backend on Render/Railway free tier — used only once you're ready to demo beyond your own machine (local development is sufficient for most of the build). Rejected alternative: self-managed VPS — unnecessary ops overhead for this stage.
+- Database: SQLite (local file-based database) for development and offline execution; seamlessly portable to hosted Supabase/PostgreSQL for cloud deployment.
+- Authentication: Simple email/password auth implemented directly against the database with secure password hashing and session tokens.
+- File storage: Not required in v1 (dynamic client-side canvas QR generator eliminates external file storage).
+- Hosting: Frontend and serverless API on Vercel (`https://feeremindersupabasedeploy.vercel.app/`). Node.js backend can also run locally or on Render/Railway.
 - Analytics: Skip dedicated analytics tooling in v1; rely on basic server logging.
-- Testing: Manual testing + a small set of automated tests for tenant-isolation logic specifically (the highest-risk area in v1).
+- Testing: Manual testing + automated tests for tenant-isolation logic specifically (the highest-risk area in v1).
 
 ## 3. System Architecture
 - Client responsibilities: Render dashboard and forms, trigger wa.me links, display due/payment status, handle offline/slow-network gracefully (loading states, retries).
@@ -54,12 +54,12 @@
 - Accessibility checks: Manual check of tap-target sizes, contrast, and readability on an actual low-end Android device.
 
 ## 8. Development and Deployment
-- Environments: Local development is sufficient for most of the build; a single hosted "demo" environment is added only when ready to show the pilot institute or for final YIIC submission (no separate staging needed at this scale).
-- Environment variables: Path to the local SQLite database file, and a session/JWT signing secret for auth — all server-side only.
-- CI checks: Lightweight — run tests on push if time allows; not a blocker for a 5-week solo timeline.
-- Deployment approach (when needed): If moving beyond local use later, migrate the database to hosted Postgres (e.g. Supabase) and deploy frontend via Vercel/Netlify, backend via Render/Railway. Not required for the YIIC build itself.
+- Environments: Dual-mode development: runs locally with `start.bat` (Express + SQLite) and deployed to production on Vercel with Serverless API functions for the AI Genesis Challenge submission.
+- Environment variables: `GEMINI_API_KEY`, Supabase credentials, and JWT secrets held securely on the server-side, never exposed to client browsers.
+- CI checks: Vite build verification, automated browser subagent tests, and linting.
+- Deployment approach: Hosted frontend and serverless API functions on Vercel, Supabase PostgreSQL, and GitHub CI.
 
 ## 9. Technical Risks and Open Questions
-- Risk: wa.me links are not fully automated (admin must tap "send" manually) — acceptable for v1 given budget, but a known limitation worth stating clearly in the YIIC submission.
-- Risk: Without a payment gateway confirming payment, "Mark as Paid" relies entirely on admin honesty/attentiveness — acceptable for a pilot with a trusted small institute, worth noting as a v1 limitation.
-- Open question: Whether row-level security (database-enforced) or purely application-layer tenant checks are used — recommend using database-level constraints as a second line of defense in addition to application logic, given how costly a tenant-isolation bug would be.
+- Risk: wa.me links are user-initiated via click-to-chat (admin taps "send" in WhatsApp) — highly effective because it avoids costly WhatsApp Business API fees and builds trust through direct teacher-parent communication.
+- Risk: Without a payment gateway confirming payment, "Mark as Paid" relies on admin verification of incoming bank/UPI notifications — zero gateway commission is achieved at the expense of manual 1-tap confirmation.
+- Open question: Row-level security vs application-layer tenant checks — multi-tenant isolation enforced both in application logic and database schemas.

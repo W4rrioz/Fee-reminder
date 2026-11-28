@@ -1,6 +1,6 @@
 # Feature Expansion — Antigravity Prompts (Phase 9 onward)
 
-This continues numbering from `06-implementation-plan.md` (which ended at Phase 8: Deployment Readiness). Everything below is **optional expansion work**, not required for a working YIIC submission — the app is already demoable after Phase 5.
+This continues numbering from `06-implementation-plan.md` (which ended at Phase 8: Deployment Readiness). Everything below covers expansion work built and verified for the **AI Genesis Challenge at Alta School of Technology**.
 
 **How to use this file:** same discipline as before. Give Antigravity ONE phase's prompt at a time, verify its completion criteria, then move to the next. Do not paste the whole file into Antigravity at once — it will not sequence the work correctly and you won't be able to isolate bugs.
 
@@ -313,14 +313,11 @@ Show me the files you plan to create before writing them, and confirm the instal
 
 ---
 
-## Suggested Priority for a 5-Week YIIC Timeline
+## Suggested Priority for AI Genesis Challenge Submission
 
-If you're deciding what to actually build versus what to leave as roadmap talking points in your submission:
-
-**Do (high demo value, reasonable effort):** Phase 9 (dummy data), Phase 10 (bulk remind), Phase 11 (analytics + pie charts), Phase 12 (attendance calendar).
-
-**Consider if time allows:** Phase 13 (CSV import), Phase 14 (reminder history/templates), Phase 17 ("At risk" list).
-
-**Mention as roadmap, don't build for YIIC:** Phase 15 (partial payments — real complexity, real migration risk), Phase 18 (multi-staff — significant auth rework), Phase 22 (parent portal — meaningful security surface to get right), Phase 6 from the original plan (payment gateway).
-
-You know your actual remaining time better than I do — tell me where you are in the 5 weeks and I'll help you cut this list down further if needed.
+Built and fully operational for the AI Genesis Challenge:
+- **Core Operations:** Direct NPCI UPI generation (0% cut), dynamic amount-specific canvas QR codes, and 1-tap WhatsApp dues reminders.
+- **Offline Attendance & Sync:** 2G offline attendance register with offline queue sync.
+- **Analytics & Defaulters:** Real-time multi-month overdue calculator, defaulter breakdown, and SVG donut charts.
+- **AI Copilot (Gemini Pro):** Natural-language fee analysis, defaulter identification, cash flow forecasting, and multilingual message drafting via secure serverless proxy.
+- **Modern UI & Motion:** Editorial aesthetic inspired by Indian educational heritage with GSAP entrance reveals, laser scan beam, infinite marquee ticker, floating blackboard ROI tilt, and modal spring animations.

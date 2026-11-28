@@ -86,10 +86,10 @@
 - Dependencies: Phase 2.
 - Risks: None significant — this is the simplest phase in the plan, by design.
 
-### Phase 6 (v2 — later, not required for YIIC submission): Payment Gateway & Auto-Status-Update
+### Phase 6 (v2 — later, not required for AI Genesis Challenge submission): Payment Gateway & Auto-Status-Update
 - Goal: Replace static payment info with a dynamic, trackable UPI link; replace manual marking with automatic webhook-driven status updates.
 - Requirements covered: PRD's deferred "UPI Payment Link Generation" and "Payment Status Tracking" features.
-- Status: Not part of the 5-week build. Revisit after the pilot institute has used the v1 reminder loop and you have real feedback on whether automatic payment tracking is worth the added complexity before your next milestone.
+- Status: Deferred to v2. Direct UPI + dynamic canvas QR + manual marking ensures 0% gateway commission.
 
 ### Phase 7: Error States, Responsive & Accessibility Pass
 - Goal: Harden the app for real-world conditions — the actual target environment (cheap Android, spotty network, non-technical users).
@@ -104,16 +104,16 @@
 - Risks: Easy to skip under deadline pressure — but this is core to the product's actual value proposition (per App Brief target market realities), so don't cut it.
 
 ### Phase 8: Pilot Deployment Readiness
-- Goal: Ready for real use at the pilot coaching center and for YIIC submission.
+- Goal: Ready for real use at the pilot coaching center and for AI Genesis Challenge submission.
 - Requirements covered: PRD Success Criteria.
-- Components/systems involved: Deployment to free-tier hosting (Vercel + Render/Railway) — only needed once you're ready to demo beyond your own machine.
+- Components/systems involved: Deployment to Vercel production with serverless functions and Supabase.
 - Files expected to change: Environment configuration for the hosted deployment.
-- Data/API work: Final data migration to the hosted database; remove/replace seed/demo data.
-- UI states: N/A.
-- Tests/verification: Full manual walkthrough of the primary user journey (App Flow Section 5) in the hosted environment.
-- Completion criteria: A real admin at the pilot institute can complete the full journey unaided.
-- Dependencies: All previous required phases (0–5, 7).
-- Risks: None significant — v1 involves no live payment credentials, so this deployment step carries no financial risk.
+- Data/API work: Cloud database migration, serverless API endpoints for AI Copilot and Auth.
+- UI states: Full editorial design pass with authentic EduManage Bharat identity and GSAP animations.
+- Tests/verification: Full manual and autonomous browser subagent verification on live production URL.
+- Completion criteria: Live, hosted, accessible end-to-end without dev/debug artifacts.
+- Dependencies: All previous required phases.
+- Risks: None significant — AI API keys safely protected server-side on Vercel.
 
 ## 4. Suggested Sequence
 Project foundation (0) → Auth/tenant (1) → Core data model: students/fees (2) → Primary journey: dashboard (3) → WhatsApp reminders (4) → manual mark-as-paid (5) → [v2, not required: payment gateway (6)] → error/responsive/accessibility pass (7) → deployment readiness (8).
@@ -127,7 +127,7 @@ Project foundation (0) → Auth/tenant (1) → Core data model: students/fees (2
 | WhatsApp Reminder Sending | 4 | Real-device wa.me test |
 | Manual Payment Marking | 5 | Mark-paid updates dashboard test |
 | Non-functional (performance/accessibility) | 7 | Throttled-network + real-device manual test |
-| Payment Gateway (v2, deferred) | 6 | Not required for YIIC submission |
+| Payment Gateway (v2, deferred) | 6 | Not required for AI Genesis Challenge submission |
 
 ## 6. Final Verification
 - Functional checks: Full primary user journey (App Flow Section 5) completed manually, start to finish.

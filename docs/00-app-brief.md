@@ -1,8 +1,8 @@
 # App Brief
 
-App name: [TBD — working name: "Fee Reminder"]
+App name: EduManage Bharat
 
-One-line idea: A mobile-first web app that tracks student fee dues and sends WhatsApp reminders with the institute's payment info; admin marks fees as paid manually in v1.
+One-line idea: A mobile-first web app that tracks student fee dues, generates zero-commission direct UPI payments, marks 2G offline attendance, and powers institutes with a Gemini AI Copilot.
 
 Problem it solves: Budget private schools and coaching institutes in Tier-2/3 Indian cities currently track fees on paper or Excel and manually chase parents by phone/WhatsApp, wasting hours every week.
 
@@ -17,22 +17,21 @@ Must-have features:
 - Manual "Mark as Paid" action
 - Multi-tenant support (one institute's data isolated from another's)
 
-Nice-to-have features (v2, not required for the YIIC submission):
+Nice-to-have features (v2):
 - Dynamic, trackable UPI payment links via a payment gateway
 - Automatic payment status update via webhook (replacing manual marking)
-- Attendance module (explicitly deferred — post-fee-module)
 - Sibling discount handling
 - Mid-term admission handling
 
 Platform:
 - Web (mobile-first, must work well on cheap Android devices, spotty network)
 
-Business model, if relevant: Free pilot for the YIIC submission and first coaching center deployment. No monetization logic in v1 — this is a proof-of-concept/learning phase, not a paid product yet.
+Business model, if relevant: Free pilot for the AI Genesis Challenge submission and first coaching center deployment. No monetization logic in v1 — this is a proof-of-concept/learning phase, not a paid product yet.
 
 Important constraints:
-- Deadline: Submission for YIIC 8th Edition (Scaler School of Technology) — 5-week build window, Sept–Oct 2026
-- Budget: Near-zero (student project, age 16) — favor free/low-cost tools and services; no payment gateway account needed for v1
-- Required tools or services: WhatsApp wa.me click-to-chat links (free, no approval process); no payment gateway required for v1 (deferred to v2)
-- Privacy or security requirements: App will store student names, parent phone numbers, and fee amounts — treat as sensitive personal data. Requires per-tenant data isolation, no cross-institute data leakage
+- Deadline: Submission for AI Genesis Challenge (Alta School of Technology) — Nov 2026
+- Budget: Near-zero (student project) — favor free/low-cost tools and services; direct bank UPI without payment gateway account needed for v1
+- Required tools or services: WhatsApp wa.me click-to-chat links (free, no approval process); Google Gemini AI API via serverless backend proxy
+- Privacy or security requirements: App will store student names, parent phone numbers, and fee amounts — treat as sensitive personal data. Requires per-tenant data isolation, no cross-institute data leakage, and shielded AI API credentials
 
 References or existing products: None specified — differentiator is deliberately narrow scope vs. full ERPs (Fedena, Entab, etc.)
