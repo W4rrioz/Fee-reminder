@@ -24,6 +24,7 @@ Developed and hardened as an official project for the **AI Genesis Challenge at 
 
 | Document | Description |
 |---|---|
+| 🏆 **[Executive Submission Summary](SUBMISSION.md)** | **Primary Evaluator Guide**: 30s pitch, 60s test walkthrough script, criteria alignment, and impact data. |
 | 📄 **[Problem Statement](docs/PROBLEM_STATEMENT.md)** | Comprehensive analysis of the Tier-2/3 Indian education crisis, gateway fee loss math, user personas, and solution architecture. |
 | 🎙️ **[User Discovery Interviews](docs/USER_INTERVIEWS.md)** | 5 in-depth field interviews with coaching center directors, independent tutors, school admins, fee clerks, and parents from Tier-2/3 India. |
 | 🤖 **[Conversation History & AI Journey](docs/CONVERSATION_HISTORY.md)** | Transparent, prompt-by-prompt log of the development collaboration with Google DeepMind Agentic AI (Antigravity), covering architectural decisions, security hardening, and animation engineering. |
