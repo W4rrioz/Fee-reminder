@@ -10,12 +10,17 @@ import {
   WifiOff,
   PieChart as PieChartIcon,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Search,
+  X,
+  User,
+  ArrowRight
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
 import { SendReminderModal } from '../components/SendReminderModal';
 import { PieChart } from '../components/PieChart';
+import { FeeReceiptModal } from '../components/FeeReceiptModal';
 
 export const DashboardScreen = () => {
   const {
@@ -33,9 +38,11 @@ export const DashboardScreen = () => {
   } = useApp();
 
   const [selectedDue, setSelectedDue] = useState(null);
+  const [activeReceiptDue, setActiveReceiptDue] = useState(null);
   const [reminderModalData, setReminderModalData] = useState(null);
   const [activeChartTab, setActiveChartTab] = useState('fees'); // 'fees' | 'unpaidMonths' | 'batches' | 'attendance'
   const [unpaidMonthFilter, setUnpaidMonthFilter] = useState('all'); // 'all' | '1' | '2' | '3+'
+  const [searchQuery, setSearchQuery] = useState('');
 
   const isAttendanceEnabled = attendanceEnabled !== undefined ? attendanceEnabled : (institute.enable_attendance !== false);
   const currentChartTab = (!isAttendanceEnabled && activeChartTab === 'attendance') ? 'fees' : activeChartTab;
@@ -264,6 +271,18 @@ export const DashboardScreen = () => {
     });
   }, [studentsUnpaidRecords, unpaidMonthFilter]);
 
+  // Quick universal student search across all records
+  const searchedStudents = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase().trim();
+    return students.filter((s) => {
+      const matchName = (s.name || '').toLowerCase().includes(q);
+      const matchRoll = String(s.roll_no || '').includes(q);
+      const matchPhone = String(s.phone || s.guardian_phone || '').includes(q);
+      return matchName || matchRoll || matchPhone;
+    }).slice(0, 6);
+  }, [students, searchQuery]);
+
   return (
     <div className="space-y-4 pb-16 animate-fade-in">
       {/* Institute Badge & Offline toggle */}
@@ -297,6 +316,111 @@ export const DashboardScreen = () => {
           )}
           <span>{isOnline ? 'Cloud Synced' : 'Offline Mode'}</span>
         </div>
+      </div>
+
+      {/* QUICK STUDENT LOOKUP SEARCH BAR (Universal Access) */}
+      <div className="bg-white border border-stone-200 rounded-xl p-3 shadow-xs">
+        <div className="relative">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Quick search student by name, roll no, or phone... (छात्र खोजें)"
+            className="w-full pl-9 pr-8 py-2 text-xs rounded-lg border border-stone-200 bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3730A3]/20 focus:border-[#3730A3] transition-all placeholder:text-stone-400 text-stone-800"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+            >
+              <X size={14} />
+            </button>
+          )}
+        </div>
+
+        {/* Instant Search Results Dropdown / Card */}
+        {searchQuery.trim() && (
+          <div className="mt-2.5 pt-2 border-t border-stone-100 space-y-2">
+            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider flex items-center justify-between">
+              <span>Matching Students ({searchedStudents.length})</span>
+              <span className="text-[10px] text-stone-400">1-Tap Collect / Receipt</span>
+            </div>
+
+            {searchedStudents.length === 0 ? (
+              <div className="py-3 text-center text-xs text-stone-500">
+                No students found matching "{searchQuery}".
+              </div>
+            ) : (
+              searchedStudents.map((st) => {
+                const batch = getBatch(st.class_batch_id);
+                // Find pending or overdue dues for this student
+                const studentDues = feeDues.filter(
+                  (d) => d.student_id === st.id && (d.status === 'pending' || d.status === 'overdue')
+                );
+                const totalPending = studentDues.reduce((sum, d) => sum + Number(d.amount), 0);
+                const hasPending = studentDues.length > 0;
+                const latestDue = studentDues[0];
+
+                return (
+                  <div
+                    key={st.id}
+                    className="p-2.5 bg-stone-50 hover:bg-stone-100/80 rounded-lg border border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 transition-colors"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-xs text-stone-900 truncate">{st.name}</span>
+                        <span className="text-[10px] text-stone-500 font-mono">#{st.roll_no}</span>
+                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-stone-200 text-stone-700">
+                          {batch?.name || 'Class'}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-stone-500 mt-0.5">
+                        Parent: {st.guardian_name || 'N/A'} • {st.guardian_phone || st.phone}
+                      </div>
+                      <div className="text-xs mt-0.5">
+                        {hasPending ? (
+                          <span className="font-bold text-[#DC2626] tabular-nums">
+                            ₹{totalPending.toLocaleString('en-IN')} Due ({studentDues.length} {studentDues.length === 1 ? 'month' : 'months'})
+                          </span>
+                        ) : (
+                          <span className="font-bold text-[#15803D] inline-flex items-center gap-1 text-[11px]">
+                            <CheckCircle size={12} /> All Fees Cleared
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {hasPending && latestDue && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => handleQuickWhatsApp(latestDue)}
+                            className="px-2.5 py-1.5 bg-[#D97706] hover:bg-amber-700 text-white rounded-md text-[11px] font-bold flex items-center gap-1 transition-all"
+                            title="Send WhatsApp Reminder"
+                          >
+                            <Send size={12} />
+                            <span>Remind</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedDue(latestDue)}
+                            className="px-2.5 py-1.5 bg-[#3730A3] hover:bg-indigo-900 text-white rounded-md text-[11px] font-bold flex items-center gap-1 transition-all"
+                            title="Collect Fee / Show QR"
+                          >
+                            <CreditCard size={12} />
+                            <span>Pay & Receipt</span>
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        )}
       </div>
 
       {/* 3 BIG NUMBERS - Ledger Calm */}
@@ -721,9 +845,26 @@ export const DashboardScreen = () => {
         <PaymentModal
           due={selectedDue}
           student={getStudent(selectedDue.student_id)}
+          batch={getBatch(getStudent(selectedDue.student_id)?.class_batch_id)}
           institute={institute}
           onClose={() => setSelectedDue(null)}
           onRecordPayment={recordPayment}
+          onPaymentSuccess={(paidDue) => {
+            setSelectedDue(null);
+            setActiveReceiptDue(paidDue);
+          }}
+        />
+      )}
+
+      {/* Official Shareable & Printable Receipt Modal */}
+      {activeReceiptDue && (
+        <FeeReceiptModal
+          isOpen={Boolean(activeReceiptDue)}
+          due={activeReceiptDue}
+          student={getStudent(activeReceiptDue.student_id)}
+          batch={getBatch(getStudent(activeReceiptDue.student_id)?.class_batch_id)}
+          institute={institute}
+          onClose={() => setActiveReceiptDue(null)}
         />
       )}
 

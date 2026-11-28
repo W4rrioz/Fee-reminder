@@ -11,6 +11,7 @@ import {
 import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
 import { SendReminderModal } from '../components/SendReminderModal';
+import { FeeReceiptModal } from '../components/FeeReceiptModal';
 
 export const FeesScreen = () => {
   const {
@@ -320,71 +321,27 @@ export const FeesScreen = () => {
         <PaymentModal
           due={activePaymentDue}
           student={getStudent(activePaymentDue.student_id)}
+          batch={getBatch(getStudent(activePaymentDue.student_id)?.class_batch_id)}
           institute={institute}
           onClose={() => setActivePaymentDue(null)}
           onRecordPayment={recordPayment}
+          onPaymentSuccess={(paidDue) => {
+            setActivePaymentDue(null);
+            setActiveReceiptDue(paidDue);
+          }}
         />
       )}
 
-      {/* Simple Shareable Receipt Modal */}
+      {/* Official Shareable & Printable Receipt Modal */}
       {activeReceiptDue && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-sm w-full p-5 shadow-xl space-y-4 border border-stone-200">
-            <div className="text-center border-b border-stone-100 pb-3">
-              <span className="text-xs font-bold text-[#15803D] bg-emerald-50 px-2.5 py-1 rounded-full uppercase">
-                Payment Receipt
-              </span>
-              <h3 className="text-base font-bold text-stone-900 mt-2">
-                {institute.name}
-              </h3>
-              <p className="text-xs text-stone-500">{institute.city}</p>
-            </div>
-
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between">
-                <span className="text-stone-500">Student:</span>
-                <span className="font-bold text-stone-900">
-                  {getStudent(activeReceiptDue.student_id)?.name}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Fee Head:</span>
-                <span className="font-semibold text-stone-800">
-                  {activeReceiptDue.fee_head}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Paid Amount:</span>
-                <span className="font-bold text-[#15803D] text-sm tabular-nums">
-                  ₹{Number(activeReceiptDue.amount).toLocaleString('en-IN')}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Mode:</span>
-                <span className="font-bold uppercase text-stone-800">
-                  {activeReceiptDue.payment_method}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Ref ID:</span>
-                <span className="font-mono text-stone-700">
-                  {activeReceiptDue.reference_id || 'N/A'}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Paid Date:</span>
-                <span className="text-stone-800">{activeReceiptDue.paid_at}</span>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setActiveReceiptDue(null)}
-              className="w-full min-h-[48px] bg-stone-900 hover:bg-black text-white font-bold rounded-lg text-xs"
-            >
-              Close Receipt
-            </button>
-          </div>
-        </div>
+        <FeeReceiptModal
+          isOpen={Boolean(activeReceiptDue)}
+          due={activeReceiptDue}
+          student={getStudent(activeReceiptDue.student_id)}
+          batch={getBatch(getStudent(activeReceiptDue.student_id)?.class_batch_id)}
+          institute={institute}
+          onClose={() => setActiveReceiptDue(null)}
+        />
       )}
 
       {/* Send WhatsApp Reminder with Exact Amount QR Photo Modal */}

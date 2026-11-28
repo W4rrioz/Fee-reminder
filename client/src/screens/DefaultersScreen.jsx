@@ -11,6 +11,7 @@ import { useApp } from '../context/AppContext';
 import { PaymentModal } from '../components/PaymentModal';
 import { SendReminderModal } from '../components/SendReminderModal';
 import { PieChart } from '../components/PieChart';
+import { FeeReceiptModal } from '../components/FeeReceiptModal';
 
 export const DefaultersScreen = () => {
   const {
@@ -24,6 +25,7 @@ export const DefaultersScreen = () => {
 
   const [selectedBatchFilter, setSelectedBatchFilter] = useState('all');
   const [selectedDue, setSelectedDue] = useState(null);
+  const [activeReceiptDue, setActiveReceiptDue] = useState(null);
   const [reminderModalData, setReminderModalData] = useState(null);
   const [activeDefaulterTab, setActiveDefaulterTab] = useState('unpaidMonths'); // 'unpaidMonths' | 'allOverdue' | 'analytics'
   const [unpaidMonthFilter, setUnpaidMonthFilter] = useState('all'); // 'all' | '1' | '2' | '3+'
@@ -506,9 +508,26 @@ export const DefaultersScreen = () => {
         <PaymentModal
           due={selectedDue}
           student={getStudent(selectedDue.student_id)}
+          batch={getBatch(getStudent(selectedDue.student_id)?.class_batch_id)}
           institute={institute}
           onClose={() => setSelectedDue(null)}
           onRecordPayment={recordPayment}
+          onPaymentSuccess={(paidDue) => {
+            setSelectedDue(null);
+            setActiveReceiptDue(paidDue);
+          }}
+        />
+      )}
+
+      {/* Official Shareable & Printable Receipt Modal */}
+      {activeReceiptDue && (
+        <FeeReceiptModal
+          isOpen={Boolean(activeReceiptDue)}
+          due={activeReceiptDue}
+          student={getStudent(activeReceiptDue.student_id)}
+          batch={getBatch(getStudent(activeReceiptDue.student_id)?.class_batch_id)}
+          institute={institute}
+          onClose={() => setActiveReceiptDue(null)}
         />
       )}
 

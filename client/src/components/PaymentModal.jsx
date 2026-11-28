@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import { X, Copy, Check, QrCode as QrIcon } from 'lucide-react';
 
-export const PaymentModal = ({ due, student, institute, onClose, onRecordPayment }) => {
+export const PaymentModal = ({ due, student, institute, batch, onClose, onRecordPayment, onPaymentSuccess }) => {
   const [method, setMethod] = React.useState('upi');
   const [refId, setRefId] = React.useState('');
   const [copied, setCopied] = React.useState(false);
@@ -39,12 +39,24 @@ export const PaymentModal = ({ due, student, institute, onClose, onRecordPayment
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onRecordPayment(due.id, {
+    const finalRefId = refId || `${method.toUpperCase()}-${Date.now().toString().slice(-6)}`;
+    const paymentData = {
       method,
-      referenceId: refId || `${method.toUpperCase()}-${Date.now().toString().slice(-6)}`,
+      referenceId: finalRefId,
       amount: cleanAmount
-    });
-    onClose();
+    };
+    onRecordPayment(due.id, paymentData);
+    if (onPaymentSuccess) {
+      onPaymentSuccess({
+        ...due,
+        status: 'paid',
+        paid_at: new Date().toISOString().split('T')[0],
+        payment_method: method,
+        reference_id: finalRefId
+      }, student);
+    } else {
+      onClose();
+    }
   };
 
   return (

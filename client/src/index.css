@@ -214,4 +214,23 @@ button, input, select, a {
 .stagger-5 { animation-delay: 300ms; }
 .stagger-6 { animation-delay: 360ms; }
 
+/* Print styles for Official Fee Receipts */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #fee-receipt-printable, #fee-receipt-printable * {
+    visibility: visible;
+  }
+  #fee-receipt-printable {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    background: white !important;
+  }
+}
+
 /* EduManage Bharat · AI Genesis Challenge */
