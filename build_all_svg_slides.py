@@ -193,36 +193,36 @@ s4_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" lang=
   <g id="user-row-1">
     <rect x="70" y="145" width="1140" height="96" rx="10" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1.5"/>
     <text x="95" y="172" font-family="Trebuchet MS" font-size="15" font-weight="bold" fill="#18181B">1. Pt. Harishankar Dwivedi <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#3730A3">(Coaching Director, Varanasi · Low Tech Literacy)</tspan></text>
-    <text x="95" y="198" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Loved 1-tap polite Hindi WhatsApp reminder saving 10 hours of Sunday calls.</tspan></text>
-    <text x="95" y="222" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Modal closed at 0ms with no physical or digital receipt voucher generated!</tspan></text>
+    <text x="95" y="198" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Loved 1-tap polite Hindi WhatsApp reminder saving 10 hours of Sunday calls.</tspan></text>
+    <text x="95" y="222" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Modal closed at 0ms with no physical or digital receipt voucher generated!</tspan></text>
   </g>
 
   <g id="user-row-2">
     <rect x="70" y="249" width="1140" height="96" rx="10" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1.5"/>
     <text x="95" y="276" font-family="Trebuchet MS" font-size="15" font-weight="bold" fill="#18181B">2. Priya Deshmukh <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#3730A3">(STEM Tutor, Pune · High Tech / Gen-Z UPI)</tspan></text>
-    <text x="95" y="302" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Loved dynamic QR embedding student roll note (tn=Roll1003_OctFee) for audit.</tspan></text>
-    <text x="95" y="326" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">No post-payment confirmation voucher or WhatsApp share sheet triggered.</tspan></text>
+    <text x="95" y="302" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Loved dynamic QR embedding student roll note (tn=Roll1003_OctFee) for audit.</tspan></text>
+    <text x="95" y="326" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">No post-payment confirmation voucher or WhatsApp share sheet triggered.</tspan></text>
   </g>
 
   <g id="user-row-3">
     <rect x="70" y="353" width="1140" height="96" rx="10" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1.5"/>
     <text x="95" y="380" font-family="Trebuchet MS" font-size="15" font-weight="bold" fill="#18181B">3. Ramanathan Iyer <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#3730A3">(Accounts Clerk, Madurai · Desktop Tally Native)</tspan></text>
-    <text x="95" y="406" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Loved instant multi-parameter filtering by batch, phone, and roll number.</tspan></text>
-    <text x="95" y="430" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Lacked sequential voucher numbers (REC-xxxx) and @media print thermal slip CSS.</tspan></text>
+    <text x="95" y="406" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Loved instant multi-parameter filtering by batch, phone, and roll number.</tspan></text>
+    <text x="95" y="430" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Lacked sequential voucher numbers (REC-xxxx) and @media print thermal slip CSS.</tspan></text>
   </g>
 
   <g id="user-row-4">
     <rect x="70" y="457" width="1140" height="96" rx="10" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1.5"/>
     <text x="95" y="484" font-family="Trebuchet MS" font-size="15" font-weight="bold" fill="#18181B">4. Ananya Mukhopadhyay <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#3730A3">(Batch Teacher, Durgapur · Low-Mid Tech 2G Class)</tspan></text>
-    <text x="95" y="510" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Loved 2G offline register marking 35 students in 0.4s without network lag.</tspan></text>
-    <text x="95" y="534" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Could not send instant WhatsApp receipt during 10-minute break between classes.</tspan></text>
+    <text x="95" y="510" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Loved 2G offline register marking 35 students in 0.4s without network lag.</tspan></text>
+    <text x="95" y="534" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Could not send instant WhatsApp receipt during 10-minute break between classes.</tspan></text>
   </g>
 
   <g id="user-row-5">
     <rect x="70" y="561" width="1140" height="96" rx="10" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1.5"/>
     <text x="95" y="588" font-family="Trebuchet MS" font-size="15" font-weight="bold" fill="#18181B">5. Qasim Ali Khan <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#3730A3">(Managing Trustee, Aligarh · Executive Non-Tech)</tspan></text>
-    <text x="95" y="614" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Loved Unpaid Months debt breakdown preventing end-of-term fee disputes.</tspan></text>
-    <text x="95" y="638" font-family="Trebuchet MS" font-size="12" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12" font-weight="normal" fill="#18181B">Needed tamper-evident receipts with institution watermarks to stop clerk theft.</tspan></text>
+    <text x="95" y="614" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#15803D">✓ LIKED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Loved Unpaid Months debt breakdown preventing end-of-term fee disputes.</tspan></text>
+    <text x="95" y="638" font-family="Trebuchet MS" font-size="12.5" font-weight="bold" fill="#8B261E">✗ CONFUSED: <tspan font-family="Segoe UI" font-size="12.5" font-weight="normal" fill="#18181B">Needed tamper-evident receipts with institution watermarks to stop clerk theft.</tspan></text>
   </g>
 </svg>'''
 
@@ -346,7 +346,7 @@ s7_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" lang
 </svg>'''
 
 # =============================================================================
-# SLIDE 8: ECONOMIC IMPACT & CLOSING SUMMARY (Strict 360px Bounded Cards)
+# SLIDE 8: ECONOMIC IMPACT SUMMARY (Strict 360px Bounded Cards)
 # =============================================================================
 s8_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" lang="en">
   <rect width="1280" height="720" fill="#8B261E"/>
@@ -402,6 +402,47 @@ s8_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" lang=
   </g>
 </svg>'''
 
+# =============================================================================
+# SLIDE 9: THANK YOU & PROJECT SUBMISSION CLOSING
+# =============================================================================
+s9_img = get_centered_img_svg("screen_phone_frame.png", 830, 160, 380, 480, pad=15)
+s9_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" lang="en">
+  <rect width="1280" height="720" fill="#8B261E"/>
+
+  <g id="thankyou-header">
+    <text x="70" y="65" font-family="Trebuchet MS" font-size="13" font-weight="bold" fill="#FECDD3" letter-spacing="1.5">AI GENESIS CHALLENGE 2026 · HACKATHON SUBMISSION</text>
+    <text x="70" y="125" font-family="Trebuchet MS" font-size="52" font-weight="bold" fill="#FFFFFF">Thank You!</text>
+    <text x="70" y="160" font-family="Segoe UI" font-size="18" font-weight="bold" fill="#FEF3C7">Empowering Bharat's Grassroots Educators, One Direct Settlement at a Time.</text>
+  </g>
+
+  <g id="resource-cards">
+    <rect x="70" y="195" width="720" height="115" rx="12" fill="#721C16" stroke="#F87171" stroke-width="1.5"/>
+    <text x="95" y="230" font-family="Trebuchet MS" font-size="17" font-weight="bold" fill="#FEF3C7">🌐  Live Production Application</text>
+    <text x="95" y="258" font-family="Segoe UI" font-size="14.5" font-weight="bold" fill="#FFFFFF">https://feeremindersupabasedeploy.vercel.app/</text>
+    <text x="95" y="285" font-family="Segoe UI" font-size="12.5" fill="#FECDD3">Instant browser access · Multi-device responsive · Zero setup · Supabase DB</text>
+
+    <rect x="70" y="325" width="720" height="115" rx="12" fill="#721C16" stroke="#F87171" stroke-width="1.5"/>
+    <text x="95" y="360" font-family="Trebuchet MS" font-size="17" font-weight="bold" fill="#FEF3C7">💻  Open-Source GitHub Repository</text>
+    <text x="95" y="388" font-family="Segoe UI" font-size="14.5" font-weight="bold" fill="#FFFFFF">https://github.com/W4rrioz/Fee-reminder</text>
+    <text x="95" y="415" font-family="Segoe UI" font-size="12.5" fill="#FECDD3">Full source code · React 18 frontend · Vercel serverless AI proxy · Comprehensive docs</text>
+
+    <rect x="70" y="455" width="720" height="115" rx="12" fill="#721C16" stroke="#F87171" stroke-width="1.5"/>
+    <text x="95" y="490" font-family="Trebuchet MS" font-size="17" font-weight="bold" fill="#FEF3C7">🎓  Author &amp; Project Track</text>
+    <text x="95" y="518" font-family="Segoe UI" font-size="14.5" font-weight="bold" fill="#FFFFFF">Aman — Project Lead &amp; Full-Stack Architect</text>
+    <text x="95" y="545" font-family="Segoe UI" font-size="12.5" fill="#FECDD3">Alta School of Technology · AI Genesis Challenge 2026 Official Submission</text>
+  </g>
+
+  <g id="bottom-feature-strip">
+    <rect x="70" y="590" width="720" height="48" rx="8" fill="#FFFFFF"/>
+    <text x="95" y="620" font-family="Trebuchet MS" font-size="13" font-weight="bold" fill="#8B261E">✦ 0% Commission UPI    ✦ 1-Tap WhatsApp Receipts    ✦ 2G Offline Register    ✦ Gemini AI</text>
+  </g>
+
+  <g id="thankyou-phone-card">
+    <rect x="830" y="195" width="380" height="443" rx="16" fill="#721C16" stroke="#F87171" stroke-width="2"/>
+    {s9_img}
+  </g>
+</svg>'''
+
 slides = [
     ("01_title.svg", s1_svg, "01_title.md", "Welcome to EduManage Bharat. Today, India's 250,000+ budget coaching teachers face a silent financial crisis: losing ₹85,000 yearly to payment gateways and 10 hours every week chasing fees."),
     ("02_problem.svg", s2_svg, "02_problem.md", "Commercial gateways take 2.36% on tuition fees, and unaccredited tutors cannot pass corporate KYC. Meanwhile, paper registers lead to disputes and 2G basement classrooms cause cloud ERPs to freeze."),
@@ -410,7 +451,8 @@ slides = [
     ("05_refinements.svg", s5_svg, "05_refinements.md", "Based on their feedback, we engineered our official Fee Receipt Voucher engine with sequential IDs and thermal print CSS, plus a 1ms dashboard universal search for busy 10-minute breaks."),
     ("06_offline_2g.svg", s6_svg, "06_offline_2g.md", "In concrete basement classrooms with zero signal, our 2G offline register marks 35 students in 0.4 seconds, buffers locally, and generates 1-tap absence alerts on WhatsApp."),
     ("07_live_demo.svg", s7_svg, "07_live_demo.md", "Now let's switch to the live production demo at feeremindersupabasedeploy.vercel.app to verify universal search, instant receipt generation, offline attendance, and Gemini AI queries."),
-    ("08_economic_impact.svg", s8_svg, "08_economic_impact.md", "In summary: saving ₹84,960 annually, slashing admin time from 10 hours to 30 minutes, and shortening fee delays from 25 days to 7 days. Thank you!")
+    ("08_economic_impact.svg", s8_svg, "08_economic_impact.md", "In summary: saving ₹84,960 annually, slashing admin time from 10 hours to 30 minutes, and shortening fee delays from 25 days to 7 days."),
+    ("09_thank_you.svg", s9_svg, "09_thank_you.md", "Thank you for your time! EduManage Bharat is live right now at feeremindersupabasedeploy.vercel.app and fully open-source. We are happy to answer any questions.")
 ]
 
 for svg_name, svg_content, note_name, note_content in slides:

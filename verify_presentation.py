@@ -30,7 +30,8 @@ def verify():
         "Product Refinements (Receipt Modal & Search)",
         "Offline Infrastructure (2G Attendance Register)",
         "Live Production Demo Workflows",
-        "Economic Impact & Closing Summary"
+        "Economic Impact & Closing Summary",
+        "Thank You & Project Submission Details"
     ]
     
     for idx, slide in enumerate(prs.slides, 1):
