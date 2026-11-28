@@ -25,6 +25,7 @@ Developed and hardened as an official project for the **AI Genesis Challenge at 
 | Document | Description |
 |---|---|
 | 📄 **[Problem Statement](docs/PROBLEM_STATEMENT.md)** | Comprehensive analysis of the Tier-2/3 Indian education crisis, gateway fee loss math, user personas, and solution architecture. |
+| 🎙️ **[User Discovery Interviews](docs/USER_INTERVIEWS.md)** | 5 in-depth field interviews with coaching center directors, independent tutors, school admins, fee clerks, and parents from Tier-2/3 India. |
 | 🤖 **[Conversation History & AI Journey](docs/CONVERSATION_HISTORY.md)** | Transparent, prompt-by-prompt log of the development collaboration with Google DeepMind Agentic AI (Antigravity), covering architectural decisions, security hardening, and animation engineering. |
 | 📋 **[Product Requirements Document (PRD)](docs/01-prd.md)** | Product scope, functional specifications, user stories, and acceptance criteria. |
 | 🛠️ **[Technical Requirements Document (TRD)](docs/02-trd.md)** | System architecture, data flow, API integrations, and non-functional performance budgets. |

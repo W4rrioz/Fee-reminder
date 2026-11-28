@@ -186,7 +186,7 @@ export const AdminLoginScreen = () => {
         </div>
       </div>
 
-      {/* Main Login Card - Editorial Style matching Screenshot 3 */}
+      {/* Main Login Card - Editorial Style */}
       <div className="w-full max-w-md mx-auto my-auto py-6 animate-fade-in">
         <div className={`${darkMode ? 'bg-stone-900 border-stone-800' : 'bg-white border-[#E7E0D6]'} rounded-2xl border p-6 sm:p-8 shadow-sm transition-all text-left`}>
           
@@ -203,7 +203,7 @@ export const AdminLoginScreen = () => {
             </p>
           </div>
 
-          {/* Role Selection Tabs matching Screenshot 3 */}
+          {/* Role Selection Tabs */}
           <div className="mb-5">
             <label className={`block text-[11px] font-bold uppercase tracking-wider mb-2.5 ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
               I am a
@@ -334,7 +334,7 @@ export const AdminLoginScreen = () => {
           </div>
         </div>
 
-        {/* Footer note matching screenshot 3 */}
+        {/* Institutional data ownership notice */}
         <p className={`text-[11px] text-center mt-5 ${darkMode ? 'text-stone-500' : 'text-stone-500'}`}>
           Your account lives on this device. EduManage keeps fee collection 100% direct with 0% gateway commission.
         </p>

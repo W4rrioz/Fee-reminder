@@ -311,7 +311,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
         </div>
       )}
 
-      {/* TOP NAVIGATION BAR - Editorial Aesthetic matching Swyam */}
+      {/* TOP NAVIGATION BAR - Editorial Heritage Aesthetic */}
       <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 dark:bg-[#121212]/90 backdrop-blur-md border-b border-[#E7E0D6] dark:border-stone-800 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           
@@ -404,13 +404,13 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
             {/* Left Column: Editorial Value Proposition */}
             <div className="lg:col-span-7 flex flex-col items-start text-left">
               
-              {/* Category Pill Badge matching Swyam */}
+              {/* Category Pill Badge */}
               <div className="hero-reveal inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3ECE1] dark:bg-stone-800/90 border border-[#E5DACD] dark:border-stone-700 text-[#8B261E] dark:text-rose-400 text-xs font-semibold tracking-wide mb-6">
                 <span className="w-2 h-2 rounded-full bg-[#8B261E] dark:bg-rose-500 animate-pulse" />
                 <span>0% Commission · For Bharat's Coaching Centers, Tutors & Schools</span>
               </div>
 
-              {/* Serif Display Headline matching Swyam typography */}
+              {/* Serif Display Headline */}
               <h1 className="hero-reveal text-4xl sm:text-5xl lg:text-[56px] font-serif font-bold text-[#1C1917] dark:text-stone-100 tracking-tight leading-[1.12] mb-6">
                 Bharat’s simplest fee engine.{' '}
                 <span className="text-[#8B261E] dark:text-[#E05D52] italic block sm:inline">
@@ -1045,7 +1045,7 @@ export const WelcomeLandingScreen = ({ onOpenAi }) => {
         </div>
       </footer>
 
-      {/* FLOATING CRIMSON "✦ ASK AI COPILOT" BUTTON (matching bottom-right "Ask Sarthi" in screenshots 1 & 2) */}
+      {/* FLOATING CRIMSON "✦ ASK AI COPILOT" BUTTON */}
       <button
         type="button"
         onClick={onOpenAi}

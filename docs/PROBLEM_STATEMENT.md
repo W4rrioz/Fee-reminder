@@ -147,6 +147,8 @@ flowchart TD
   2. Generates monthly fee receipts and reminders with one click.
   3. Marks attendance in 3 seconds before class starts, even in regional areas with 2G connections.
 
+> 🎙️ *For complete verbatim transcripts and cross-synthesis across coaching center owners, independent tutors, school administrators, fee clerks, and parents, see **[USER_INTERVIEWS.md](USER_INTERVIEWS.md)**.*
+
 ---
 
 ## 6. Measurable Impact & Economic Value

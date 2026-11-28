@@ -222,10 +222,10 @@ Tap a suggestion below or type your question:`,
   const processUserQuery = (queryText) => {
     const q = queryText.toLowerCase().trim();
 
-    // Educational concepts (Sarthi AI Tutor mode)
+    // Educational concepts (EduManage AI Copilot mode)
     if (q.includes('velocity') || q.includes('speed')) {
       return {
-        text: `### ✦ Sarthi Explains: Velocity vs Speed
+        text: `### ✦ EduManage Copilot Explains: Velocity vs Speed
 
 **Speed** sirf yeh batata hai ki koi cheez kitni tezi se chal rahi hai (jaise *40 km/h*). Yeh ek **Scalar** quantity hai jisme direction nahi hoti.
 
@@ -243,7 +243,7 @@ Lekin **Velocity** mein speed ke saath **Direction (disha)** bhi hoti hai! Yeh e
 
     if (q.includes('chemical reaction') || q.includes('reaction') || q.includes('metal')) {
       return {
-        text: `### ✦ Sarthi Explains: Chemical Reactions & Equations (Class 10)
+        text: `### ✦ EduManage Copilot Explains: Chemical Reactions & Equations (Class 10)
 
 Jab do ya zyada substances milkar naye properties wale substances banate hain jinki chemical identity badal jaati hai, usse **Chemical Reaction** kehte hain.
 
@@ -264,7 +264,7 @@ According to the **Law of Conservation of Mass**, matter can neither be created 
 
     if (q.includes('kinetic') || q.includes('energy') || q.includes('formula')) {
       return {
-        text: `### ✦ Sarthi Explains: Kinetic Energy Formula
+        text: `### ✦ EduManage Copilot Explains: Kinetic Energy Formula
 
 Kinetic Energy ($K$) kisi object ki motion (gati) ki wajah se hoti hai.
 
